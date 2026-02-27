@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\URL;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         URL::forceScheme('https');
-        URL::forceRootUrl('https://sambath.tovna24.com');
+       
         // LanguageSwitch
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
