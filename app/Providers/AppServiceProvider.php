@@ -21,12 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Force HTTPS
+        URL::forceScheme('https');
+        
         // LanguageSwitch
-            // Force HTTPS
-            if (config('app.env') === 'local') {
-                URL::forceScheme('https');
-            }
-    
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
                 ->locales(['en', 'km'])       // English + Khmer
