@@ -24,7 +24,7 @@
     WORKDIR /var/www
     
     # Copy Laravel
-    COPY ./src .
+    COPY ..
     
     # Install dependencies (production only)
     RUN composer install --no-dev --optimize-autoloader
