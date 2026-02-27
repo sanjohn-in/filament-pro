@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
