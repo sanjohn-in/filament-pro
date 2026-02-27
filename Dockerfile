@@ -12,25 +12,29 @@ RUN apk add --no-cache \
     icu-dev
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl
+RUN docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    zip \
+    intl \
+    opcache
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# ✅ CORRECT COPY
+# Copy Laravel project
 COPY . .
 
-# Install dependencies (production only)
+# Install dependencies (production)
 RUN composer install --no-dev --optimize-autoloader
 
-# Optimize Laravel
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
-
-# Correct permissions
+# Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 CMD ["php-fpm"]
