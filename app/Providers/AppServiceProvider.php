@@ -23,10 +23,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (app()->environment('production')) {
-            URL::forceScheme('https');
-            URL::forceRootUrl('https://sambath.tovna24.com');
-        }
+        URL::forceScheme('https');
+        URL::forceRootUrl('https://sambath.tovna24.com');
+    
+        // Force Livewire update URL to HTTPS directly
+        Livewire::setUpdateRoute(function ($handle) {
+            return Route::post('/livewire/update', $handle)
+                ->middleware('web');
+        });
     
        
         // LanguageSwitch
