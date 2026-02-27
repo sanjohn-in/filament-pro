@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if (app()->environment('production')) {
             URL::forceScheme('https');
-            URL::forceRootUrl(config('app.url'));
+            URL::forceRootUrl('https://sambath.tovna24.com');
         }
     
        
