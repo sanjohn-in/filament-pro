@@ -54,7 +54,7 @@ class AppPanelProvider extends PanelProvider
             ])
             ->login()
             ->globalSearch() 
-            ->spa()
+            // ->spa()
             ->authMiddleware([
                 Authenticate::class,
             ]);
