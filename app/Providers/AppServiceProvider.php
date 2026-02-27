@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Force HTTPS
         URL::forceScheme('https');
-        
+        URL::forceRootUrl(config('app.url')); 
         // LanguageSwitch
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
