@@ -53,8 +53,8 @@ class CarModelsTable
                 ->searchable()
                 ->preload(),
 
-            TernaryFilter::make('is_active')
-                ->label(__('messages.is_active')),
+                TernaryFilter::make('is_active')
+                    ->label(__('messages.is_active')),
             ])
             ->recordActions([
                 ViewAction::make(),

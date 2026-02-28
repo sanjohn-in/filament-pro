@@ -12,12 +12,17 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 
 class CarsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('end_date', 'asc')
             ->columns([
                 TextColumn::make('carModel.name')
                     ->label(__('messages.car_model'))
@@ -58,37 +63,43 @@ class CarsTable
                     ->formatStateUsing(fn ($state) => $state . ' ' . __('messages.months')),
 
 
-            TextColumn::make('status')
-                ->label(__('messages.status'))
-                ->badge()
-                ->getStateUsing(function (Model $record): string {
-                    if (blank($record->end_date)) {
+                    TextColumn::make('status')
+                    ->label(__('messages.status'))
+                    ->badge()
+                    ->getStateUsing(function (Model $record): string {
+                        if (blank($record->end_date)) {
+                            return 'active';
+                        }
+                    
+                        $endDate = Carbon::parse($record->end_date)->startOfDay();
+                        $today   = Carbon::today();
+                        $daysLeft = $today->diffInDays($endDate, false); // false = signed difference
+                    
+                        // 🔴 end_date is today or past
+                        if ($daysLeft <= 0) {
+                            return 'expired';
+                        }
+                    
+                        // 🟡 end_date is 1 to 6 days away (02/03 → 07/03)
+                        if ($daysLeft <= 6) {
+                            return 'expiring_soon';
+                        }
+                    
+                        // 🟢 end_date is 7+ days away (08/03 or beyond)
                         return 'active';
-                    }
-            
-                    $endDate = Carbon::parse($record->end_date);
-                    $today   = Carbon::today();
-            
-                    if ($endDate->lte($today)) {
-                        return 'expired';
-                    }
-            
-                    if ($endDate->diffInDays($today) <= 7) {
-                        return 'expiring_soon';
-                    }
-            
-                    return 'active';
-                })
-                ->color(fn (string $state): string => match ($state) {
-                    'expired'       => 'danger',
-                    'expiring_soon' => 'warning',
-                    'active'        => 'success',
-                })
-                ->formatStateUsing(fn (string $state): string => match ($state) {
-                    'expired'       => __('messages.status_expired'),
-                    'expiring_soon' => __('messages.status_expiring_soon'),
-                    'active'        => __('messages.status_active'),
-                }),
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        'expired'       => 'danger',   // 🔴
+                        'expiring_soon' => 'warning',  // 🟡
+                        'active'        => 'success',  // 🟢
+                        default         => 'success',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'expired'       => __('messages.status_expired'),
+                        'expiring_soon' => __('messages.status_expiring_soon'),
+                        'active'        => __('messages.status_active'),
+                        default         => __('messages.status_active'),
+                    }),
 
                 TextColumn::make('start_date')
                     ->label(__('messages.start_date'))
@@ -110,7 +121,53 @@ class CarsTable
                     ->boolean(),
             ])
             ->filters([
-                //
+                    
+                SelectFilter::make('owner.name')
+                ->label(__('messages.owner'))
+                ->relationship('owner', 'name')
+                ->searchable()
+                ->preload(),
+
+                Filter::make('date_range')
+                    ->label(__('messages.start_date'))
+                    ->form([
+                        DatePicker::make('start_date')
+                            ->label(__('messages.start_date'))
+                            ->native(false),
+
+                        DatePicker::make('end_date')
+                            ->label(__('messages.end_date'))
+                            ->native(false),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when(
+                                $data['start_date'],
+                                fn ($query) => $query->whereDate('start_date', '>=', $data['start_date'])
+                            )
+                            ->when(
+                                $data['end_date'],
+                                fn ($query) => $query->whereDate('end_date', '<=', $data['end_date'])
+                            );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+
+                        if ($data['start_date']) {
+                            $indicators[] = __('messages.start_date') . ': ' .
+                                Carbon::parse($data['start_date'])->format('d/m/Y');
+                        }
+
+                        if ($data['end_date']) {
+                            $indicators[] = __('messages.end_date') . ': ' .
+                                Carbon::parse($data['end_date'])->format('d/m/Y');
+                        }
+
+                        return $indicators;
+                    }),
+
+                    TernaryFilter::make('is_active')
+                        ->label(__('messages.is_active')),
             ])
             ->recordClasses(function (Model $record): string {
                 if (blank($record->end_date)) {
