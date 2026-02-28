@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('brand_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();

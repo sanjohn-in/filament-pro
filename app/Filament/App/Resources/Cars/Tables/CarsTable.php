@@ -16,6 +16,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
+use Illuminate\Support\Facades\DB;
 
 class CarsTable
 {
@@ -128,39 +129,42 @@ class CarsTable
                 ->searchable()
                 ->preload(),
 
-                Filter::make('date_range')
-                    ->label(__('messages.start_date'))
-                    ->form([
-                        DatePicker::make('start_date')
+                Filter::make('end_date')
+                    ->label(__('messages.end_date'))
+                    ->schema([
+                        DatePicker::make('end_date_from')
                             ->label(__('messages.start_date'))
-                            ->native(false),
+                            ->native(false)
+                            ->displayFormat('d/m/Y'),
 
-                        DatePicker::make('end_date')
+                        DatePicker::make('end_date_until')
                             ->label(__('messages.end_date'))
-                            ->native(false),
+                            ->native(false)
+                            ->displayFormat('d/m/Y'),
                     ])
+                    ->columns(2)
                     ->query(function ($query, array $data) {
                         return $query
                             ->when(
-                                $data['start_date'],
-                                fn ($query) => $query->whereDate('start_date', '>=', $data['start_date'])
+                                $data['end_date_from'],
+                                fn ($query) => $query->whereDate('end_date', '>=', $data['end_date_from'])
                             )
                             ->when(
-                                $data['end_date'],
-                                fn ($query) => $query->whereDate('end_date', '<=', $data['end_date'])
+                                $data['end_date_until'],
+                                fn ($query) => $query->whereDate('end_date', '<=', $data['end_date_until'])
                             );
                     })
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
 
-                        if ($data['start_date']) {
+                        if ($data['end_date_from']) {
                             $indicators[] = __('messages.start_date') . ': ' .
-                                Carbon::parse($data['start_date'])->format('d/m/Y');
+                                Carbon::parse($data['end_date_from'])->format('d/m/Y');
                         }
 
-                        if ($data['end_date']) {
+                        if ($data['end_date_until']) {
                             $indicators[] = __('messages.end_date') . ': ' .
-                                Carbon::parse($data['end_date'])->format('d/m/Y');
+                                Carbon::parse($data['end_date_until'])->format('d/m/Y');
                         }
 
                         return $indicators;
