@@ -28,10 +28,8 @@ class CarModelForm
                 TextInput::make('name')
                     ->label(__('messages.name'))
                     ->live(onBlur: true)
-                    ->afterStateUpdated(function ($state, callable $set, $get) {
-                        if (!$get('slug')) {
-                            $set('slug', Str::slug($state, '_'));
-                        }
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $set('slug', Str::of($state)->lower()->replace(' ', '_'));
                     })
                     ->required()
                     ->maxLength(255),
