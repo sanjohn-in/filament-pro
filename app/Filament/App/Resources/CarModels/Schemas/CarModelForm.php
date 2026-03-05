@@ -40,7 +40,7 @@ class CarModelForm
 
                 TextInput::make('slug')
                     ->label(__('messages.slug'))
-                    ->unique(ignoreRecord: true) 
+                    ->unique(ignoreRecord: false) 
                     ->required()
                     ->maxLength(255),
                     
