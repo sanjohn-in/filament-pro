@@ -28,8 +28,10 @@ class CarModelForm
                 TextInput::make('name')
                     ->label(__('messages.name'))
                     ->live(onBlur: true)
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        $set('slug', Str::of($state)->lower()->replace(' ', '_'));
+                    ->afterStateUpdated(function ($state, callable $set, $get) {
+                        if (!$get('slug')) {
+                            $set('slug', Str::slug($state, '_'));
+                        }
                     })
                     ->required()
                     ->maxLength(255),
@@ -40,7 +42,7 @@ class CarModelForm
 
                 TextInput::make('slug')
                     ->label(__('messages.slug'))
-                    ->unique(ignoreRecord: false) 
+                    ->unique(ignoreRecord: true) 
                     ->required()
                     ->maxLength(255),
                     
