@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models\Admin;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Guest extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'main_category_id',
+        'name',
+        'phone',
+        'note',
+        'tag',
+    ];
+
+    public function mainCategory(): BelongsTo
+    {
+        return $this->belongsTo(MainCategory::class);
+    }
+}

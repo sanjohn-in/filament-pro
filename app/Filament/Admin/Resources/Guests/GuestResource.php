@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Filament\Admin\Resources\Guests;
+
+use App\Filament\Admin\Resources\Guests\Pages\CreateGuest;
+use App\Filament\Admin\Resources\Guests\Pages\EditGuest;
+use App\Filament\Admin\Resources\Guests\Pages\ListGuests;
+use App\Filament\Admin\Resources\Guests\Pages\ViewGuest;
+use App\Filament\Admin\Resources\Guests\Schemas\GuestForm;
+use App\Filament\Admin\Resources\Guests\Schemas\GuestInfolist;
+use App\Filament\Admin\Resources\Guests\Tables\GuestsTable;
+use App\Models\Admin\Guest;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+
+class GuestResource extends Resource
+{
+    protected static ?string $model = Guest::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static ?string $recordTitleAttribute = 'Guest';
+
+    public static function form(Schema $schema): Schema
+    {
+        return GuestForm::configure($schema);
+    }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return GuestInfolist::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+    
+        return GuestsTable::configure($table);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery()->where('main_category_id', session('main_category_id'));
+        return $query;
+    }
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListGuests::route('/'),
+            // 'create' => CreateGuest::route('/create'),
+            // 'view' => ViewGuest::route('/{record}'),
+            // 'edit' => EditGuest::route('/{record}/edit'),
+        ];
+    }
+    public static function canViewAny(): bool
+    {
+        return session()->has('main_category_id');
+    }
+
+    public static function getNavigationLabel(): string { return __('messages.guests'); }
+    public static function getModelLabel(): string { return __('messages.guest'); }
+    public static function getPluralModelLabel(): string { return __('messages.guests'); }
+
+
+}

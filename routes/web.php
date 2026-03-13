@@ -12,3 +12,9 @@ Route::get('/', function () {
     return redirect('/app');
 });
 
+
+Route::get('/admin/clear-category', function () {
+    session()->forget('main_category_id');
+    // session()->forget('main_category_id');
+    return redirect('/admin/select-category');
+});
