@@ -64,4 +64,5 @@ return [
     'tag' => "Tag",
     'other' => 'Others',
     'guest_name' => 'Guest name',
+    'link' => "Link",
 ];

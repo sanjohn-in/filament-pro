@@ -12,18 +12,24 @@ class BrandInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
-                TextEntry::make('slug'),
+                TextEntry::make('name')
+                ->label(__('messages.name')),
+                TextEntry::make('slug')
+                ->label(__('messages.slug')),
                 TextEntry::make('description')
                     ->placeholder('-')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->label(__('messages.description')),
                 IconEntry::make('is_active')
+                    ->label(__('messages.is_active'))
                     ->boolean(),
                 TextEntry::make('created_at')
                     ->dateTime()
-                    ->placeholder('-'),
+                    ->placeholder('-')
+                    ->label(__('messages.created_at')),
                 TextEntry::make('updated_at')
                     ->dateTime()
+                    ->label(__('messages.updated_at'))
                     ->placeholder('-'),
             ]);
     }
