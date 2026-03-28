@@ -52,4 +52,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(MainCategory::class);
     }
+    public function canAccessPanel(\Filament\Panel $panel): bool
+    {
+        return match ($panel->getId()) {
+            'admin' => in_array($this->role, ['admin', 'super_admin']),
+            'app' => true,
+            default => false,
+        };
+    }
 }
