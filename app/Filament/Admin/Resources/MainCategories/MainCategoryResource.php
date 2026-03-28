@@ -25,6 +25,8 @@ class MainCategoryResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'MainCategory';
+
+    protected static ?int $navigationSort = 6;
   
     public static function form(Schema $schema): Schema
     {
@@ -42,7 +44,11 @@ class MainCategoryResource extends Resource
     }
     public static function getEloquentQuery(): Builder
     {
-        $query = parent::getEloquentQuery()->where('user_id', Auth::id());
+        $query = parent::getEloquentQuery()->where([
+            'user_id' => Auth::id(),
+            'id'  =>  session('main_category_id')
+        ]);
+    
         return $query;
     }
 

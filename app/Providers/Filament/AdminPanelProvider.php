@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Resources\Donations\Widgets\DonationStatsWidget;
+use App\Filament\Admin\Resources\Guests\Widgets\DonationChartWidget;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -32,16 +34,17 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->topNavigation()
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
             ->pages([
-                // Dashboard::class,
+                Dashboard::class,
             ])
-            // ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            // ->widgets([
-            //     AccountWidget::class,
-            //     FilamentInfoWidget::class,
-            // ])
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            ->widgets([
+                DonationStatsWidget::class,
+                DonationChartWidget::class,
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -55,8 +58,10 @@ class AdminPanelProvider extends PanelProvider
                 'category.selected'
             ])
             ->spa()
+            ->globalSearch(false) 
             ->authMiddleware([
                 Authenticate::class,
             ]);
+            
     }
 }

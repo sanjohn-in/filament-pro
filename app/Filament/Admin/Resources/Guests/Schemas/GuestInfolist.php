@@ -17,6 +17,15 @@ class GuestInfolist
                 TextEntry::make('phone')
                     ->label(__('messages.phone'))
                     ->placeholder('-'),
+
+                TextEntry::make('link')
+                    ->getStateUsing(function ($record) {
+                        $domain = \App\Models\Admin\Configuration::where('slug', 'domain')->value('link');
+                        return rtrim($domain, '/') . '/guest/' . $record->id;
+                    })
+                    ->label(__('messages.link'))
+                    ->copyable()
+                    ->placeholder('-'),
                 TextEntry::make('tag')
                     ->label(__('messages.tag'))
                     ->formatStateUsing(fn ($state) => __("messages.$state"))
@@ -24,6 +33,6 @@ class GuestInfolist
                 TextEntry::make('note')
                 ->label(__('messages.note'))
                 ->placeholder('-'),
-            ])->columns(2);;
+            ])->columns(2);
     }
 }

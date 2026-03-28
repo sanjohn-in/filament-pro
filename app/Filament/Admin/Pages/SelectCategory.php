@@ -6,6 +6,7 @@ use Filament\Pages\Page;
 use App\Models\Admin\MainCategory;
 use BackedEnum;
 use Filament\Actions\CreateAction;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
@@ -81,29 +82,66 @@ class SelectCategory extends Page
                             ->placeholder('Hun Malyly')
                             ->required(),
     
-                            DateTimePicker::make('date')
-                                ->label(__('messages.date'))
-                                ->native(true)
+                            DatePicker::make('date')
+                                ->native(false)
                                 ->required()
                                 ->live(onBlur: true)
-                                ->afterStateUpdated(function ($state, callable $set) {
+                                ->afterStateUpdated(function ($state, callable $set, $record) {
+                            
+                                    // ✅ Only run when creating (no record yet)
+                                    if ($record) {
+                                        return;
+                                    }
+                            
                                     $datePart = \Carbon\Carbon::parse($state)->format('dmY');
-    
+                            
                                     if ($state && \Carbon\Carbon::parse($state)->format('H:i') !== '00:00') {
                                         $timePart = \Carbon\Carbon::parse($state)->format('Hi');
                                     } else {
                                         $timePart = rand(1000, 9999);
                                     }
-    
+                            
                                     $set('slug', $datePart . '-' . $timePart);
-                                }),
-    
+                                })
+                                ->label(__('messages.date')),
+                            
+                                Select::make('time')
+                                    ->label(__('messages.time'))
+                                    ->options(function () {
+                                        $times = [];
+                                        foreach (['AM', 'PM'] as $period) {
+                                            $startHour = $period === 'AM' ? 0 : 12;
+                                            $endHour   = $period === 'AM' ? 12 : 24;
+
+                                            for ($h = $startHour; $h < $endHour; $h++) {
+                                                foreach ([0, 15, 30, 45] as $m) {
+                                                    $value   = sprintf('%02d:%02d', $h, $m);
+                                                    $display = sprintf(
+                                                        '%d:%02d %s',
+                                                        $h === 0 ? 12 : ($h > 12 ? $h - 12 : $h),
+                                                        $m,
+                                                        $period
+                                                    );
+                                                    $times[$value] = $display;
+                                                }
+                                            }
+                                        }
+                                        return $times;
+                                    })
+                                    ->optionsLimit(96)  // ← 24 hours × 4 intervals = 96 total options show all
+                                    ->searchable()
+                                    ->native(false)
+                                    ->placeholder(__('messages.select_time'))
+                                    ->required(),
+
                             TextInput::make('google_map')
+                            ->placeholder('https://maps.app.goo.gl/sQsL8f5PGFqqhmtB6')
                             ->label(__('messages.google_map')),
     
                             Textarea::make('address')
+                                ->placeholder('Phnom Penh, St271, Cambodia')
                                 ->label(__('messages.address'))
-                                ->columnSpanFull(), // full-width
+                                ->rows(1),
     
                             FileUpload::make('cover_image')
                                 ->label(__('messages.cover_image'))
@@ -118,10 +156,12 @@ class SelectCategory extends Page
                                 ->directory('qr')
                                 ->visibility('public')
                                 ->image()
+                                ->label(__('messages.qr_code'))
                                 ->imageEditorAspectRatioOptions([null, '16:9', '4:3', '1:1']),
     
                             Toggle::make('is_visible')
                                 ->default(true)
+                                ->label(__('messages.is_visible'))
                                 ->required(),
                         ]),
                 ]),

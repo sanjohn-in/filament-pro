@@ -2,6 +2,9 @@
 
 namespace App\Filament\Admin\Resources\Guests\Tables;
 
+use App\Filament\Admin\Resources\Donations\Schemas\DonationForm;
+use App\Models\Admin\Donation;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -31,7 +34,7 @@ class GuestsTable
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'bride_site' => 'primary',
-                        'groom_site'  => 'success',
+                        'groom_site'  => 'danger',
                         'both_site'  => 'info',
                         'other' => 'warning',
                         default  => 'gray',
@@ -43,17 +46,31 @@ class GuestsTable
                         'other' => __('messages.other'),
                         default  => $state,
                     }),
+                  
+                // TextColumn::make('note')
+                //     ->label(__('messages.note'))
+                //     ->limit(40),
 
-                TextColumn::make('note')
-                    ->label(__('messages.note'))
-                    ->limit(40)
-                    ->toggleable(isToggledHiddenByDefault: true),
+               
+
+                TextColumn::make('guest_link')
+                    ->label(__('messages.link'))
+                    ->getStateUsing(function ($record) {
+                        $domain = \App\Models\Admin\Configuration::where('slug', 'domain')->value('link');
+                        return rtrim($domain, '/') . '/guest/' . $record->id;
+                    })
+                    
+                    ->copyable()                          // ✅ built-in copy button
+                    
+                    ->copyMessageDuration(1500)
+                    ->icon('heroicon-o-link'),
 
                 TextColumn::make('created_at')
-                    ->label(__('messages.created_at'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                ->label(__('messages.created_at'))
+                ->date('d/m/Y') 
+                
+                ->sortable(),
+
                 ])
             ->filters([
                 SelectFilter::make('tag')
@@ -66,6 +83,29 @@ class GuestsTable
                     ]),
             ])
             ->recordActions([
+                Action::make('tie_hand')
+                ->label(__('messages.tie_hand'))
+                ->button()
+                ->color('info')
+                ->icon('heroicon-o-hand-raised')
+                ->schema(DonationForm::tieHandFields())
+                ->action(function (array $data): void {
+                    Donation::create($data);
+                })
+                ->visible(fn ($record) => ! $record->donation()->exists())
+                ->successNotificationTitle(__('messages.donation_created'))
+                ->modalHeading(__('messages.tie_hand'))
+                ->modalSubmitActionLabel(__('messages.save'))
+                ->modalWidth('xl'),
+
+                Action::make('tied_hand')
+                    ->label(__('messages.tied_hand'))
+                    ->button()
+                    ->color('secondary')
+                    ->icon('heroicon-o-check-circle')
+                    ->disabled()
+                    ->visible(fn ($record) => $record->donation()->exists()),
+
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),

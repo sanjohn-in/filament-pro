@@ -32,6 +32,7 @@ class MainCategoriesTable
                     ->searchable(),
                 TextColumn::make('date')
                     ->label(__('messages.date'))
+                    ->date('d/m/Y') 
                     ->searchable(),
                 TextColumn::make('adress')
                     ->label(__('messages.address'))

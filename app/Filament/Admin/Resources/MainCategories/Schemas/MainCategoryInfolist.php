@@ -26,7 +26,8 @@ class MainCategoryInfolist
                     ->label(__('messages.slug')),
                 TextEntry::make('date')
                     ->label(__('messages.date'))
-                    ->placeholder('-'),
+                    ->placeholder('-')
+                    ->date('d/m/Y') ,
                 TextEntry::make('adress')
                     ->label(__('messages.address'))
                     ->placeholder('-'),
@@ -38,12 +39,14 @@ class MainCategoryInfolist
                 ImageEntry::make('cover_image')
                 ->disk('public')
                 ->imageWidth(300)
+                ->label(__('messages.cover_image'))
                 // ->columnSpanFull()
                 ->placeholder('No Cover Image'),
 
                 ImageEntry::make('qr_code')
                 ->disk('public')
                 ->imageWidth(300)
+                ->label(__('messages.qr_code'))
                 // ->columnSpanFull()
                 ->placeholder('No QR Code'),
                 
@@ -51,9 +54,11 @@ class MainCategoryInfolist
                     ->boolean(),
                 TextEntry::make('created_at')
                     ->dateTime()
+                    ->label(__('messages.created_at'))
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
                     ->dateTime()
+                    ->label(__('messages.updated_at'))
                     ->placeholder('-'),
             ]);
     }
