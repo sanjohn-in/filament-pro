@@ -59,6 +59,10 @@ class TableGroupResource extends Resource
             'edit' => EditTableGroup::route('/{record}/edit'),
         ];
     }
+    public static function canViewAny(): bool
+    {
+        return session()->has('main_category_id');
+    }
     public static function getNavigationLabel(): string { return __('messages.table_groups'); }
     public static function getModelLabel(): string { return __('messages.table_group'); }
     public static function getPluralModelLabel(): string { return __('messages.table_groups'); }

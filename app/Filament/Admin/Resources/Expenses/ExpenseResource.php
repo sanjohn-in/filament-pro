@@ -6,6 +6,7 @@ use App\Filament\Admin\Resources\Expenses\Pages\CreateExpense;
 use App\Filament\Admin\Resources\Expenses\Pages\EditExpense;
 use App\Filament\Admin\Resources\Expenses\Pages\ListExpenses;
 use App\Filament\Admin\Resources\Expenses\Schemas\ExpenseForm;
+use App\Filament\Admin\Resources\Expenses\Tables\ExpensesTable;
 use App\Filament\Admin\Resources\Expenses\Tables\ExpenseTable;
 use App\Models\Admin\Expense;
 use BackedEnum;
@@ -32,9 +33,9 @@ class ExpenseResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return ExpenseTable::configure($table);
+        return ExpensesTable::configure($table);
     }
-
+    
     // Filter by session main_category_id
     public static function getEloquentQuery(): Builder
     {
@@ -55,6 +56,10 @@ class ExpenseResource extends Resource
             // 'create' => CreateExpense::route('/create'),
             // 'edit' => EditExpense::route('/{record}/edit'),
         ];
+    }
+    public static function canViewAny(): bool
+    {
+        return session()->has('main_category_id');
     }
     public static function getNavigationLabel(): string { return __('messages.expenses'); }
     public static function getModelLabel(): string { return __('messages.expense'); }
