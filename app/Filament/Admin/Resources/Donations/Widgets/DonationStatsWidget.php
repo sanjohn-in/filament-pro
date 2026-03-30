@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class DonationStatsWidget extends ChartWidget
 {
-    
+ 
+
     public function getHeading(): ?string
     {
         return __('messages.donation_status_widget');
@@ -19,14 +20,31 @@ class DonationStatsWidget extends ChartWidget
         $data = Donation::select('guest_id', DB::raw('count(*) as total'))
             ->with('guest')
             ->groupBy('guest_id')
+            ->where('main_category_id', session('main_category_id'))
             ->get();
-    
+
+        // ← Handle empty data
+        if ($data->isEmpty()) {
+            return [
+                'datasets' => [
+                    [
+                        'label'           => __('messages.no_data'),
+                        'data'            => [1],
+                        'backgroundColor' => ['rgba(200, 200, 200, 0.3)'],
+                        'borderColor'     => ['rgba(200, 200, 200, 0.5)'],
+                        'borderWidth'     => 1,
+                    ],
+                ],
+                'labels' => [__('messages.no_donations_yet')],
+            ];
+        }
+
         $labels = $data->map(fn ($d) =>
             $d->guest?->name ?? __('messages.anonymous')
         )->toArray();
-    
+
         $values = $data->pluck('total')->toArray();
-    
+
         $colors = [
             'rgba(59, 130, 246, 0.8)',
             'rgba(16, 185, 129, 0.8)',
@@ -36,7 +54,7 @@ class DonationStatsWidget extends ChartWidget
             'rgba(236, 72, 153, 0.8)',
             'rgba(20, 184, 166, 0.8)',
         ];
-    
+
         return [
             'datasets' => [
                 [
@@ -54,5 +72,27 @@ class DonationStatsWidget extends ChartWidget
     protected function getType(): string
     {
         return 'pie';
+    }
+
+    protected function getOptions(): array
+    {
+        $isEmpty = Donation::where('main_category_id', session('main_category_id'))->doesntExist();
+
+        return [
+            'plugins' => [
+                'legend' => [
+                    'position' => 'bottom',
+                    'display'  => true,
+                ],
+                // ← Show "No data" text in center when empty
+                'tooltip' => [
+                    'enabled' => !$isEmpty,
+                ],
+            ],
+            'animation' => [
+                'animateRotate' => true,
+                'animateScale'  => true,
+            ],
+        ];
     }
 }

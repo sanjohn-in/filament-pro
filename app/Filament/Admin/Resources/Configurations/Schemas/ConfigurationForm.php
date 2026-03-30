@@ -32,7 +32,6 @@ class ConfigurationForm
                                 )
                                 ->columnSpanFull(),
                           
-    
                             TextInput::make('link')
                                 ->label(__('messages.link'))
                                 ->url()

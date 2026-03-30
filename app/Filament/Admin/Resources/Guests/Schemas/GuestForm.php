@@ -23,11 +23,27 @@ class GuestForm
                         ->label(__('messages.guest_name'))
                         ->required()
                         ->maxLength(255),
-    
-                    TextInput::make('phone')
-                        ->label(__('messages.phone'))
-                        ->tel()
-                        ->nullable(),
+                    
+                    Select::make('table_group_id')
+                        ->label(__('messages.table_group'))
+                        ->options(function () {
+                            $tables = \App\Models\Admin\TableGroup::query()
+                                ->where('main_category_id', session('main_category_id'))
+                                ->where('status', 'open')
+                                ->get()
+                                ->mapWithKeys(fn ($t) => [$t->id => $t->name]);
+
+                            return $tables;
+                        })
+                        ->searchable()
+                        ->nullable()
+                        ->native(false)
+                        // ← Only show if tables exist
+                        ->visible(fn () =>
+                            \App\Models\Admin\TableGroup::where('main_category_id', session('main_category_id'))
+                                ->exists()
+                        )
+                        ->placeholder(__('messages.select_table')),
     
                     Select::make('tag')
                         ->label(__('messages.tag'))
@@ -38,10 +54,14 @@ class GuestForm
                             'other' => __('messages.other'),
                         ])
                         ->required(),
-    
+
+                    TextInput::make('phone')
+                        ->label(__('messages.phone'))
+                        ->tel()
+                        ->nullable(),
                     Textarea::make('note')
                         ->label(__('messages.note'))
-                        ->rows(1),
+                        ->rows(2)->columnSpanFull(),
     
                 ])
                 ->columns(2),

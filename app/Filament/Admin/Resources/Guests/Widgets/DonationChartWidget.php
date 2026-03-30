@@ -3,7 +3,9 @@
 namespace App\Filament\Admin\Resources\Guests\Widgets;
 
 use App\Models\Admin\Donation as AdminDonation;
-use Filament\Widgets\ChartWidget;  
+use Filament\Widgets\ChartWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class DonationChartWidget extends ChartWidget  // ← fix this
@@ -20,6 +22,7 @@ class DonationChartWidget extends ChartWidget  // ← fix this
         $data = AdminDonation::select('guest_id', DB::raw('count(*) as total'))
             ->with('guest')
             ->groupBy('guest_id')
+            ->where('main_category_id', session('main_category_id'))
             ->get();
 
         if ($data->isEmpty()) {
@@ -65,7 +68,6 @@ class DonationChartWidget extends ChartWidget  // ← fix this
             'labels' => $labels,
         ];
     }
-
     // ← This method only exists in ChartWidget not StatsOverviewWidget
     protected function getType(): string
     {
