@@ -17,7 +17,7 @@ use Carbon\Carbon;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\Summarizers\Summarizer;
 
-class ExpenseTable
+class ExpensesTable
 {
     public static function configure(Table $table): Table
     {
