@@ -69,8 +69,13 @@ class DonationChartWidget extends ChartWidget
                 ],
             ],
             'labels' => [
-                __('messages.guests_donated') . " ({$donatedCount}/{$totalGuests}) - $" . number_format($grandTotalUsd, 2),
-                __('messages.guests_not_donated') . " ({$nonDonatedCount}/{$totalGuests})",
+                __('messages.guests_donated')
+                    . " ({$donatedCount}/{$totalGuests})"
+                    . "\n$" . number_format($grandTotalUsd, 2)
+                    . ", \n៛ " . number_format($totalKhr),
+
+                __('messages.guests_not_donated')
+                    . " ({$nonDonatedCount}/{$totalGuests})",
             ],
         ];
     }
@@ -83,26 +88,37 @@ class DonationChartWidget extends ChartWidget
     protected function getOptions(): array
     {
         $mainCategoryId = session('main_category_id');
-        $isEmpty = AdminDonation::where('main_category_id', $mainCategoryId)->doesntExist();
-
+    
+        $data = AdminDonation::select(
+            DB::raw('SUM(amount_usd) as total_usd'),
+            DB::raw('SUM(amount_khr) as total_khr')
+        )
+        ->where('main_category_id', $mainCategoryId)
+        ->first();
+    
+        $rate = config('app.khr_to_usd_rate', 4100);
+    
+        $totalUsd = floatval($data->total_usd ?? 0);
+        $totalKhr = floatval($data->total_khr ?? 0);
+        $grandTotalUsd = $totalUsd + ($totalKhr / $rate);
+    
         return [
             'plugins' => [
-                'legend' => [
-                    'position' => 'bottom',
-                    'display'  => true,
-                ],
                 'tooltip' => [
-                    'enabled' => !$isEmpty,
                     'callbacks' => [
                         'label' => "function(context) {
-                            return context.label;
+                            let label = context.label || '';
+                            if (context.dataIndex === 0) {
+                                return [
+                                    label,
+                                    'USD: $" . number_format($grandTotalUsd, 2) . "',
+                                    'KHR: ៛ " . number_format($totalKhr) . "'
+                                ];
+                            }
+                            return label;
                         }",
                     ],
                 ],
-            ],
-            'animation' => [
-                'animateRotate' => true,
-                'animateScale'  => true,
             ],
         ];
     }
