@@ -58,7 +58,12 @@ class MainCategoriesTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                ->after(function () {
+                    session()->forget('main_category_id');
+
+                    return redirect('/admin/select-category');
+                }),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
