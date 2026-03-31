@@ -21,6 +21,7 @@ class MainCategory extends Model
         'cover_image',
         'qr_code',
         'is_visible',
+        'time',
     ];
     public function user()
     {
