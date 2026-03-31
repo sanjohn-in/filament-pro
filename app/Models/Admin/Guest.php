@@ -5,6 +5,7 @@ namespace App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -31,6 +32,10 @@ class Guest extends Model
     public function donation(): HasOne
     {
         return $this->hasOne(Donation::class);
+    }
+    public function donations(): HasMany
+    {
+        return $this->hasMany(Donation::class, 'guest_id');
     }
     public function tableGroup(): BelongsTo
     {

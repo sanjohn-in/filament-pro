@@ -3,96 +3,81 @@
 namespace App\Filament\Admin\Resources\Donations\Widgets;
 
 use App\Models\Admin\Donation;
-use Filament\Widgets\ChartWidget;
+use App\Models\Admin\Guest;
+use Filament\Widgets\StatsOverviewWidget as BaseStatsOverviewWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\DB;
 
-class DonationStatsWidget extends ChartWidget
+class DonationStatsWidget extends BaseStatsOverviewWidget
 {
- 
-
     public function getHeading(): ?string
     {
         return __('messages.donation_status_widget');
     }
 
-    protected function getData(): array
+    protected function getStats(): array
     {
-        $data = Donation::select('guest_id', DB::raw('count(*) as total'))
-            ->with('guest')
-            ->groupBy('guest_id')
-            ->where('main_category_id', session('main_category_id'))
-            ->get();
+        $mainCategoryId = session('main_category_id');
 
-        // ← Handle empty data
-        if ($data->isEmpty()) {
-            return [
-                'datasets' => [
-                    [
-                        'label'           => __('messages.no_data'),
-                        'data'            => [1],
-                        'backgroundColor' => ['rgba(200, 200, 200, 0.3)'],
-                        'borderColor'     => ['rgba(200, 200, 200, 0.5)'],
-                        'borderWidth'     => 1,
-                    ],
-                ],
-                'labels' => [__('messages.no_donations_yet')],
-            ];
-        }
+        // Count total guests
+        $totalGuests = Guest::count();
 
-        $labels = $data->map(fn ($d) =>
-            $d->guest?->name ?? __('messages.anonymous')
-        )->toArray();
+        // Count guests who donated
+        $donatedGuests = Donation::where('main_category_id', $mainCategoryId)
+            ->distinct('guest_id')
+            ->count('guest_id');
 
-        $values = $data->pluck('total')->toArray();
+        // Count guests who didn't donate
+        $nonDonatedGuests = $totalGuests - $donatedGuests;
 
-        $colors = [
-            'rgba(59, 130, 246, 0.8)',
-            'rgba(16, 185, 129, 0.8)',
-            'rgba(245, 158, 11, 0.8)',
-            'rgba(239, 68, 68, 0.8)',
-            'rgba(139, 92, 246, 0.8)',
-            'rgba(236, 72, 153, 0.8)',
-            'rgba(20, 184, 166, 0.8)',
-        ];
+        // Get donation totals
+        $data = Donation::select(
+            DB::raw('SUM(amount_usd) as total_usd'),
+            DB::raw('SUM(amount_khr) as total_khr')
+        )
+            ->where('main_category_id', $mainCategoryId)
+            ->first();
+
+        $rate = config('app.khr_to_usd_rate', 4100);
+        $totalUsd = floatval($data->total_usd ?? 0);
+        $totalKhr = floatval($data->total_khr ?? 0);
+        $grandTotalUsd = $totalUsd + ($totalKhr / $rate);
+        $grandTotalKhr = $totalKhr + ($totalUsd * $rate);
 
         return [
-            'datasets' => [
-                [
-                    'label'           => __('messages.donations'),
-                    'data'            => $values,
-                    'backgroundColor' => array_slice($colors, 0, count($values)),
-                    'borderWidth'     => 2,
-                    'borderColor'     => '#ffffff',
-                ],
-            ],
-            'labels' => $labels,
-        ];
-    }
+            // Donated vs Total
+            Stat::make(__('messages.guests_donated'), "{$donatedGuests}/{$totalGuests}")
+                ->description(__('messages.guests_donated_description'))
+                ->color('success')
+                ->icon('heroicon-o-check-circle'),
 
-    protected function getType(): string
-    {
-        return 'pie';
-    }
+            // Not Donated
+            Stat::make(__('messages.guests_not_donated'), $nonDonatedGuests)
+                ->description(__('messages.guests_not_donated_description'))
+                ->color('danger')
+                ->icon('heroicon-o-x-circle'),
 
-    protected function getOptions(): array
-    {
-        $isEmpty = Donation::where('main_category_id', session('main_category_id'))->doesntExist();
+            // Total USD
+            Stat::make(__('messages.total_usd'), '$' . number_format($totalUsd, 2))
+                ->color('info')
+                ->icon('heroicon-o-currency-dollar'),
 
-        return [
-            'plugins' => [
-                'legend' => [
-                    'position' => 'bottom',
-                    'display'  => true,
-                ],
-                // ← Show "No data" text in center when empty
-                'tooltip' => [
-                    'enabled' => !$isEmpty,
-                ],
-            ],
-            'animation' => [
-                'animateRotate' => true,
-                'animateScale'  => true,
-            ],
+            // Total KHR
+            Stat::make(__('messages.total_khr'), number_format($totalKhr, 0) . ' ៛')
+                ->color('warning')
+                ->icon('heroicon-o-currency-dollar'),
+
+            // Grand Total USD
+            Stat::make(__('messages.grand_total_usd'), '$' . number_format($grandTotalUsd, 2))
+                ->description(__('messages.combined_total'))
+                ->color('primary')
+                ->icon('heroicon-o-sparkles'),
+
+            // Grand Total KHR
+            Stat::make(__('messages.grand_total_khr'), number_format($grandTotalKhr, 0) . ' ៛')
+                ->description(__('messages.combined_total'))
+                ->color('primary')
+                ->icon('heroicon-o-sparkles'),
         ];
     }
 }

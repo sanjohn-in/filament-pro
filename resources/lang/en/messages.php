@@ -134,5 +134,8 @@ return [
     'add_guest'               => 'Add Guest',
     'remove_from_table'       => 'Remove from Table',
     'select_table'            => 'Select Table',
-    
+    'guests_donated' => 'Guests Donated',
+    'guests_donated_description' => 'Out of total guests',
+    'guests_not_donated' => 'Guests Not Donated',
+    'guests_not_donated_description' => 'Haven\'t donated yet',
 ];

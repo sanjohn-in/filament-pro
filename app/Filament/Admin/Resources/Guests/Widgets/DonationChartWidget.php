@@ -3,15 +3,12 @@
 namespace App\Filament\Admin\Resources\Guests\Widgets;
 
 use App\Models\Admin\Donation as AdminDonation;
+use App\Models\Admin\Guest;
 use Filament\Widgets\ChartWidget;
-use Filament\Widgets\StatsOverviewWidget\Stat;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
-class DonationChartWidget extends ChartWidget  // ← fix this
-
-{  
-
+class DonationChartWidget extends ChartWidget
+{
     public function getHeading(): ?string
     {
         return __('messages.donation_by_guest');
@@ -19,68 +16,94 @@ class DonationChartWidget extends ChartWidget  // ← fix this
 
     protected function getData(): array
     {
-        $data = AdminDonation::select('guest_id', DB::raw('count(*) as total'))
-            ->with('guest')
-            ->groupBy('guest_id')
-            ->where('main_category_id', session('main_category_id'))
-            ->get();
+        $mainCategoryId = session('main_category_id');
 
-        if ($data->isEmpty()) {
+        // Count total guests
+        $totalGuests = Guest::count();
+
+        // Count guests who donated
+        $donatedCount = AdminDonation::where('main_category_id', $mainCategoryId)
+            ->distinct('guest_id')
+            ->count('guest_id');
+
+        // Count guests who didn't donate
+        $nonDonatedCount = $totalGuests - $donatedCount;
+
+        // Get donation totals
+        $data = AdminDonation::select(
+            DB::raw('SUM(amount_usd) as total_usd'),
+            DB::raw('SUM(amount_khr) as total_khr')
+        )
+            ->where('main_category_id', $mainCategoryId)
+            ->first();
+
+        $rate = config('app.khr_to_usd_rate', 4100);
+        $totalUsd = floatval($data->total_usd ?? 0);
+        $totalKhr = floatval($data->total_khr ?? 0);
+        $grandTotalUsd = $totalUsd + ($totalKhr / $rate);
+
+        // Handle empty data
+        if ($donatedCount == 0 && $nonDonatedCount == 0) {
             return [
                 'datasets' => [
                     [
                         'label'           => __('messages.no_data'),
                         'data'            => [1],
-                        'backgroundColor' => ['rgba(200,200,200,0.5)'],
-                        'borderWidth'     => 0,
+                        'backgroundColor' => ['rgba(200, 200, 200, 0.3)'],
+                        'borderColor'     => ['rgba(200, 200, 200, 0.5)'],
+                        'borderWidth'     => 1,
                     ],
                 ],
-                'labels' => [__('messages.no_data')],
+                'labels' => [__('messages.no_guests')],
             ];
         }
-
-        $labels = $data->map(fn ($d) =>
-            $d->guest?->name ?? __('messages.anonymous')
-        )->toArray();
-
-        $values = $data->pluck('total')->toArray();
-
-        $colors = [
-            'rgba(59, 130, 246, 0.8)',
-            'rgba(16, 185, 129, 0.8)',
-            'rgba(245, 158, 11, 0.8)',
-            'rgba(239, 68, 68, 0.8)',
-            'rgba(139, 92, 246, 0.8)',
-            'rgba(236, 72, 153, 0.8)',
-            'rgba(20, 184, 166, 0.8)',
-        ];
 
         return [
             'datasets' => [
                 [
-                    'label'           => __('messages.donations'),
-                    'data'            => $values,
-                    'backgroundColor' => array_slice($colors, 0, count($values)),
+                    'label'           => __('messages.donation_status'),
+                    'data'            => [$donatedCount, $nonDonatedCount],
+                    'backgroundColor' => ['rgba(16, 185, 129, 0.8)', 'rgba(239, 68, 68, 0.8)'],
                     'borderWidth'     => 2,
                     'borderColor'     => '#ffffff',
                 ],
             ],
-            'labels' => $labels,
+            'labels' => [
+                __('messages.guests_donated') . " ({$donatedCount}/{$totalGuests}) - $" . number_format($grandTotalUsd, 2),
+                __('messages.guests_not_donated') . " ({$nonDonatedCount}/{$totalGuests})",
+            ],
         ];
     }
-    // ← This method only exists in ChartWidget not StatsOverviewWidget
+
     protected function getType(): string
     {
-        return 'doughnut';
+        return 'pie';
     }
 
     protected function getOptions(): array
     {
+        $mainCategoryId = session('main_category_id');
+        $isEmpty = AdminDonation::where('main_category_id', $mainCategoryId)->doesntExist();
+
         return [
             'plugins' => [
-                'legend' => ['position' => 'bottom'],
+                'legend' => [
+                    'position' => 'bottom',
+                    'display'  => true,
+                ],
+                'tooltip' => [
+                    'enabled' => !$isEmpty,
+                    'callbacks' => [
+                        'label' => "function(context) {
+                            return context.label;
+                        }",
+                    ],
+                ],
             ],
-            'cutout' => '65%',
+            'animation' => [
+                'animateRotate' => true,
+                'animateScale'  => true,
+            ],
         ];
     }
 }
