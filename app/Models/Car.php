@@ -11,13 +11,24 @@ class Car extends Model
     use HasFactory;
 
     protected $fillable = [
-        'model_id', 'owner_id', 'price', 'interest',
-        'price', 'contract', 'start_date', 'end_date',
-        'year', 'is_active', 'note',
+        'model_id',
+        'owner_id',
+        'price',
+        'interest',
+        'contract',
+        'start_date',
+        'end_date',
+        'year',
+        'is_active',
+        'note',
     ];
     protected $casts = [
-        'end_date'   => 'date',
+        'end_date' => 'date',
         'start_date' => 'date',
+        'price' => 'decimal:2',
+        'interest' => 'decimal:2',
+        'is_active' => 'boolean',
+        'contract' => 'integer', 
     ];
     public function carModel(): BelongsTo
     {
