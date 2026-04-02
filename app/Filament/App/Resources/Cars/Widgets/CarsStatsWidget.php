@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\App\Widgets;
+namespace App\Filament\App\Resources\Cars\Widgets;
 
 use App\Models\Car; // adjust to your actual model namespace
 use Carbon\Carbon;
