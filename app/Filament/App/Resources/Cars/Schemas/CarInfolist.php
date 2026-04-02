@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Resources\Cars\Schemas;
 
+use Carbon\Carbon;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
@@ -12,7 +13,8 @@ class CarInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('model_id')
+                TextEntry::make('carModel.name')
+                    ->label(__('messages.car_model'))
                     ->numeric(),
                 TextEntry::make('owner.name')
                     ->label(__('messages.owner'))
@@ -24,9 +26,11 @@ class CarInfolist
                     ->label(__('messages.contract')),
                 TextEntry::make('start_date')
                     ->label(__('messages.start_date'))
+                    ->date('d/m/Y')
                     ->placeholder('-'),
                 TextEntry::make('end_date')
                     ->label(__('messages.end_date'))
+                    ->date('d/m/Y')
                     ->placeholder('-'),
                 TextEntry::make('year')
                     ->label(__('messages.year'))

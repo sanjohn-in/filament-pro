@@ -44,9 +44,9 @@ class CarsTable
                     ->sortable(),
 
 
-                TextColumn::make('year')
-                    ->label(__('messages.year'))
-                    ->sortable(),
+                // TextColumn::make('year')
+                //     ->label(__('messages.year'))
+                //     ->sortable(),
 
                 TextColumn::make('price')
                     ->label(__('messages.price'))
