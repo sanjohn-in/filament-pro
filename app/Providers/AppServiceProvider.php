@@ -49,14 +49,14 @@ class AppServiceProvider extends ServiceProvider
                 ->displayLocale('en')
                 ->circular();                 
         });
-        FilamentView::registerRenderHook(
-            PanelsRenderHook::TOPBAR_LOGO_BEFORE,
-            fn (): string => Blade::render('
-                <a href="/admin/clear-category"
-                   class="mr-3 inline-flex items-center text-gray-700 hover:text-gray-900">
-                    <x-heroicon-o-arrow-left style="width:24px"/>
-                </a>
-            ')
-        );
+        // FilamentView::registerRenderHook(
+        //     PanelsRenderHook::TOPBAR_LOGO_BEFORE,
+        //     fn (): string => Blade::render('
+        //         <a href="/admin/clear-category"
+        //            class="mr-3 inline-flex items-center text-gray-700 hover:text-gray-900">
+        //             <x-heroicon-o-arrow-left style="width:24px"/>
+        //         </a>
+        //     ')
+        // );
     }
 }
