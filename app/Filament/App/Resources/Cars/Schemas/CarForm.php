@@ -23,12 +23,20 @@ class CarForm
                     ->required(),
 
 
-                Select::make('owner_id')
+                    Select::make('owner_id')
                     ->label(__('messages.owner'))
                     ->relationship('owner', 'name')
                     ->searchable()
                     ->preload()
-                    ->nullable(),
+                    ->nullable()
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->label(__('messages.owner'))
+                            ->required(),
+                    ])
+                    ->createOptionAction(
+                        fn ($action) => $action->modalHeading(__('messages.name'))
+                    ),
               
             TextInput::make('price')
                 ->label(__('messages.price'))
@@ -80,16 +88,17 @@ class CarForm
                     ->label(__('messages.year'))
                     ->numeric()
                     ->nullable(),
-
-                DatePicker::make('start_date')
+                    DatePicker::make('start_date')
                     ->label(__('messages.start_date'))
-                    ->timezone('Asia/Phnom_Penh')
+                    ->native(false)
+                    ->displayFormat('d/m/Y')
                     ->locale('km')
                     ->nullable(),
-
+                
                 DatePicker::make('end_date')
                     ->label(__('messages.end_date'))
-                    ->timezone('Asia/Phnom_Penh')
+                    ->native(false)
+                    ->displayFormat('d/m/Y')
                     ->locale('km')
                     ->nullable(),
 
