@@ -178,4 +178,5 @@ return [
     'stats_expiring_soon_desc'=> 'Expire within 6 days',
     'stats_expired'           => 'Expired',
     'stats_expired_desc'      => 'Contract has ended',
+    'pay_date' => 'Pay Date',
 ];

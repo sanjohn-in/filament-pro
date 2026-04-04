@@ -178,4 +178,5 @@ return [
     'stats_expiring_soon_desc' => 'ផុតកំណត់ក្នុងរយៈពេល 6 ថ្ងៃ',
     'stats_expired' => 'ផុតកំណត់',
     'stats_expired_desc' => 'កិច្ចសន្យាបានបញ្ចប់ហើយ',
+    'pay_date' => 'ថ្ងៃបង់ប្រាក់',
 ];
