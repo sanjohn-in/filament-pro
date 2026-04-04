@@ -87,19 +87,14 @@ class CarForm
                         
                 Grid::make(2)->schema([
                     TextInput::make('year')
-                    ->label(__('messages.year'))
-                    ->numeric()
-                    ->nullable(),
+                        ->label(__('messages.year'))
+                        ->numeric()
+                        ->nullable(),
 
-                DatePicker::make('pay_date')
-                    ->label(__('messages.pay_date'))
-                    ->native(false)
-                    ->displayFormat('d')
-                    ->locale('km')
-                    ->required()
-                    ->dehydrateStateUsing(function ($state) {
-                        return $state ? Carbon::parse($state)->day : null;
-                    }),    
+                    Select::make('pay_date')
+                        ->label(__('messages.pay_date'))
+                        ->options(collect(range(1, 31))->mapWithKeys(fn ($d) => [$d => $d]))
+                        ->required(),
 
                 ]),
                 DatePicker::make('start_date')
