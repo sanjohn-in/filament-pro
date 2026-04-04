@@ -36,9 +36,12 @@ class CarInfolist
                     ->label(__('messages.year'))
                     ->numeric()
                     ->placeholder('-'),
-                IconEntry::make('is_active')
-                    ->label(__('messages.is_active'))
-                    ->boolean(),
+
+                TextEntry::make('pay_date')
+                    ->label(__('messages.pay_date'))
+                    ->color('warning')
+                    ->formatStateUsing(fn ($state) => $state ? "ទី {$state}" : '-')
+                    ->placeholder('--'),
                 TextEntry::make('note')
                     ->label(__('messages.note'))
                     ->placeholder('-')

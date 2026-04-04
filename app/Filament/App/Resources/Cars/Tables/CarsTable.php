@@ -53,6 +53,13 @@ class CarsTable
                     ->money('USD')
                     ->sortable(),
 
+                TextColumn::make('pay_date')
+                    ->label(__('messages.pay_date'))
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => $state ? "ថ្ងៃទី {$state}" : '-')
+                    ->color('warning')
+                    ->sortable(),
+
                 TextColumn::make('interest')
                     ->label(__('messages.interest'))
                     ->money('USD')
@@ -102,6 +109,7 @@ class CarsTable
                         default         => __('messages.status_active'),
                     }),
 
+
                 TextColumn::make('start_date')
                     ->label(__('messages.start_date'))
                     ->date('d/m/Y'),
@@ -117,9 +125,9 @@ class CarsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                IconColumn::make('is_active')
-                    ->label(__('messages.is_active'))
-                    ->boolean(),
+                // IconColumn::make('is_active')
+                //     ->label(__('messages.is_active'))
+                //     ->boolean(),
             ])
             ->filters([
                     

@@ -2,11 +2,13 @@
 
 namespace App\Filament\App\Resources\Cars\Schemas;
 
+use Carbon\Carbon;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\DatePicker;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 
 class CarForm
@@ -38,22 +40,22 @@ class CarForm
                         fn ($action) => $action->modalHeading(__('messages.name'))
                     ),
               
-            TextInput::make('price')
-                ->label(__('messages.price'))
-                    ->numeric()
-                    ->prefix('$')
-                    ->required()
-                    ->live(onBlur: true)                          // ← recalculate when price changes
-                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                        $price    = floatval($state);
-                        $contract = floatval($get('contract'));
-                
-                        if ($price > 0 && $contract > 0) {
-                            $set('interest', round($price / 12 * $contract, 2));
-                        }
-                    }),
+                TextInput::make('price')
+                    ->label(__('messages.price'))
+                        ->numeric()
+                        ->prefix('$')
+                        ->required()
+                        ->live(onBlur: true)                          // ← recalculate when price changes
+                        ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                            $price    = floatval($state);
+                            $contract = floatval($get('contract'));
+                    
+                            if ($price > 0 && $contract > 0) {
+                                $set('interest', round($price / 12 * $contract, 2));
+                            }
+                        }),
 
-                    Select::make('contract')
+                Select::make('contract')
                     ->label(__('messages.contract'))
                     ->options([
                         3  => '3 ' . __('messages.months'),
@@ -73,7 +75,6 @@ class CarForm
                             $set('interest', round($price / 12 * $contract, 2));
                         }
                     }),
-
                     
                 TextInput::make('interest')
                     ->label(__('messages.interest'))
@@ -84,16 +85,30 @@ class CarForm
                     ->helperText(__('messages.interest_helper')),
 
                         
-                TextInput::make('year')
+                Grid::make(2)->schema([
+                    TextInput::make('year')
                     ->label(__('messages.year'))
                     ->numeric()
                     ->nullable(),
-                    DatePicker::make('start_date')
+
+                DatePicker::make('pay_date')
+                    ->label(__('messages.pay_date'))
+                    ->native(false)
+                    ->displayFormat('d')
+                    ->locale('km')
+                    ->required()
+                    ->dehydrateStateUsing(function ($state) {
+                        return $state ? Carbon::parse($state)->day : null;
+                    }),    
+
+                ]),
+                DatePicker::make('start_date')
                     ->label(__('messages.start_date'))
                     ->native(false)
                     ->displayFormat('d/m/Y')
                     ->locale('km')
                     ->nullable(),
+
                 
                 DatePicker::make('end_date')
                     ->label(__('messages.end_date'))
@@ -103,7 +118,7 @@ class CarForm
                     ->nullable(),
 
                 Textarea::make('note')
-                   ->label(__('messages.note'))
+                ->label(__('messages.note'))
                     ->columnSpanFull(),
 
                 Toggle::make('is_active')

@@ -21,6 +21,7 @@ class Car extends Model
         'year',
         'is_active',
         'note',
+        'pay_date',
     ];
     protected $casts = [
         'end_date' => 'date',
