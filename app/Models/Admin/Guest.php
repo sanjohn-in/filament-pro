@@ -21,6 +21,7 @@ class Guest extends Model
         'phone',
         'note',
         'tag',
+        'link',
         'table_group_id',
     ];
 

@@ -71,7 +71,7 @@ class GuestsTable
                     ->label(__('messages.link'))
                     ->getStateUsing(function ($record) {
                         $domain = \App\Models\Admin\Configuration::where('slug', 'domain')->value('link');
-                        return rtrim($domain, '/') . '/guest/' . $record->id;
+                        return rtrim($domain, '/') . 'events/guest/' . $record->id;
                     })
                     
                     ->copyable()                          // ✅ built-in copy button

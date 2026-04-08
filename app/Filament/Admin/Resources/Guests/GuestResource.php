@@ -75,7 +75,10 @@ class GuestResource extends Resource
     public static function getPluralModelLabel(): string { return __('messages.guests'); }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return static::getModel()::when(
+            session()->has('main_category_id'),
+            fn ($query) => $query->where('main_category_id', session('main_category_id'))
+        )->count();
     }
 
 }
