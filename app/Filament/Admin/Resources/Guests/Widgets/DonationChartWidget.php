@@ -19,7 +19,7 @@ class DonationChartWidget extends ChartWidget
         $mainCategoryId = session('main_category_id');
 
         // Count total guests
-        $totalGuests = Guest::count();
+        $totalGuests = Guest::where('main_category_id', $mainCategoryId)->count();
 
         // Count guests who donated
         $donatedCount = AdminDonation::where('main_category_id', $mainCategoryId)

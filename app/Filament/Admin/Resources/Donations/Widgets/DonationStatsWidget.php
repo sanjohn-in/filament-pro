@@ -20,7 +20,7 @@ class DonationStatsWidget extends BaseStatsOverviewWidget
         $mainCategoryId = session('main_category_id');
 
         // Count total guests
-        $totalGuests = Guest::count();
+        $totalGuests = Guest::where('main_category_id', $mainCategoryId)->count();
 
         // Count guests who donated
         $donatedGuests = Donation::where('main_category_id', $mainCategoryId)
