@@ -68,16 +68,21 @@ class GuestsTable
                
 
                 TextColumn::make('guest_link')
-                    ->label(__('messages.link'))
-                    ->getStateUsing(function ($record) {
-                        $domain = \App\Models\Admin\Configuration::where('slug', 'domain')->value('link');
-                        return rtrim($domain, '/') . '/events/guest/' . $record->id;
-                    })
-                    
-                    ->copyable()                          // ✅ built-in copy button
-                    
-                    ->copyMessageDuration(1500)
-                    ->icon('heroicon-o-link'),
+                ->label(__('messages.link'))
+                ->getStateUsing(function ($record) {
+                    $domain = \App\Models\Admin\Configuration::where('slug', 'domain')->value('link');
+                    return rtrim($domain, '/') . '/events/' . $record->mainCategory->slug  . '/template/'  . $record->id . '?gid=' . $record->id;
+                })
+                ->limit(40) // 👀 show short
+                ->tooltip(fn ($state) => $state) // full on hover
+                ->copyable()
+                ->copyableState(fn ($record) => 
+                    rtrim(\App\Models\Admin\Configuration::where('slug', 'domain')->value('link'), '/') 
+                    . '/events/guest/' . $record->mainCategory->slug  
+                    . '/template/' . $record->id . '?gid=' . $record->id
+                )
+                ->copyMessageDuration(1500)
+                ->icon('heroicon-o-link'),
 
                 TextColumn::make('created_at')
                 ->label(__('messages.created_at'))
