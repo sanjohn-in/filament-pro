@@ -17,7 +17,7 @@ return new class extends Migration
         $table->foreignId('owner_id')->nullable()->constrained()->cascadeOnDelete();
         $table->decimal('price', 10, 2);
         $table->decimal('interest', 10, 2);
-        $table->enum('contract', [3, 6, 12, 18, 24])->default(3);
+        $table->integer('contract')->default(3);
         $table->string('start_date')->nullable();
         $table->string('end_date')->nullable();
         $table->year('year')->nullable();

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Admin\MainCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -59,5 +60,34 @@ class User extends Authenticatable
             'app' => true,
             default => false,
         };
+    }
+    /**
+     * Get user's preferences for a specific category
+     */
+    public function getUserCategoryData($mainCategoryId): array
+    {
+        $data = json_decode($this->category_preferences ?? '{}', true);
+        return $data[$mainCategoryId] ?? [];
+    }
+
+    /**
+     * Update user's category preferences (selected theme, etc)
+     */
+    public function updateUserCategoryData($mainCategoryId, array $data): void
+    {
+        $preferences = json_decode($this->category_preferences ?? '{}', true);
+        $preferences[$mainCategoryId] = array_merge(
+            $preferences[$mainCategoryId] ?? [],
+            $data
+        );
+        $this->update(['category_preferences' => json_encode($preferences)]);
+    }
+
+    /**
+     * Get all theme purchases for user
+     */
+    public function themePurchases(): HasMany
+    {
+        return $this->hasMany(\App\Models\Admin\UserThemePurchase::class);
     }
 }

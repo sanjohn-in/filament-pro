@@ -8,6 +8,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -34,9 +35,16 @@ class MainCategoriesTable
                     ->label(__('messages.date'))
                     ->date('d/m/Y') 
                     ->searchable(),
-                TextColumn::make('adress')
+                TextColumn::make('address')
                     ->label(__('messages.address'))
                     ->searchable(),
+                    
+                ColorColumn::make('theme_color')
+                    ->label(__('messages.theme_color')),
+
+                ColorColumn::make('bg_color')
+                    ->label(__('messages.background_color')),
+
                 IconColumn::make('is_visible')
                     ->label(__('messages.is_active'))
                     ->boolean(),

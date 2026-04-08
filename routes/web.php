@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 
@@ -12,6 +13,10 @@ Route::get('/', function () {
     return redirect('/app');
 });
 
+
+Route::controller(EventController::class)->group(function () {
+    Route::get('/events/{slug}/template/{id}', 'index');
+});
 
 Route::get('/admin/clear-category', function () {
     session()->forget('main_category_id');

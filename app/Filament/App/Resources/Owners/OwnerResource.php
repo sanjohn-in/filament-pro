@@ -52,7 +52,7 @@ class OwnerResource extends Resource
         return [
             'index' => ListOwners::route('/'),
             // 'create' => CreateOwner::route('/create'),
-            // 'view' => ViewOwner::route('/{record}'),
+            'view' => ViewOwner::route('/{record}'),
             // 'edit' => EditOwner::route('/{record}/edit'),
         ];
     }

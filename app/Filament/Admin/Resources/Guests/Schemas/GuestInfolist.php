@@ -30,6 +30,11 @@ class GuestInfolist
                     ->label(__('messages.tag'))
                     ->formatStateUsing(fn ($state) => __("messages.$state"))
                     ->placeholder('-'),
+
+                    TextEntry::make('is_attending')
+                    ->label(__('messages.is_attending'))
+                    ->formatStateUsing(fn ($state) => __("messages.$state"))
+                    ->placeholder('-'),
                 TextEntry::make('note')
                 ->label(__('messages.note'))
                 ->placeholder('-'),

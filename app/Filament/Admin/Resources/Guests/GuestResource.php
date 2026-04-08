@@ -73,6 +73,9 @@ class GuestResource extends Resource
     public static function getNavigationLabel(): string { return __('messages.guests'); }
     public static function getModelLabel(): string { return __('messages.guest'); }
     public static function getPluralModelLabel(): string { return __('messages.guests'); }
-
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
 }

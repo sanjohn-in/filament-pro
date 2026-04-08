@@ -66,4 +66,8 @@ class TableGroupResource extends Resource
     public static function getNavigationLabel(): string { return __('messages.table_groups'); }
     public static function getModelLabel(): string { return __('messages.table_group'); }
     public static function getPluralModelLabel(): string { return __('messages.table_groups'); }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 }

@@ -42,6 +42,7 @@ class DonationForm
                 ->getOptionLabelFromRecordUsing(fn ($record) =>
                     "{$record->name}" . ($record->phone ? " — {$record->phone}" : '')
                 )
+                ->required()
                 ->columnSpanFull(),
 
             Select::make('payment_method')

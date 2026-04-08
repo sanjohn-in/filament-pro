@@ -6,6 +6,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -45,7 +46,8 @@ class GuestForm
                         )
                         ->placeholder(__('messages.select_table')),
     
-                    Select::make('tag')
+                    Grid::make(2)->schema([
+                        Select::make('tag')
                         ->label(__('messages.tag'))
                         ->options([
                             'bride_site' => __('messages.bride_site'),
@@ -54,6 +56,18 @@ class GuestForm
                             'other' => __('messages.other'),
                         ])
                         ->required(),
+    
+                        Select::make('is_attending')
+                        ->label(__('messages.is_attending'))
+                        ->options([
+                            'yes' => __('messages.yes'),
+                            'not_attend' => __('messages.no'),
+                        ])
+                        ->default('yes')
+                        ->required(),
+    
+                    ]),
+                  
 
                     TextInput::make('phone')
                         ->label(__('messages.phone'))

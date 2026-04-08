@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\MainCategories\Schemas;
 
+use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -49,7 +50,20 @@ class MainCategoryInfolist
                 ->label(__('messages.qr_code'))
                 // ->columnSpanFull()
                 ->placeholder('No QR Code'),
+
+                ImageEntry::make('portfolios')
+                ->disk('public')
+                ->imageWidth(300)
+                ->label(__('messages.portfolios'))
+                // ->columnSpanFull()
+                ->placeholder('No Cover Image'),
                 
+                ColorEntry::make('theme_color')
+                    ->label(__('messages.theme_color')),
+                    
+                ColorEntry::make('bg_color')
+                    ->label(__('messages.background_color')),
+
                 IconEntry::make('is_visible')
                     ->boolean(),
                 TextEntry::make('created_at')

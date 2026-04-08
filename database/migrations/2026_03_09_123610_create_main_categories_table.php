@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('groom_name')->nullable();
             $table->string('slug')->nullable();
             $table->string('date')->nullable();
-            $table->string('adress')->nullable();
+            $table->string('time')->nullable();
+            $table->string('address')->nullable();
             $table->text('google_map')->nullable();
             $table->text('cover_image')->nullable();
             $table->text('qr_code')->nullable();

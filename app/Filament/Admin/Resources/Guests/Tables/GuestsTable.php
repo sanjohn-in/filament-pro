@@ -25,9 +25,10 @@ class GuestsTable
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('phone')
+                    TextColumn::make('phone')
                     ->label(__('messages.phone'))
-                    ->searchable(),
+                    ->searchable()
+                    ->placeholder('--'),
 
                 TextColumn::make('tag')
                     ->label(__('messages.tag'))
@@ -44,6 +45,19 @@ class GuestsTable
                         'groom_site'  => __('messages.groom_site'),
                         'both_site'  => __('messages.both_site'),
                         'other' => __('messages.other'),
+                        default  => $state,
+                    }),
+                TextColumn::make('is_attending')
+                    ->label(__('messages.is_attending'))
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'yes' => 'primary',
+                        'no'  => 'danger',
+                        default  => 'primary',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'yes' => __('messages.yes'),
+                        'no'  => __('messages.no'),
                         default  => $state,
                     }),
                   

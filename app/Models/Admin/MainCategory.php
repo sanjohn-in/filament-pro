@@ -4,6 +4,7 @@ namespace App\Models\Admin;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MainCategory extends Model
@@ -16,13 +17,24 @@ class MainCategory extends Model
         'groom_name',
         'slug',
         'date',
-        'adress',
+        'address',
         'google_map',
         'cover_image',
         'qr_code',
         'is_visible',
         'time',
+        'default_theme_id',
+        'portfolios',
+        'theme_color',
+        'bg_color',
+        'schedules',
     ];
+
+    protected $casts = [
+        'portfolios' => 'array',
+        'schedules'  => 'array',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -30,5 +42,27 @@ class MainCategory extends Model
     public function guests(): HasMany
     {
         return $this->hasMany(Guest::class);
+    }
+   /**
+     * Get the themes for this main category
+     */
+    public function themes(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Theme::class,
+            'main_category_theme',
+            'main_category_id',
+            'theme_id'
+        )
+        // Qualify column to avoid ambiguity with `themes.display_order`.
+        ->orderBy('main_category_theme.display_order');
+    }
+ 
+    /**
+     * Get the default theme
+     */
+    public function defaultTheme()
+    {
+        return $this->belongsTo(Theme::class, 'default_theme_id');
     }
 }
