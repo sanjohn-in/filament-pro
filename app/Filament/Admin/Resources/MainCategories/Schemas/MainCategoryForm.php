@@ -159,8 +159,8 @@ class MainCategoryForm
 
                 ColorPicker::make('bg_color')
                     ->label(__('messages.background_color'))
-                    ->default('#898989')
-                    ->formatStateUsing(fn ($state) => $state ?? '#898989')
+                    ->default('#e6e6e6')
+                    ->formatStateUsing(fn ($state) => $state ?? '#e6e6e6')
                     ->required(),
 
                     
