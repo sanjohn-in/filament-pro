@@ -78,7 +78,7 @@ class GuestsTable
                 ->copyable()
                 ->copyableState(fn ($record) => 
                     rtrim(\App\Models\Admin\Configuration::where('slug', 'domain')->value('link'), '/') 
-                    . '/events/guest/' . $record->mainCategory->slug  
+                    . '/events/' . $record->mainCategory->slug  
                     . '/template/' . $record->id . '?gid=' . $record->id
                 )
                 ->copyMessageDuration(1500)
