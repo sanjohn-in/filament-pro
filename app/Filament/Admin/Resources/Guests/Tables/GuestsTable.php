@@ -71,7 +71,11 @@ class GuestsTable
                 ->label(__('messages.link'))
                 ->getStateUsing(function ($record) {
                     $domain = \App\Models\Admin\Configuration::where('slug', 'domain')->value('link');
-                    return rtrim($domain, '/') . '/events/' . $record->mainCategory->slug  . '/template/'  . $record->mainCategory->id . '?gid=' . $record->id;
+                    // return $record->mainCategory;
+                    return rtrim($domain, '/') . '/events/' . $record->mainCategory->slug  . '/template/' 
+                    //  . $record->mainCategory->defaultTheme 
+                     .  '1/'
+                     . '?gid=' . $record->id;
                 })
                 ->limit(40) // 👀 show short
                 ->tooltip(fn ($state) => $state) // full on hover
@@ -79,7 +83,10 @@ class GuestsTable
                 ->copyableState(fn ($record) => 
                     rtrim(\App\Models\Admin\Configuration::where('slug', 'domain')->value('link'), '/') 
                     . '/events/' . $record->mainCategory->slug  
-                    . '/template/' . $record->mainCategory->id . '?gid=' . $record->id
+                    . '/template/' 
+                    .  '1/'
+                    .
+                    '?gid=' . $record->id
                 )
                 ->copyMessageDuration(1500)
                 ->icon('heroicon-o-link'),
