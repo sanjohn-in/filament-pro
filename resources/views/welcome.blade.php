@@ -630,6 +630,9 @@
             pointer-events: none;
             z-index: 9998; /* below opener (9999), above page */
         }
+        .primary {
+            color: var(--primary)!important;
+        }
     </style>
 </head>
 <body>
@@ -684,7 +687,7 @@
             ដោយការគោរពនិងជូនចំពោះ
         </p>
 
-        <h2 class="f-display anim-fadeup d2 mb-1 leading-tight py-2 font-bold" style="font-size:2.5rem;color:var(--primary)">
+        <h2 class="f-display anim-fadeup d2 mb-1 leading-tight py-2 font-bold" style="font-size:2rem;color:var(--primary)">
             {{ $guest->name ?? '—' }}
         </h2>
 
@@ -791,21 +794,21 @@
 
         <div class="relative z-10 w-full max-w-2xl mx-auto px-4 py-8 rounded-2xl"
              style="background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, transparent 80%);">
-            <p class="f-serif tracking-widest uppercase font-semibold anim-fadeup mb-5 text-xl"
-               style="color:#fff; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">
+            <h2 class="f-serif text-white uppercase font-bold anim-fadeup mb-5 text-3xl "
+               style="text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">
                សិរីមង្គលអាពាហ៍ពិពាហ៍
-            </p>
+            </h2>
 
             <div class="ornament-row mb-5 text-xl anim-fadeup d1" aria-hidden="true">✦</div>
 
-            <h1 class="f-display text-white anim-fadeup d2 leading-none"
-                style="font-size:2.5rem; text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5);">
+            <h1 class="f-display  text-white anim-fadeup d2 leading-none text-2xl"
+                style="size:2rem; text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">
                 {{ $event->groom_name ?? 'Groom Name' }}
             </h1>
-            <p class="f-display anim-fadeup d3 my-2"
-               style="font-size:3rem; color:var(--primary); text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">&amp;</p>
-            <h1 class="f-display text-white anim-fadeup d4 leading-none"
-                style="font-size:2.5rem; text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5);">
+            <p class="f-display text-white anim-fadeup d3 my-2"
+               style="font-size:2rem; text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">&amp;</p>
+            <h1 class="f-display  text-white anim-fadeup d4 leading-none text-2xl"
+                style="size:2rem; text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">
                 {{ $event->bride_name ?? 'Bride Name' }}
             </h1>
 
@@ -823,7 +826,7 @@
             <div id="countdown" class="flex justify-center gap-3 mt-10 anim-fadeup d6">
                 @foreach(['days' => 'ថ្ងៃ', 'hours' => 'ម៉ោង', 'minutes' => 'នាទី', 'seconds' => 'វិនាទី'] as $key => $label)
                 <div class="cd-box shadow-xl">
-                    <div id="cd-{{ $key }}" class="f-heading text-2xl font-semibold" style="color:var(--primary)">00</div>
+                    <div id="cd-{{ $key }}" class="f-heading text-2xl font-semibold" style="color:var(--primary); text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">00</div>
                     <div class="text-xs uppercase tracking-wider mt-1" style="color:rgba(255,255,255,.5)">{{ $label }}</div>
                 </div>
                 @endforeach
