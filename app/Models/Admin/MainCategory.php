@@ -4,8 +4,10 @@ namespace App\Models\Admin;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class MainCategory extends Model
 {
@@ -28,6 +30,7 @@ class MainCategory extends Model
         'theme_color',
         'bg_color',
         'schedules',
+        'music_id'
     ];
 
     protected $casts = [
@@ -64,5 +67,14 @@ class MainCategory extends Model
     public function defaultTheme()
     {
         return $this->belongsTo(Theme::class, 'default_theme_id');
+    }
+    public function music(): HasOne
+    {
+        return $this->hasOne(Configuration::class, 'id', 'music_id');
+    }
+    public function musics(): BelongsTo
+    {
+        return $this->belongsTo(Configuration::class, 'music_id')
+            ->where('type', 'music');
     }
 }

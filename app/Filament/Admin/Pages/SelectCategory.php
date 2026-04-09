@@ -60,16 +60,27 @@ class SelectCategory extends Page
                         ->schema([
                             Hidden::make('user_id')->default(fn () => Auth::id()),
     
-                            Select::make('type')
-                                ->label(__('messages.type'))
-                                ->options([
-                                    'wedding' => 'Wedding',
-                                    'engagement' => 'Engagement',
-                                    'handtied_ceremony' => 'Handtied ceremony',
-                                    // 'birthday' => 'Birthday',
-                                    'other' => 'Other',
-                                ])
-                                ->required(),
+                            Grid::make(2)
+                            ->schema([
+                                Select::make('type')
+                                    ->label(__('messages.type'))
+                                    ->options([
+                                        'wedding'           => __('messages.wedding'),
+                                        'engagement'        => __('messages.engagement'),
+                                        'birthday'          => __('messages.birthday'),
+                                        'handtied_ceremony' => __('messages.handtied_ceremony'),
+                                        'other'             => __('messages.other'),
+                                    ])
+                                  ->required(),
+        
+                                  Select::make('music_id')
+                                  ->label(__('messages.music'))
+                                  ->relationship('musics', 'name') // 'name' = column to display
+                                  ->searchable()
+                                  ->preload()
+                                  ->required(),
+                                    
+                            ]),
     
                             TextInput::make('slug')
                                 ->label(__('messages.slug'))

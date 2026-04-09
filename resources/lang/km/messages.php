@@ -196,4 +196,10 @@ return [
     'not_attending' => "មិនចូលរួម",
     'yes' => "បាទ/ចាស៎",
     'no' => 'ទេ', 
+    'music' => 'ចម្រៀង',
+    'wedding' => 'ពិធីមង្គលការ',
+    'engagement' => 'ភ្ជាប់ពាក្យ',
+    'birthday' => 'ថ្ងៃកំណើត',
+    'handtied_ceremony' => 'ពិធីចងដៃ',
+    'other' => 'ផ្សេងៗ',
 ];

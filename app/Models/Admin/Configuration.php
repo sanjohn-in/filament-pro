@@ -16,7 +16,7 @@ class Configuration extends Model
 
     protected $casts = [
         'is_visible' => 'boolean',
-        // 'value' => 'string'
+        'value' => 'string'
     ];
 
 

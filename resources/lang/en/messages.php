@@ -196,4 +196,10 @@ return [
     'not_attending' => "Not Attending",
     'yes' => "Yes",
     'no' => 'No', 
+    'music' => 'Music',
+    'wedding' => 'Wedding',
+    'engagement' => 'Engagement',
+    'birthday' => 'Birthday',
+    'handtied_ceremony' => 'Handtied Ceremony',
+    'other' => 'Other',
 ];

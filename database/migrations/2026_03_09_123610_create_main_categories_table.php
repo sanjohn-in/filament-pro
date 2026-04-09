@@ -20,7 +20,7 @@ return new class extends Migration
 
             $table->enum('type', ['wedding', 'engagement', 'handtied_ceremony', 'birthday', 'other'])
                   ->default('other');
-
+            $table->integer('music_id')->nullable();
             $table->string('bride_name')->nullable();
             $table->string('groom_name')->nullable();
             $table->string('slug')->nullable();

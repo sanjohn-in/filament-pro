@@ -12,6 +12,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -26,16 +27,27 @@ class MainCategoryForm
             ->components([
                 Hidden::make('user_id')->default(fn () => Auth::id()),
 
-                Select::make('type')
-                    ->label(__('messages.type'))
-                    ->options([
-                        'wedding'           => 'Wedding',
-                        'engagement'        => 'Engagement',
-                        'handtied_ceremony' => 'Handtied ceremony',
-                        'birthday'          => 'Birthday',
-                        'other'             => 'Other',
-                    ])
-                    ->required(),
+                Grid::make(2)
+                    ->schema([
+                        Select::make('type')
+                            ->label(__('messages.type'))
+                            ->options([
+                                'wedding'           => __('messages.wedding'),
+                                'engagement'        => __('messages.engagement'),
+                                'birthday'          => __('messages.birthday'),
+                                'handtied_ceremony' => __('messages.handtied_ceremony'),
+                                'other'             => __('messages.other'),
+                            ])
+                          ->required(),
+
+                          Select::make('music_id')
+                          ->label(__('messages.music'))
+                          ->relationship('musics', 'name') // 'name' = column to display
+                          ->searchable()
+                          ->preload()
+                          ->required(),
+                            
+                    ]),
 
                 TextInput::make('slug')
                     ->unique()
