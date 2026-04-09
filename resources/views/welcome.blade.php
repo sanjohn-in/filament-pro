@@ -420,24 +420,31 @@
         .btn-primary:hover { opacity: .88; transform: translateY(-2px); }
 
         .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
+            columns: 2;
+            column-gap: 12px;
         }
-        .gallery-grid .g-tall { grid-row: span 2; }
+        @media (min-width: 768px) {
+            .gallery-grid {
+                columns: 3;
+            }
+        }
         .gallery-grid a {
-            display: block;
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 12px;
+            break-inside: avoid;
             overflow: hidden;
-            aspect-ratio: 1;
+            border-radius: 0.75rem;
+            border: 1px solid var(--primary);
             background: var(--dark);
+            padding: 4px;
         }
-        .gallery-grid .g-tall { aspect-ratio: auto; }
         .gallery-grid img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
             transition: transform .5s ease;
             display: block;
+            border-radius: 0.75rem;
         }
         .gallery-grid a:hover img { transform: scale(1.06); }
 
@@ -687,11 +694,11 @@
 
         {{-- FIX: w-100 → w-full --}}
         <div class="anim-fadeup d3 flex gap-3 w-full items-center justify-center">
-            <h1 class="f-display text-xl leading-none">
+            <h1 class="f-display text-2xl leading-none">
                 {{ $event->groom_name ?? 'Hun Chan Malyly' }}
             </h1>
             <span class="f-display" style="font-size:2.2rem;color:var(--primary)">&amp;</span>
-            <h1 class="f-display leading-none text-xl">
+            <h1 class="f-display leading-none text-2xl">
                 {{ $event->bride_name ?? 'Thou San' }}
             </h1>
         </div>
@@ -790,13 +797,13 @@
             <div class="ornament-row mb-5 text-xl anim-fadeup d1" aria-hidden="true">✦</div>
 
             <h1 class="f-display text-white anim-fadeup d2 leading-none"
-                style="font-size:3.5rem; text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5);">
+                style="font-size:2.5rem; text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5);">
                 {{ $event->groom_name ?? 'Groom Name' }}
             </h1>
             <p class="f-display anim-fadeup d3 my-2"
                style="font-size:3rem; color:var(--primary); text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">&amp;</p>
             <h1 class="f-display text-white anim-fadeup d4 leading-none"
-                style="font-size:3.5rem; text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5);">
+                style="font-size:2.5rem; text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.5);">
                 {{ $event->bride_name ?? 'Bride Name' }}
             </h1>
 
@@ -866,8 +873,7 @@
                 @foreach($event->portfolios as $i => $photo)
                 <a href="{{ asset('storage/' . $photo) }}"
                    data-fancybox="gallery"
-                   data-caption="Photo {{ $i + 1 }}"
-                   class="{{ $i === 0 ? 'g-tall' : '' }}">
+                   data-caption="Photo {{ $i + 1 }}">
                     <img src="{{ asset('storage/' . $photo) }}" alt="Gallery photo {{ $i + 1 }}" loading="lazy">
                 </a>
                 @endforeach
