@@ -15,7 +15,7 @@
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Tangerine:wght@400;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Tangerine:wght@400;700&family=Jost:wght@300;400;500&family=Moul&display=swap" rel="stylesheet">
 
     @php
         $themeColor = $event->theme_color ?? '#4548c9';
@@ -39,16 +39,16 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         body {
-            font-family: 'Jost', sans-serif;
+            font-family: 'Jost', 'Moul', sans-serif;
             background: var(--secondary);
             color: var(--text);
             overflow-x: hidden;
         }
 
         /* ─── Font Helpers ─── */
-        .f-display { font-family: 'Tangerine', cursive; }
-        .f-serif   { font-family: 'Cormorant Garamond', serif; }
-        .f-heading { font-family: 'Playfair Display', serif; }
+        .f-display { font-family: 'Moul', 'Tangerine', cursive; }
+        .f-serif   { font-family: 'Moul', 'Cormorant Garamond', serif; }
+        .f-heading { font-family: 'Moul', 'Playfair Display', serif; }
 
         /* ─── Animations ─── */
         @keyframes fadeUp    { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -569,6 +569,7 @@
         .hand-label {
             margin-top: 8px;
             font-family: 'Cormorant Garamond', serif;
+            font-family: 'Moul', 'Cormorant Garamond', serif;
             font-size: 12px;
             letter-spacing: .24em;
             text-transform: uppercase;
