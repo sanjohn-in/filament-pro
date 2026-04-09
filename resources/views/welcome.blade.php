@@ -697,11 +697,11 @@
 
         {{-- FIX: w-100 → w-full --}}
         <div class="anim-fadeup d3 flex gap-3 w-full items-center justify-center">
-            <h1 class="f-display text-2xl leading-none">
+            <h1 class="f-display text-xl leading-none">
                 {{ $event->groom_name ?? 'Hun Chan Malyly' }}
             </h1>
-            <span class="f-display" style="font-size:2.2rem;color:var(--primary)">&amp;</span>
-            <h1 class="f-display leading-none text-2xl">
+            <span class="f-display" style="font-size:1rem;color:var(--primary)">&amp;</span>
+            <h1 class="f-display text-xl leading-none ">
                 {{ $event->bride_name ?? 'Thou San' }}
             </h1>
         </div>
