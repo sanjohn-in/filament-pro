@@ -15,7 +15,7 @@
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Tangerine:wght@400;700&family=Jost:wght@300;400;500&family=Noto+Sans+Khmer&family=Battambang&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Tangerine:wght@400;700&family=Jost:wght@300;400;500&family=Moul&display=swap" rel="stylesheet">
 
     @php
         $themeColor = $event->theme_color ?? '#4548c9';
@@ -23,21 +23,6 @@
     @endphp
 
     <style>
-        /* ─── Custom Font: Khmer OS Muol Light ─── */
-        @font-face {
-            font-family: 'Khmer OS Muol Light';
-            src: url('{{ asset('fonts/KhmerOSMuolLight.woff2') }}') format('woff2'),
-                 url('{{ asset('fonts/KhmerOSMuolLight.woff') }}') format('woff'),
-                 url('{{ asset('fonts/KhmerOSMuolLight.ttf') }}') format('truetype');
-            font-weight: 300; /* Assuming 'Light' corresponds to a weight like 300 */
-            font-style: normal;
-            font-display: swap; /* Ensures text is visible while font is loading */
-        }
-        /* If you have a regular/bold version, you might add more @font-face rules */
-        /* @font-face {
-            font-family: 'Khmer OS Muol Light';
-            src: url('{{ asset('fonts/KhmerOSMuol.woff2') }}') format('woff2');
-            font-weight: 400; font-style: normal; font-display: swap; } */
         /* ─── Dynamic Theme Colors ─── */
         :root {
             --primary        : {{ $themeColor }};
@@ -53,17 +38,17 @@
         /* ─── Base ─── */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-        body { /* Changed Khmer fonts to 'Khmer OS Muol Light' with fallbacks */
-            font-family: 'Jost', 'Khmer OS Muol Light', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', sans-serif;
+        body { /* Using 'Moul' from Google Fonts as the reliable online alternative to Khmer OS Muol */
+            font-family: 'Jost', 'Moul', 'Khmer OS Muol', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', sans-serif;
             background: var(--secondary);
             color: var(--text);
             overflow-x: hidden;
         }
 
-        /* ─── Font Helpers ─── */ /* Changed Khmer fonts to 'Khmer OS Muol Light' with fallbacks */
-        .f-display { font-family: 'Khmer OS Muol Light', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Tangerine', cursive; }
-        .f-serif   { font-family: 'Khmer OS Muol Light', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Cormorant Garamond', serif; }
-        .f-heading { font-family: 'Khmer OS Muol Light', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Playfair Display', serif; }
+        /* ─── Font Helpers ─── */
+        .f-display { font-family: 'Moul', 'Khmer OS Muol', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Tangerine', cursive; }
+        .f-serif   { font-family: 'Moul', 'Khmer OS Muol', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Cormorant Garamond', serif; }
+        .f-heading { font-family: 'Moul', 'Khmer OS Muol', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Playfair Display', serif; }
 
         /* ─── Animations ─── */
         @keyframes fadeUp    { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -584,7 +569,7 @@
         .hand-label {
             margin-top: 8px;
             font-family: 'Cormorant Garamond', serif;
-            font-family: 'Khmer OS Muol Light', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Cormorant Garamond', serif; /* Corrected duplicate and changed Khmer fonts */
+            font-family: 'Moul', 'Khmer OS Muol', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Cormorant Garamond', serif;
             letter-spacing: .24em;
             text-transform: uppercase;
             color: color-mix(in srgb, var(--primary) 65%, transparent);
