@@ -691,7 +691,7 @@
 
         <div class="divider-line mb-4"></div>
 
-        <p class="anim-fadeup d3 f-serif leading-relaxed font-medium" style="color:#7a6555">
+        <p class="anim-fadeup d3 f-serif leading-relaxed font-medium mb-4" style="color:#7a6555">
            យើងខ្ញុំសូមអញ្ជើញលោកអ្នក<br> មកចូលរួមពិធីមង្គលការរបស់យើង។
         </p>
 
