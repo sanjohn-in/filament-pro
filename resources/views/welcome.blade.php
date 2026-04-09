@@ -73,7 +73,8 @@
         /* ─── Divider utilities ─── */
         .divider-line {
             height: 2px;
-            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            background: linear-gradient(to right, transparent, var(--primary) 20%, var(--primary) 80%, transparent);
+            opacity: 0.7;
         }
 
         .ornament-row {
@@ -124,7 +125,7 @@
             max-width: 420px;
             width: 100%;
             background: white;
-            border: 1px solid color-mix(in srgb, var(--primary) 50%, transparent);
+            border: 2px solid var(--primary);
             padding: 36px;
             text-align: center;
             box-shadow: 0 40px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05) inset;
@@ -144,7 +145,7 @@
             height: 26px;
             border-color: var(--primary);
             border-style: solid;
-            opacity: .6;
+            opacity: 1;
         }
         .corner.tl { top: 6px; left: 6px;    border-width: 2px 0 0 2px; }
         .corner.tr { top: 6px; right: 6px;   border-width: 2px 2px 0 0; }
@@ -159,13 +160,14 @@
             background-size: 200%;
             color: #fff;
             font-family: 'Jost', sans-serif;
-            font-size: 10px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 800;
             letter-spacing: .28em;
             text-transform: uppercase;
             border: none;
             cursor: pointer;
             transition: background-position .5s, transform .3s, box-shadow .3s;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
             box-shadow: 0 8px 24px var(--primary-dim);
         }
         .btn-open:hover {
@@ -567,7 +569,7 @@
         .hand-label {
             margin-top: 8px;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 10px;
+            font-size: 12px;
             letter-spacing: .24em;
             text-transform: uppercase;
             color: color-mix(in srgb, var(--primary) 65%, transparent);
@@ -674,7 +676,7 @@
 
         <div class="divider-line mb-6"></div>
 
-        <p class="anim-fadeup d1 text-base tracking-widest uppercase mb-5 f-serif" style="color:var(--primary)">
+        <p class="anim-fadeup d1 text-base tracking-widest uppercase mb-5 f-serif font-bold" style="color:var(--primary)">
             — សិរីមង្គលអាពាហ៏ពិពាហ៍ —
         </p>
 
@@ -682,13 +684,13 @@
             ដោយការគោរពនិងជូនចំពោះ
         </p>
 
-        <h2 class="f-display anim-fadeup d2 mb-1 leading-tight py-2" style="font-size:2.2rem;color:var(--primary)">
+        <h2 class="f-display anim-fadeup d2 mb-1 leading-tight py-2 font-bold" style="font-size:2.5rem;color:var(--primary)">
             {{ $guest->name ?? '—' }}
         </h2>
 
         <div class="divider-line mb-4"></div>
 
-        <p class="anim-fadeup d3 f-serif leading-relaxed" style="color:#7a6555">
+        <p class="anim-fadeup d3 f-serif leading-relaxed font-medium" style="color:#7a6555">
            យើងខ្ញុំសូមអញ្ជើញលោកអ្នក<br> មកចូលរួមពិធីមង្គលការរបស់យើង។
         </p>
 
