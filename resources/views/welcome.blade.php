@@ -1061,19 +1061,19 @@
             <div class="swiper wishes-swiper reveal">
                 <div class="swiper-wrapper">
                     @foreach($wishes as $wish)
-                        <div class="swiper-slide py-5 px-2 md:p-10">
+                        <div class="swiper-slide py-4 px-2 md:p-8">
                             <div class="relative bg-[#fffdfa] rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] p-3 md:p-8 text-center border border-primary/10 max-w-2xl mx-auto">
                                 
                                 {{-- The Guest Name with stylized signature lines --}}
                             <div class="flex items-center flex-column justify-center ">
                                 
-                                <h4 class="f-serif" style="color:var(--primary)">
+                                <h4 class="f-serif text-sm md:text-base mb-1" style="color:var(--primary)">
                                     {{ $wish->name ?? 'ភ្ញៀវកិត្តិយស' }}
                                 </h4>
                                 </div>
                                 
                                 {{-- The Wish Note --}}
-                                <p class="f-serif text-sm md:text-base leading-[1.8] text-gray-700 italic mb-2">
+                                <p class="f-serif text-xs md:text-sm leading-[1.8] text-gray-700 italic mb-2">
                                     {{ $wish->note }}
                                 </p>
 
