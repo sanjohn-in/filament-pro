@@ -15,7 +15,7 @@
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Tangerine:wght@400;700&family=Jost:wght@300;400;500&family=Odor+Mean+Chey&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Tangerine:wght@400;700&family=Jost:wght@300;400;500&family=Noto+Sans+Khmer&family=Battambang&display=swap" rel="stylesheet">
 
     @php
         $themeColor = $event->theme_color ?? '#4548c9';
@@ -39,16 +39,16 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         body {
-            font-family: 'Jost', 'Odor Mean Chey', sans-serif;
+            font-family: 'Jost', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', sans-serif;
             background: var(--secondary);
             color: var(--text);
             overflow-x: hidden;
         }
 
         /* ─── Font Helpers ─── */
-        .f-display { font-family: 'Odor Mean Chey', 'Tangerine', cursive; }
-        .f-serif   { font-family: 'Odor Mean Chey', 'Cormorant Garamond', serif; }
-        .f-heading { font-family: 'Odor Mean Chey', 'Playfair Display', serif; }
+        .f-display { font-family: 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Tangerine', cursive; }
+        .f-serif   { font-family: 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Cormorant Garamond', serif; }
+        .f-heading { font-family: 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Playfair Display', serif; }
 
         /* ─── Animations ─── */
         @keyframes fadeUp    { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -569,7 +569,7 @@
         .hand-label {
             margin-top: 8px;
             font-family: 'Cormorant Garamond', serif;
-            font-family: 'Odor Mean Chey', 'Cormorant Garamond', serif;
+            font-family: 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Cormorant Garamond', serif;
             font-size: 12px;
             letter-spacing: .24em;
             text-transform: uppercase;
@@ -677,7 +677,7 @@
 
         <div class="divider-line mb-6"></div>
 
-        <p class="anim-fadeup d1 text-base tracking-widest uppercase mb-5 f-serif font-bold" style="color:var(--primary)">
+        <p class="anim-fadeup d1 text-xl tracking-widest uppercase mb-5 f-serif font-bold" style="color:var(--primary)">
             — សិរីមង្គលអាពាហ៏ពិពាហ៍ —
         </p>
 
@@ -988,7 +988,7 @@
                 បញ្ជាក់ការចូលរួម
             </p>
             {{-- FIX: fw-bold → font-bold --}}
-            <h2 class="f-display fw-light reveal mt-2" style="font-size:2.5rem;color:#2a1200">RSVP</h2>
+            <h2 class=" fw-light reveal mt-2" style="font-size:1.5rem;color:#2a1200">RSVP</h2>
 
             <div class="ornament-row my-4 text-lg reveal" aria-hidden="true">✦</div>
 
