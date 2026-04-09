@@ -22,6 +22,7 @@ class Guest extends Model
         'note',
         'tag',
         'link',
+        'is_attending',
         'table_group_id',
     ];
 

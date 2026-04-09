@@ -61,9 +61,9 @@ class GuestsTable
                         default  => $state,
                     }),
                   
-                // TextColumn::make('note')
-                //     ->label(__('messages.note'))
-                //     ->limit(40),
+                TextColumn::make('note')
+                    ->label(__('messages.note'))
+                    ->limit(40),
 
                
 

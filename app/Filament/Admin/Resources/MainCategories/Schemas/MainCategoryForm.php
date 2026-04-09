@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\MainCategories\Schemas;
 
+use App\Services\ImageCompressor;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -184,48 +185,7 @@ class MainCategoryForm
                     ->imageEditorAspectRatioOptions([null, '16:9', '4:3', '1:1'])
                     ->label(__('messages.cover_image'))
                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
-                        $directory = "cover";
-                        $sourcePath = $file->getRealPath();
-                        $mime       = mime_content_type($sourcePath);
-                    
-                        // Create GD resource based on the uploaded file type
-                        $src = match($mime) {
-                            'image/png'  => imagecreatefrompng($sourcePath),
-                            'image/webp' => imagecreatefromwebp($sourcePath),
-                            'image/gif'  => imagecreatefromgif($sourcePath),
-                            default      => imagecreatefromjpeg($sourcePath),
-                        };
-                    
-                        $origW = imagesx($src);
-                        $origH = imagesy($src);
-                    
-                        // Scale down if wider than 1920px
-                        if ($origW > 1920) {
-                            $ratio  = 1920 / $origW;
-                            $newW   = 1920;
-                            $newH   = (int) round($origH * $ratio);
-                            $canvas = imagecreatetruecolor($newW, $newH);
-                    
-                            imagealphablending($canvas, false);
-                            imagesavealpha($canvas, true);
-                    
-                            imagecopyresampled($canvas, $src, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
-                            imagedestroy($src);
-                            $src = $canvas;
-                        }
-                    
-                        $filename = pathinfo($file->hashName(), PATHINFO_FILENAME) . '.jpg';
-                        $path     = "{$directory}/{$filename}";
-                    
-                        // Capture the compressed JPEG output
-                        ob_start();
-                        imagejpeg($src, null, 75); // 75% quality for balance between size and quality
-                        $data = ob_get_clean();
-                        imagedestroy($src);
-                    
-                        Storage::disk('public')->put($path, $data);
-                    
-                        return $path;
+                        return ImageCompressor::compressAndSave($file, 'cover');
                     }),
 
                 FileUpload::make('qr_code')

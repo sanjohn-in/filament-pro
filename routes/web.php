@@ -15,9 +15,10 @@ Route::get('/', function () {
 
 
 Route::controller(EventController::class)->group(function () {
-    Route::get('/events/{slug}/template/{id}', 'index');
+    Route::get('/events/{slug}/template/{id}',      'index');
+    Route::post('/events/{slug}/guest/{gid}/wishes', 'sendWishes')->name('event.wishes');
+    Route::post('/events/{slug}/guest/{gid}/rsvp',   'rsvpReply')->name('event.rsvp');
 });
-
 Route::get('/admin/clear-category', function () {
     session()->forget('main_category_id');
     // session()->forget('main_category_id');

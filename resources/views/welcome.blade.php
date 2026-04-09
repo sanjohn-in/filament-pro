@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css"/>
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
 
+    {{-- Swiper.js --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,6 +62,7 @@
         @keyframes pulseGlow { 0%,100% { opacity: .4; } 50% { opacity: 1; } }
         @keyframes doorClose { to { opacity: 0; transform: scale(1.08); pointer-events: none; } }
         @keyframes drawLine  { from { width: 0; } to { width: 100%; } }
+        @keyframes scrollHandBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
 
         .anim-fadeup  { animation: fadeUp  .9s ease both; }
         .anim-scalein { animation: scaleIn .85s cubic-bezier(.22,1,.36,1) both; }
@@ -314,20 +319,25 @@
 
         .scroll-hint {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px; /* Adjusted for better visual balance */
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 8px; /* Spacing between hand and text */
             z-index: 5;
         }
-        .scroll-bar {
-            width: 1px;
-            height: 56px;
-            background: linear-gradient(to bottom, transparent, var(--primary));
-            animation: pulseGlow 2s ease-in-out infinite;
+        .scroll-hand-icon {
+            font-size: 2.5rem; /* Large enough to be noticeable */
+            line-height: 1;
+            color: var(--primary); /* Uses the theme color */
+            animation: scrollHandBounce 1.5s infinite ease-in-out; /* Applies the bouncing animation */
+            filter: drop-shadow(0 4px 12px color-mix(in srgb, var(--primary) 50%, transparent)); /* Subtle shadow for depth */
+        }
+        .scroll-hint p {
+            color: var(--primary); /* Ensures text uses theme color */
+            font-weight: bold; /* Makes the text more prominent */
         }
 
         .section-light { background: var(--secondary); }
@@ -835,9 +845,10 @@
         </div>
 
         <div class="scroll-hint" aria-hidden="true">
-            <div class="scroll-bar"></div>
-            <p class="f-serif text-xs tracking-widest uppercase"
-               style="color:color-mix(in srgb, var(--primary) 40%, transparent)">Scroll</p>
+            <span class="scroll-hand-icon">👇</span>
+            <p class="f-serif text-sm tracking-widest uppercase mb-3">
+               អូសចុះក្រោម
+            </p>
         </div>
     </section>
 
@@ -981,7 +992,6 @@
     </section>
     @endif
 
-
     {{-- ░░░ RSVP ░░░ --}}
     <section class="section-light pb-6 px-4">
         <div class="max-w-lg mx-auto text-center">
@@ -1034,6 +1044,53 @@
         </div>
     </section>
 
+    {{-- ░░░ WISHES SLIDER (Professional Stationery Style) ░░░ --}}
+    @if(isset($wishes) && count($wishes) > 0)
+    <section class="section-light py-16 px-4 overflow-hidden">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-10 reveal">
+                <p class="f-serif text-sm tracking-[0.3em] uppercase mb-3" style="color:var(--primary)">
+                    ពាក្យជូនពរ
+                </p>
+                <h2 class="f-display text-xl md:text-2xl" style="color:var(--text)">
+                    មតិអបអរសាទរពីភ្ញៀវកិត្តិយស
+                </h2>
+                <div class="ornament-row justify-center mt-6 text-sm" aria-hidden="true">✦</div>
+            </div>
+
+            <div class="swiper wishes-swiper reveal">
+                <div class="swiper-wrapper">
+                    @foreach($wishes as $wish)
+                        <div class="swiper-slide p-6 md:p-10">
+                            <div class="relative bg-[#fffdfa] rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] p-8 md:p-14 text-center border border-primary/10 max-w-2xl mx-auto">
+                                
+                                {{-- Decorative Quote Icon --}}
+                                <div class="absolute -top-5 left-1/2 -translate-x-1/2 w-12 h-12 bg-white border border-primary/20 rounded-full flex items-center justify-center shadow-sm text-2xl text-primary font-serif italic">
+                                    “
+                                </div>
+
+                                {{-- The Wish Note --}}
+                                <p class="f-serif text-base md:text-xl leading-[1.8] text-gray-700 italic mb-2">
+                                    {{ $wish->note }}
+                                </p>
+
+                                {{-- The Guest Name with stylized signature lines --}}
+                                <div class="flex items-center justify-center gap-4">
+                                    <div class="h-[1px] w-8 md:w-12 bg-primary/30" aria-hidden="true"></div>
+                                    <h4 class="f-display text-base md:text-lg tracking-wide" style="color:var(--primary)">
+                                        {{ $wish->name ?? 'ភ្ញៀវកិត្តិយស' }}
+                                    </h4>
+                                    <div class="h-[1px] w-8 md:w-12 bg-primary/30" aria-hidden="true"></div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+    @endif
 
     {{-- ░░░ FOOTER ░░░ --}}
     <footer class="section-dark py-6 px-4 text-center">
@@ -1189,6 +1246,7 @@ function openWeddingPage() {
         initCountdown();
         initReveal();
         initFancybox();
+        initSwiper();
     }, 800);
 }
 
@@ -1253,26 +1311,84 @@ function initFancybox() {
     });
 }
 
+/* ─── Swiper Slider ─── */
+function initSwiper() {
+    if (typeof Swiper === 'undefined') return;
+    new Swiper('.wishes-swiper', {
+        loop: true,
+        autoplay: { delay: 4500, disableOnInteraction: false },
+        pagination: { el: '.swiper-pagination', clickable: true },
+        effect: 'fade',
+        fadeEffect: { crossFade: true },
+        slidesPerView: 1,
+        autoHeight: true,
+    });
+}
+
+
+const WISHES_URL = "{{ $guest ? route('event.wishes', ['slug' => $event->slug, 'gid' => $guest->id]) : null }}";
+const RSVP_URL   = "{{ $guest ? route('event.rsvp',   ['slug' => $event->slug, 'gid' => $guest->id]) : null }}";
+const CSRF_TOKEN = "{{ csrf_token() }}";
+// Pre-fill RSVP state if guest already replied
 /* ─── RSVP ─── */
-function rsvpReply(status) {
+async function rsvpReply(status) {
     document.getElementById('btn-yes').classList.toggle('active', status === 'yes');
     document.getElementById('btn-no').classList.toggle('active',  status === 'no');
 
     const msg = document.getElementById('rsvp-msg');
-    msg.textContent = status === 'yes'
-        ? '🎉 អរគុណ! យើងពិតជារីករាយណាស់ដែលអ្នកអាចចូលរួមជាមួយយើងបាន។'
-        : '💛 យើងយល់ហើយ។ សូមអរគុណសម្រាប់ការប្រាប់យើងឱ្យដឹង។';
+
+    if (!RSVP_URL) {
+        // Fallback when no guest is loaded (preview mode)
+        msg.textContent = status == 'yes'
+            ? '🎉 អរគុណ! យើងពិតជារីករាយណាស់ដែលអ្នកអាចចូលរួមជាមួយយើងបាន។'
+            : '💛 យើងយល់ហើយ។ សូមអរគុណសម្រាប់ការប្រាប់យើងឱ្យដឹង។';
+        msg.classList.remove('hidden');
+        msg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        return;
+    }
+
+    try {
+        const res  = await fetch(RSVP_URL, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN },
+            body:    JSON.stringify({ status }),
+        });
+        const data = await res.json();
+        msg.textContent = data.message;
+    } catch {
+        msg.textContent = status === 'yes'
+            ? '🎉 អរគុណ! យើងពិតជារីករាយណាស់ដែលអ្នកអាចចូលរួមជាមួយយើងបាន។'
+            : '💛 យើងយល់ហើយ។ សូមអរគុណសម្រាប់ការប្រាប់យើងឱ្យដឹង។';
+    }
+
     msg.classList.remove('hidden');
     msg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 /* ─── Wishes ─── */
-function sendWishes() {
-    const text = document.getElementById('wishes-text').value.trim();
+async function sendWishes() {
+    const textarea = document.getElementById('wishes-text');
+    const text     = textarea.value.trim();
     if (!text) return;
+
+    if (WISHES_URL) {
+        try {
+            await fetch(WISHES_URL, {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN },
+                body:    JSON.stringify({ wishes: text }),
+            });
+        } catch { /* silent fail — still show thank-you */ }
+    }
+
     document.getElementById('wishes-sent').classList.remove('hidden');
-    document.getElementById('wishes-text').value = '';
+    textarea.value = '';
 }
+
+/* ─── Restore RSVP state on page load ─── */
+document.addEventListener('DOMContentLoaded', () => {
+    if (INITIAL_RSVP) rsvpReply(INITIAL_RSVP);
+});
 
 /* ─── Music ─── */
 function toggleMusic() {

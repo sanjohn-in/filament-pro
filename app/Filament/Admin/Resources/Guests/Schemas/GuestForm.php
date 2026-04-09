@@ -61,7 +61,7 @@ class GuestForm
                         ->label(__('messages.is_attending'))
                         ->options([
                             'yes' => __('messages.yes'),
-                            'not_attend' => __('messages.no'),
+                            'no' => __('messages.no'),
                         ])
                         ->default('yes')
                         ->required(),

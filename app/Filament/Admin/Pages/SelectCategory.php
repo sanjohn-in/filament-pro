@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Pages;
 
 use Filament\Pages\Page;
 use App\Models\Admin\MainCategory;
+use App\Services\ImageCompressor;
 use BackedEnum;
 use Filament\Actions\CreateAction;
 use Filament\Forms\Components\ColorPicker;
@@ -226,48 +227,7 @@ class SelectCategory extends Page
                                 ->imageEditorAspectRatioOptions([null, '16:9', '4:3', '1:1'])
                                 ->label(__('messages.cover_image'))
                                 ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
-                                    $directory = "cover";
-                                    $sourcePath = $file->getRealPath();
-                                    $mime       = mime_content_type($sourcePath);
-                                
-                                    // Create GD resource based on the uploaded file type
-                                    $src = match($mime) {
-                                        'image/png'  => imagecreatefrompng($sourcePath),
-                                        'image/webp' => imagecreatefromwebp($sourcePath),
-                                        'image/gif'  => imagecreatefromgif($sourcePath),
-                                        default      => imagecreatefromjpeg($sourcePath),
-                                    };
-                                
-                                    $origW = imagesx($src);
-                                    $origH = imagesy($src);
-                                
-                                    // Scale down if wider than 1920px
-                                    if ($origW > 1920) {
-                                        $ratio  = 1920 / $origW;
-                                        $newW   = 1920;
-                                        $newH   = (int) round($origH * $ratio);
-                                        $canvas = imagecreatetruecolor($newW, $newH);
-                                
-                                        imagealphablending($canvas, false);
-                                        imagesavealpha($canvas, true);
-                                
-                                        imagecopyresampled($canvas, $src, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
-                                        imagedestroy($src);
-                                        $src = $canvas;
-                                    }
-                                
-                                    $filename = pathinfo($file->hashName(), PATHINFO_FILENAME) . '.jpg';
-                                    $path     = "{$directory}/{$filename}";
-                                
-                                    // Capture the compressed JPEG output
-                                    ob_start();
-                                    imagejpeg($src, null, 75); // 75% quality for balance between size and quality
-                                    $data = ob_get_clean();
-                                    imagedestroy($src);
-                                
-                                    Storage::disk('public')->put($path, $data);
-                                
-                                    return $path;
+                                    return ImageCompressor::compressAndSave($file, 'cover');
                                 }),
     
                             FileUpload::make('qr_code')
@@ -296,52 +256,7 @@ class SelectCategory extends Page
                                 ->label(__('messages.portfolios'))
                                 ->columnSpanFull()
                                 ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
-                                    $username  = Auth::user()?->name ?? 'guest';
-                                    $folder    = Str::of($username)->lower()->replace(' ', '');
-                                    $directory = "portfolios/{$folder}";
-                                
-                                    $sourcePath = $file->getRealPath();
-                                    $mime       = mime_content_type($sourcePath);
-                                
-                                    // Create GD resource from whatever image type was uploaded
-                                    $src = match($mime) {
-                                        'image/png'  => imagecreatefrompng($sourcePath),
-                                        'image/webp' => imagecreatefromwebp($sourcePath),
-                                        'image/gif'  => imagecreatefromgif($sourcePath),
-                                        default      => imagecreatefromjpeg($sourcePath),
-                                    };
-                                
-                                    $origW = imagesx($src);
-                                    $origH = imagesy($src);
-                                
-                                    // Scale down only if wider than 1920px, never upscale
-                                    if ($origW > 1920) {
-                                        $ratio  = 1920 / $origW;
-                                        $newW   = 1920;
-                                        $newH   = (int) round($origH * $ratio);
-                                        $canvas = imagecreatetruecolor($newW, $newH);
-                                
-                                        // Preserve transparency for PNG/WebP
-                                        imagealphablending($canvas, false);
-                                        imagesavealpha($canvas, true);
-                                
-                                        imagecopyresampled($canvas, $src, 0, 0, 0, 0, $newW, $newH, $origW, $origH);
-                                        imagedestroy($src);
-                                        $src = $canvas;
-                                    }
-                                
-                                    $filename = pathinfo($file->hashName(), PATHINFO_FILENAME) . '.jpg';
-                                    $path     = "{$directory}/{$filename}";
-                                
-                                    // Capture JPEG output into a variable
-                                    ob_start();
-                                    imagejpeg($src, null, 75);
-                                    $data = ob_get_clean();
-                                    imagedestroy($src);
-                                
-                                    Storage::disk('public')->put($path, $data);
-                                
-                                    return $path;
+                                    return ImageCompressor::compressAndSave($file, 'cover');
                                 }),
 
                             Toggle::make('is_visible')

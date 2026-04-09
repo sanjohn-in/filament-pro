@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Themes\Schemas;
 
+use App\Services\ImageCompressor;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -10,6 +11,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ThemeForm
 {
@@ -66,7 +68,10 @@ class ThemeForm
                         ->disk('public')
                         ->image()
                         ->imageEditor()
-                        ->imageEditorAspectRatioOptions([null, '16:9', '4:3', '1:1']),
+                        ->imageEditorAspectRatioOptions([null, '16:9', '4:3', '1:1'])
+                        ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
+                            return ImageCompressor::compressAndSave($file, 'cover');
+                        }),
 
                     FileUpload::make('preview_image_url')
                         ->label('Preview Image')
