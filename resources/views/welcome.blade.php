@@ -1046,9 +1046,9 @@
 
     {{-- ░░░ WISHES SLIDER (Professional Stationery Style) ░░░ --}}
     @if(isset($wishes) && count($wishes) > 0)
-    <section class="section-light py-16 px-4 overflow-hidden">
+    <section class="section-light pt-6 pb-0 px-4 overflow-hidden">
         <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-10 reveal">
+            <div class="text-center  reveal">
                 <p class="f-serif text-sm tracking-[0.3em] uppercase mb-3" style="color:var(--primary)">
                     ពាក្យជូនពរ
                 </p>
@@ -1061,32 +1061,30 @@
             <div class="swiper wishes-swiper reveal">
                 <div class="swiper-wrapper">
                     @foreach($wishes as $wish)
-                        <div class="swiper-slide p-6 md:p-10">
-                            <div class="relative bg-[#fffdfa] rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] p-8 md:p-14 text-center border border-primary/10 max-w-2xl mx-auto">
+                        <div class="swiper-slide py-5 px-2 md:p-10">
+                            <div class="relative bg-[#fffdfa] rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] p-3 md:p-8 text-center border border-primary/10 max-w-2xl mx-auto">
                                 
-                                {{-- Decorative Quote Icon --}}
-                                <div class="absolute -top-5 left-1/2 -translate-x-1/2 w-12 h-12 bg-white border border-primary/20 rounded-full flex items-center justify-center shadow-sm text-2xl text-primary font-serif italic">
-                                    “
+                                {{-- The Guest Name with stylized signature lines --}}
+                            <div class="flex items-center flex-column justify-center ">
+                                
+                                <h4 class="f-serif" style="color:var(--primary)">
+                                    {{ $wish->name ?? 'ភ្ញៀវកិត្តិយស' }}
+                                </h4>
                                 </div>
-
+                                
                                 {{-- The Wish Note --}}
-                                <p class="f-serif text-base md:text-xl leading-[1.8] text-gray-700 italic mb-2">
+                                <p class="f-serif text-sm md:text-base leading-[1.8] text-gray-700 italic mb-2">
                                     {{ $wish->note }}
                                 </p>
 
-                                {{-- The Guest Name with stylized signature lines --}}
-                                <div class="flex items-center justify-center gap-4">
-                                    <div class="h-[1px] w-8 md:w-12 bg-primary/30" aria-hidden="true"></div>
-                                    <h4 class="f-display text-base md:text-lg tracking-wide" style="color:var(--primary)">
-                                        {{ $wish->name ?? 'ភ្ញៀវកិត្តិយស' }}
-                                    </h4>
-                                    <div class="h-[1px] w-8 md:w-12 bg-primary/30" aria-hidden="true"></div>
-                                </div>
+                              
                             </div>
                         </div>
                     @endforeach
                 </div>
-                <div class="swiper-pagination"></div>
+                {{-- Swiper Navigation Arrows --}}
+                {{-- <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div> --}}
             </div>
         </div>
     </section>
@@ -1317,11 +1315,20 @@ function initSwiper() {
     new Swiper('.wishes-swiper', {
         loop: true,
         autoplay: { delay: 4500, disableOnInteraction: false },
-        pagination: { el: '.swiper-pagination', clickable: true },
-        effect: 'fade',
-        fadeEffect: { crossFade: true },
-        slidesPerView: 1,
-        autoHeight: true,
+        effect: 'slide', // Changed from 'fade' to 'slide' for card effect
+        slidesPerView: 1.5, // Default for mobile
+        spaceBetween: 10, // Space between cards on mobile
+        breakpoints: {
+            768: { // md breakpoint and up
+                slidesPerView: 2.5, // Show 1.5 cards
+                spaceBetween: 5, // Space between cards on desktop
+            }
+        },
+        navigation: { // Added navigation for arrows
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        // Removed pagination and autoHeight (autoHeight is problematic with slidesPerView > 1)
     });
 }
 
