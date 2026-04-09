@@ -38,17 +38,17 @@
         /* ─── Base ─── */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Jost', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', sans-serif;
+        body { /* Changed Khmer fonts to 'Khmer OS Muol Light' with fallbacks */
+            font-family: 'Jost', 'Khmer OS Muol Light', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', sans-serif;
             background: var(--secondary);
             color: var(--text);
             overflow-x: hidden;
         }
 
-        /* ─── Font Helpers ─── */
-        .f-display { font-family: 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Tangerine', cursive; }
-        .f-serif   { font-family: 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Cormorant Garamond', serif; }
-        .f-heading { font-family: 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Playfair Display', serif; }
+        /* ─── Font Helpers ─── */ /* Changed Khmer fonts to 'Khmer OS Muol Light' with fallbacks */
+        .f-display { font-family: 'Khmer OS Muol Light', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Tangerine', cursive; }
+        .f-serif   { font-family: 'Khmer OS Muol Light', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Cormorant Garamond', serif; }
+        .f-heading { font-family: 'Khmer OS Muol Light', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Playfair Display', serif; }
 
         /* ─── Animations ─── */
         @keyframes fadeUp    { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -569,8 +569,7 @@
         .hand-label {
             margin-top: 8px;
             font-family: 'Cormorant Garamond', serif;
-            font-family: 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Cormorant Garamond', serif;
-            font-size: 12px;
+            font-family: 'Khmer OS Muol Light', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Cormorant Garamond', serif; /* Corrected duplicate and changed Khmer fonts */
             letter-spacing: .24em;
             text-transform: uppercase;
             color: color-mix(in srgb, var(--primary) 65%, transparent);
@@ -890,7 +889,7 @@
     <section class="section-dark py-5 px-4">
         <div class="max-w-3xl mx-auto text-center">
 
-            <h2 class="reveal mt-2" style="font-size:2.5rem">
+            <h2 class="reveal mt-2" style="font-size:2rem">
                 ព័ត៌មានអំពីកម្មវិធី
             </h2>
 
@@ -1282,13 +1281,6 @@ function toggleMusic() {
         if (btn) btn.textContent = '🎵';
     } else {
         music.pause();
-        if (btn) btn.textContent = '🔇';
-    }
-}
-</script>
-
-</body>
-</html>
         if (btn) btn.textContent = '🔇';
     }
 }
