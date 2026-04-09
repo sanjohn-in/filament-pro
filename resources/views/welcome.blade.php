@@ -23,6 +23,21 @@
     @endphp
 
     <style>
+        /* ─── Custom Font: Khmer OS Muol Light ─── */
+        @font-face {
+            font-family: 'Khmer OS Muol Light';
+            src: url('{{ asset('fonts/KhmerOSMuolLight.woff2') }}') format('woff2'),
+                 url('{{ asset('fonts/KhmerOSMuolLight.woff') }}') format('woff'),
+                 url('{{ asset('fonts/KhmerOSMuolLight.ttf') }}') format('truetype');
+            font-weight: 300; /* Assuming 'Light' corresponds to a weight like 300 */
+            font-style: normal;
+            font-display: swap; /* Ensures text is visible while font is loading */
+        }
+        /* If you have a regular/bold version, you might add more @font-face rules */
+        /* @font-face {
+            font-family: 'Khmer OS Muol Light';
+            src: url('{{ asset('fonts/KhmerOSMuol.woff2') }}') format('woff2');
+            font-weight: 400; font-style: normal; font-display: swap; } */
         /* ─── Dynamic Theme Colors ─── */
         :root {
             --primary        : {{ $themeColor }};
