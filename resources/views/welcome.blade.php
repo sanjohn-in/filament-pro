@@ -145,7 +145,7 @@
         @keyframes cardReveal   { to { opacity: 0; transform: scale(1.1); filter: blur(10px); } }
         @keyframes textShimmer { to { background-position: 200% center; } }
         @keyframes iconSpin    { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes liveBreathing { 0%, 100% { text-shadow: 0 0 5px transparent; transform: scale(1); } 50% { text-shadow: 0 0 15px var(--primary-glow); transform: scale(1.02); } }
+        @keyframes liveBreathing { 0%, 100% { text-shadow: 0 0 5px transparent; transform: scale(1); } 50% { text-shadow: 0 0 15px var(--primary-glow); transform: scale(1.09); } }
 
         .anim-fadeup  { animation: fadeUp  .9s ease both; }
         .anim-scalein { animation: scaleIn .85s cubic-bezier(.22,1,.36,1) both; }
@@ -301,11 +301,11 @@
         .btn-open {
             position: relative;
             display: inline-block;
-            padding: 14px 42px;
+            padding: 14px 28px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 50%, var(--primary) 100%);
             background-size: 200%;
             color: #fff;
-            font-family: 'Jost', sans-serif;
+            /* font-family: 'Jost', sans-serif; */
             font-size: 15px;
             font-weight: 800;
             letter-spacing: .28em;
@@ -722,7 +722,7 @@
 
         .hand-label {
             margin-top: 8px;
-            font-family: 'Cormorant Garamond', serif;
+            /* font-family: 'Cormorant Garamond', serif; */
             font-family: 'Moul', 'Khmer OS Muol', 'Noto Sans Khmer', 'Battambang', 'Times New Roman', 'Cormorant Garamond', serif;
             letter-spacing: .24em;
             text-transform: uppercase;
@@ -908,8 +908,8 @@
                 <span class="btn-open-sparkle s3" aria-hidden="true">✦</span>
                 <span class="btn-open-sparkle s4" aria-hidden="true">✦</span>
 
-                <button class="btn-open btn-open-enhanced" onclick="openWeddingPage()">
-                    <span class="btn-open-shimmer font-bold shadow-lg" aria-hidden="true"></span>
+                <button class="btn-open btn-open-enhanced f-serif" onclick="openWeddingPage()">
+                    <div class="btn-open-shimmer" aria-hidden="true"></div>
                     ✦ &nbsp; {{ $translations['open_invite'] }} &nbsp; ✦
                 </button>
             </div>
