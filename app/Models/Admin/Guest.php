@@ -24,6 +24,7 @@ class Guest extends Model
         'link',
         'is_attending',
         'table_group_id',
+        'lang',
     ];
 
     public function mainCategory(): BelongsTo
