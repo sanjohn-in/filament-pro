@@ -909,7 +909,7 @@
                 <span class="btn-open-sparkle s4" aria-hidden="true">✦</span>
 
                 <button class="btn-open btn-open-enhanced" onclick="openWeddingPage()">
-                    <span class="btn-open-shimmer" aria-hidden="true"></span>
+                    <span class="btn-open-shimmer font-bold shadow-lg" aria-hidden="true"></span>
                     ✦ &nbsp; {{ $translations['open_invite'] }} &nbsp; ✦
                 </button>
             </div>
