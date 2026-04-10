@@ -22,6 +22,18 @@ class Donation extends Model
         'amount_khr' => 'decimal:2',
     ];
 
+      // 👇 Add these mutators here
+      public function setAmountUsdAttribute($value)
+      {
+          $this->attributes['amount_usd'] = is_null($value) || $value === '' ? 0 : $value;
+      }
+  
+      public function setAmountKhrAttribute($value)
+      {
+          $this->attributes['amount_khr'] = is_null($value) || $value === '' ? 0 : $value;
+      }
+
+      
     public function guest(): BelongsTo
     {
         return $this->belongsTo(Guest::class);
