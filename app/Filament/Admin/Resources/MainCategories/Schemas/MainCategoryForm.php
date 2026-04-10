@@ -139,11 +139,14 @@ class MainCategoryForm
                 Repeater::make('schedules')
                     ->label(__('messages.schedules', ['default' => 'Event Schedules']))
                     ->schema([
-                        TextInput::make('label')
-                            ->label(__('messages.ceremony_label', ['default' => 'Label']))
+                        TextInput::make('label_kh')
+                            ->label(__('messages.ceremony_label_kh', ['default' => 'Label Kh']))
                             ->placeholder('e.g. កិច្ចសន្យាអាពាហ៍ពិពាហ៍, ពិធីទទួលភ្ញៀវ…')
                             ->required(),
-
+                            TextInput::make('label_en')
+                            ->label(__('messages.ceremony_label_en', ['default' => 'Label En']))
+                            ->placeholder('e.g. កិច្ចសន្យាអាពាហ៍ពិពាហ៍, ពិធីទទួលភ្ញៀវ…')
+                            ->required(),
                         Select::make('time')
                             ->label(__('messages.ceremony_time', ['default' => 'Time']))
                             ->options(function () {

@@ -60,6 +60,7 @@
             'minutes' => $t('នាទី', 'Mins'),
             'seconds' => $t('វិនាទី', 'Secs'),
             'guest' => $t('ភ្ញៀវកិត្តិយស', 'Guest'),
+            'location_label' => $t('ទីតាំងកម្មវិធី', 'Event Location'),
         ];
     @endphp
     {{-- ── Basic SEO ── --}}
@@ -1102,6 +1103,13 @@
                     {{ \Carbon\Carbon::parse($event->date)->translatedFormat('l, d F Y') }}
                 </p>
 
+                @if($event->address)
+                    <div class="text-center mb-6 px-4">
+                        <span class="block opacity-50 text-[10px] uppercase tracking-[0.2em] mb-1">{{ $translations['location_label'] }}</span>
+                        <p class="f-serif text-sm md:text-base font-medium" style="color:#7a6555; line-height: 1.5;">{{ $event->address }}</p>
+                    </div>
+                @endif
+
                 <div class="divider-line mb-6"></div>
 
                 <div class="space-y-5">
@@ -1115,8 +1123,13 @@
                         if ($rawTime) {
                             $h12         = $hour === 0 ? 12 : ($hour > 12 ? $hour - 12 : $hour);
                             $min         = explode(':', $rawTime)[1] ?? '00';
-                            $period      = $isPM ? 'រសៀល' : 'ព្រឹក';
-                            $timeDisplay = 'ម៉ោង ' . $h12 . ':' . $min . ' ' . $period;
+                            if ($lang === 'en') {
+                                $period      = $isPM ? 'PM' : 'AM';
+                                $timeDisplay = $h12 . ':' . $min . ' ' . $period;
+                            } else {
+                                $period      = $isPM ? 'រសៀល' : 'ព្រឹក';
+                                $timeDisplay = 'ម៉ោង ' . $h12 . ':' . $min . ' ' . $period;
+                            }
                         } else {
                             $timeDisplay = '-';
                         }
@@ -1132,7 +1145,7 @@
                                 {{ $timeDisplay }}
                             </p>
                             <p class="f-serif text-base mt-0.5" style="color:#9a8070">
-                                {{ $schedule['label'] ?? '' }}
+                                {{ $schedule['label_' . $lang] ?? ($schedule['label_kh'] ?? '') }}
                             </p>
                         </div>
                     </div>
@@ -1143,6 +1156,9 @@
 
                     @endforeach
                 </div>
+
+
+                
             </div>
             @endif
 
