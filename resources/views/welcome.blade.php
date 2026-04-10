@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html lang="km">
 <head>
+
+    @php
+    // Translation Logic
+    $lang = $locale ?? 'km';
+    $t = function($km, $en) use ($lang) {
+        return $lang === 'en' ? $en : $km;
+    };
+    $eventType = $event->type ?? 'other'; // adjust to your actual column name
+    $titleTranslations = [
+        'wedding'           => ['km' => 'លិខិតអញ្ជើញអាពាហ៍ពិពាហ៍',    'en' => 'Wedding Invitation'],
+        'engagement'        => ['km' => 'លិខិតអញ្ជើញពិធីភ្ជាប់ពាក្យ',  'en' => 'Engagement Invitation'],
+        'birthday'          => ['km' => 'លិខិតអញ្ជើញខួបកំណើត',          'en' => 'Birthday Invitation'],
+        'handtied_ceremony' => ['km' => 'លិខិតអញ្ជើញពិធីចងដៃ',          'en' => 'Hand-Tied Ceremony Invitation'],
+        'other'             => ['km' => 'លិខិតអញ្ជើញ',                   'en' => 'Invitation'],
+    ];
+    $inviteTitle = $titleTranslations[$eventType][$lang] ?? $titleTranslations['other'][$lang];
+    $pageTitle   = ($event->name ?? '') . ' — ' . $inviteTitle;
+    $coverImage  = $event->cover_image ? asset('storage/' . $event->cover_image) : null;
+    @endphp
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $event->name ?? 'Wedding Invitation' }}</title>
+    {{-- After --}}
 
-    {{-- Tailwind CSS --}}
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{{ $pageTitle }}</title>
 
-    {{-- Fancybox --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css"/>
-    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
-
-    {{-- Swiper.js --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-    {{-- Google Fonts --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Tangerine:wght@400;700&family=Jost:wght@300;400;500&family=Moul&display=swap" rel="stylesheet">
 
     @php
         $themeColor = $event->theme_color ?? '#4548c9';
         $bgColor    = $event->bg_color ?? ('color-mix(in srgb, ' . $themeColor . ' 6%, #fdf6e8)');
         
-        // Translation Logic
-        $lang = $locale ?? 'km';
-        $t = function($km, $en) use ($lang) {
-            return $lang === 'en' ? $en : $km;
-        };
+    
 
         $translations = [
             'wedding_invitation' => $t('សិរីមង្គលអាពាហ៏ពិពាហ៍', 'Wedding Invitation'),
@@ -60,6 +62,46 @@
             'guest' => $t('ភ្ញៀវកិត្តិយស', 'Guest'),
         ];
     @endphp
+    {{-- ── Basic SEO ── --}}
+    <meta name="description" content="{{ $translations['invite_msg'] }}">
+    <meta name="robots"      content="noindex, nofollow">
+
+    {{-- ── Open Graph (Facebook / Telegram / WhatsApp) ── --}}
+    <meta property="og:type"        content="website">
+    <meta property="og:title"       content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $translations['invite_msg'] }}">
+    <meta property="og:site_name"   content="{{ $inviteTitle }}">
+    @if($coverImage)
+    <meta property="og:image"       content="{{ $coverImage }}">
+    <meta property="og:image:alt"   content="{{ $pageTitle }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height"content="630">
+    @endif
+
+    {{-- ── Twitter Card ── --}}
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $translations['invite_msg'] }}">
+    @if($coverImage)
+    <meta name="twitter:image"       content="{{ $coverImage }}">
+    <meta name="twitter:image:alt"   content="{{ $pageTitle }}">
+    @endif
+    {{-- Tailwind CSS --}}
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    {{-- Fancybox --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
+
+    {{-- Swiper.js --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    {{-- Google Fonts --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Tangerine:wght@400;700&family=Jost:wght@300;400;500&family=Moul&display=swap" rel="stylesheet">
+
 
     <style>
         /* ─── Dynamic Theme Colors ─── */
@@ -829,13 +871,16 @@
 
         {{-- FIX: w-100 → w-full --}}
         <div class="anim-fadeup d3 flex gap-3 w-full items-center justify-center open-animate">
-            <h1 class="f-display text-xl leading-none">
-                {{ $event->groom_name ?? 'Hun Chan Malyly' }}
-            </h1>
-            <span class="f-display" style="font-size:1rem;color:var(--primary)">&amp;</span>
             <h1 class="f-display text-xl leading-none ">
                 {{ $event->bride_name ?? 'Thou San' }}
             </h1>
+            
+            <span class="f-display" style="font-size:1rem;color:var(--primary)">&amp;</span>
+            
+            <h1 class="f-display text-xl leading-none">
+                {{ $event->groom_name ?? 'Hun Chan Malyly' }}
+            </h1>
+          
         </div>
 
         <div class="divider-line my-4 anim-draw d5"></div>
