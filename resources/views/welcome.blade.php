@@ -119,7 +119,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: textShimmer 3s linear infinite;
-            padding: 16px 0;
+            padding: 12px 0;
         }
 
         .d1 { animation-delay: .2s; }
@@ -356,7 +356,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 60px 24px 140px;
+            padding: 40px 24px 120px;
             background-color: var(--dark);
             background-size: cover;
             background-position: center center;
@@ -569,7 +569,7 @@
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 99px; }
 
         @media (max-width: 480px) {
-            .opener-card { padding: 36px 22px 36px; }
+            .opener-card { padding: 16px 22px 16px; }
             .hero-frame  { inset: 14px; }
         }
 
@@ -805,11 +805,11 @@
             ✦
         </div>
 
-        <div class="divider-line mb-6 anim-draw d1"></div>
+        <div class="divider-line mb-2 mb:mb-5 anim-draw d1"></div>
 
-        <p class="anim-fadeup d1 text-xl tracking-widest uppercase  f-serif font-bold flex items-center justify-center gap-4" style="color:var(--primary)">
+        <p class="anim-fadeup d1 tracking-widest uppercase  f-serif font-bold flex items-center justify-center gap-4" >
             <span class="opacity-30 anim-slide-left d2">—</span>
-            <span class="text-shimmer">{{ $translations['wedding_invitation'] }}</span>
+            <span class="text-shimmer text-base ">{{ $translations['wedding_invitation'] }}</span>
             <span class="opacity-30 anim-slide-right d2">—</span>
         </p>
 
@@ -817,7 +817,7 @@
             {{ $translations['respectfully_to'] }}
         </p>
 
-        <h2 class="f-display anim-fadeup d2 mb-1 leading-tight py-2 font-bold open-animate" style="font-size:2rem;color:var(--primary)">
+        <h2 class="f-display anim-fadeup d2 mb-1 leading-tight py-2 font-bold open-animate text-2xl" >
             {{ $guest->name ?? '—' }}
         </h2>
 
@@ -922,7 +922,7 @@
         <div class="hero-glow"    aria-hidden="true"></div>
         <div class="hero-frame"   aria-hidden="true"></div>
 
-        <div class="relative z-10 w-full max-w-2xl mx-auto px-4 py-12 rounded-3xl border border-white/10 backdrop-blur-[2px]"
+        <div class="relative z-10 w-full max-w-2xl mx-auto px-4 py-0 md:py-8 rounded-3xl border border-white/10 backdrop-blur-[2px]"
              style="background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, transparent 100%);">
             
              
@@ -931,26 +931,28 @@
                {{ $translations['wedding_invitation'] }}
             </h2>
 
-            <div class="ornament-row mb-8 text-xl anim-fadeup d1" aria-hidden="true">
+            <div class="ornament-row mb-5 text-xl anim-fadeup d1" aria-hidden="true">
                 <span class="anim-spin-slow">✦</span>
             </div>
 
             <div class="space-y-2 open-animate md:text-4xl text-3xl">
-                <div class="f-display  anim-fadeup d2 leading-tight "
-                    style="text-shadow: 0 0 20px rgba(255,255,255,0.4);">
-                    {{ $event->groom_name ?? 'Groom Name' }}
-                </div>
-                
-                <div class="f-display anim-fadeup d3 text-3xl opacity-80"
-                   style="text-shadow: 0 0 15px rgba(255,255,255,0.3);">&amp;</div>
-                
-                <div class="f-display anim-fadeup d4 leading-tight"
-                    style="text-shadow: 0 0 20px rgba(255,255,255,0.4);">
+
+                <div class="f-display anim-fadeup d4 leading-tight" style="text-shadow: 0 0 20px rgba(255,255,255,0.4);">
                     {{ $event->bride_name ?? 'Bride Name' }}
                 </div>
+
+                <div class="f-display anim-fadeup d3 text-3xl opacity-80"
+                   style="text-shadow: 0 0 15px rgba(255,255,255,0.3);">
+                   &amp;
+                </div>
+                
+                <div class="f-display  anim-fadeup d2 leading-tight " style="text-shadow: 0 0 20px rgba(255,255,255,0.4);">
+                   {{ $event->groom_name ?? 'Groom Name' }}
+               </div>
+               
             </div>
 
-            <div class="ornament-row my-10 text-xl anim-fadeup d5" aria-hidden="true">
+            <div class="ornament-row my-4 md:my-8 text-xl anim-fadeup d5" aria-hidden="true">
                 <span class="anim-spin-slow">✦</span>
             </div>
 
@@ -965,7 +967,7 @@
 
             {{-- Countdown --}}
             @if($event->date ?? false)
-            <div id="countdown" class="flex justify-center gap-3 mt-10 anim-fadeup d6">
+            <div id="countdown" class="flex justify-center gap-3 mt-4 mb:mt-5 anim-fadeup d6">
                 @foreach(['days', 'hours', 'minutes', 'seconds'] as $key)
                 <div class="cd-box shadow-xl">
                     <div id="cd-{{ $key }}" class="f-heading text-2xl font-semibold" style="color:var(--primary); text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">00</div>
@@ -1226,7 +1228,7 @@
     <footer class="section-dark py-6 px-4 text-center">
         <div class="max-w-md mx-auto">
             <p class="f-display text-base" style="color:var(--primary)">
-                {{ $event->groom_name ?? 'Groom' }} &amp; {{ $event->bride_name ?? 'Bride' }}
+                {{ $event->bride_name ?? 'Bride' }} &amp; {{ $event->groom_name ?? 'Groom' }} 
             </p>
             @if($event->date ?? false)
             <p class="f-serif mt-2 mb-10 text-sm italic"
