@@ -161,7 +161,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: textShimmer 3s linear infinite;
-            padding: 12px 0;
+            padding-top: 12px;
+            padding-bottom: 0;
         }
 
         .d1 { animation-delay: .2s; }
@@ -451,9 +452,11 @@
         .cd-box {
             background: rgba(255,255,255,.09);
             border: 1px solid var(--primary-dim);
-            padding: 2px 16px 8px;
+            padding: 2px 16px 3px;
             min-width: 50px;
             backdrop-filter: blur(6px);
+            border-radius: 6px;
+            margin-bottom: 10px;
         }
 
         .scroll-hint {
@@ -466,6 +469,7 @@
             align-items: center;
             gap: 8px; /* Spacing between hand and text */
             z-index: 5;
+            cursor: pointer;
         }
         .scroll-hand-icon {
             font-size: 2.5rem; /* Large enough to be noticeable */
@@ -969,14 +973,14 @@
 
         <div class="relative z-10 w-full max-w-2xl mx-auto px-4 py-0 md:py-8 rounded-3xl border border-white/10 backdrop-blur-[2px]"
              style="background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, transparent 100%);">
-            
              
-            <h2 class="f-serif uppercase font-bold anim-fadeup mb-2 md:text-5xl text-4xl text-shimmer"
+            <h2 class="f-serif uppercase font-bold anim-fadeup mb-0 md:text-5xl text-4xl text-shimmer leading-relaxed"
                style="text-shadow: 0 0 20px rgba(255,255,255,0.2);">
+             
                {{ $translations['wedding_invitation'] }}
             </h2>
 
-            <div class="ornament-row mb-5 text-xl anim-fadeup d1" aria-hidden="true">
+            <div class="ornament-row mb-2 md:mb-5 text-xl anim-fadeup d1" aria-hidden="true">
                 <span class="anim-spin-slow">✦</span>
             </div>
 
@@ -1023,7 +1027,7 @@
             @endif
         </div>
 
-        <div class="scroll-hint" aria-hidden="true">
+        <div class="scroll-hint" onclick="document.getElementById('couple-section').scrollIntoView({ behavior: 'smooth' })">
             <span class="scroll-hand-icon">👇</span>
             <p class="f-serif text-sm tracking-widest uppercase mb-3">
                {{ $translations['scroll_down'] }}
@@ -1033,7 +1037,7 @@
 
 
     {{-- ░░░ COUPLE ░░░ --}}
-    <section class="section-light pt-10 pb-6 px-4">
+    <section id="couple-section" class="section-light pt-10 pb-6 px-4">
         <div class="max-w-3xl mx-auto text-center">
 
             <p class="f-serif font-bold text-xl tracking-widest uppercase reveal" style="color:var(--primary)">
