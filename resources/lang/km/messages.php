@@ -188,7 +188,7 @@ return [
     'schedules' => 'កាលវិភាគ',
     'add_schedule' => "បន្ថែមកាលវិភាគ",
     'portfolios_helper' => 'អាចបញ្ចូលបានអតិបរមា 9 រូបភាពប៉ុណ្ណោះ',
-    'ceremony_label_en' => 'ស្លាក ចំណងជើង (អង្លេស)',
+    'ceremony_label_en' => 'ស្លាក ចំណងជើង (អង់គ្លេស)',
     'ceremony_label_kh' => 'ស្លាក ចំណងជើង (ខ្មែរ)',
     'ceremony_time' => 'ពេលវេលា',
     'ceremony_date' => 'កាលបរិច្ឆេទ',
@@ -206,7 +206,7 @@ return [
     'handtied_ceremony' => 'ពិធីចងដៃ',
     'other' => 'ផ្សេងៗ',
     'language' => 'ភាសា',
-    'english' => 'អង្លេស',
+    'english' => 'អង់គ្លេស',
     'khmer' => 'ខ្មែរ',
 
 ];
