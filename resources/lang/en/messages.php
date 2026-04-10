@@ -209,5 +209,6 @@ return [
     'language' => 'Language',
     'english' => 'English',
     'khmer' => 'Khmer',
+    'donation_created' => 'Created Sucess!',
     
 ];

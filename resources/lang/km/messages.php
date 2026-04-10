@@ -208,5 +208,6 @@ return [
     'language' => 'ភាសា',
     'english' => 'អង់គ្លេស',
     'khmer' => 'ខ្មែរ',
+    'donation_created' => 'បង្កើតជោគជ័យ!',
 
 ];
