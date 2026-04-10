@@ -23,6 +23,8 @@ return new class extends Migration
             $table->integer('music_id')->nullable();
             $table->string('bride_name')->nullable();
             $table->string('groom_name')->nullable();
+            $table->string('bride_name_en')->nullable();
+            $table->string('groom_name_en')->nullable();
             $table->string('slug')->nullable();
             $table->string('date')->nullable();
             $table->string('time')->nullable();

@@ -46,8 +46,11 @@ return [
     'main_category'        => "Main Category",
     'type' => 'Type',
     'date' => 'Date',
-    'groom_name' => 'Groom name',
-    'bride_name' => 'Bride name',
+    'groom_name_en' => 'Groom name (English)',
+    'bride_name_en' => 'Bride name (English)',
+    'groom_name_kh' => 'Groom name (Khmer)',
+    'bride_name_kh' => 'Bride name (Khmer)',
+
     'slug' => 'Slug',
     'create_category' => 'Create Category',
     'google_map' => 'Goolge map',
@@ -202,4 +205,8 @@ return [
     'birthday' => 'Birthday',
     'handtied_ceremony' => 'Handtied Ceremony',
     'other' => 'Other',
+    'language' => 'Language',
+    'english' => 'English',
+    'khmer' => 'Khmer',
+    
 ];

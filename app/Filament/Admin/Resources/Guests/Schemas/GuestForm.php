@@ -25,7 +25,8 @@ class GuestForm
                         ->required()
                         ->maxLength(255),
                     
-                    Select::make('table_group_id')
+                    Grid::make(2)->schema([
+                        Select::make('table_group_id')
                         ->label(__('messages.table_group'))
                         ->options(function () {
                             $tables = \App\Models\Admin\TableGroup::query()
@@ -45,6 +46,15 @@ class GuestForm
                                 ->exists()
                         )
                         ->placeholder(__('messages.select_table')),
+
+                        Select::make('lang')
+                        ->label(__('messages.language'))
+                        ->options([
+                            'kh' => __('messages.khmer'),
+                            'en' => __('messages.english'),
+                        ])->default('kh')
+                        ->required(),
+                    ]),
     
                     Grid::make(2)->schema([
                         Select::make('tag')

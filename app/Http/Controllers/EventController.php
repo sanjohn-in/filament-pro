@@ -17,20 +17,30 @@ class EventController extends Controller
      */
     public function index(Request $request, $slug, $id)
     {
+        $locale = $request->query('lang') === 'en' ? 'en' : 'km';
+        app()->setLocale($locale);
+
         $theme = Theme::findOrFail($id);
         $guest = $request->query('gid')
-        ? Guest::findOrFail($request->query('gid'))
-        : null;
+            ? Guest::findOrFail($request->query('gid'))
+            : null;
         $event = MainCategory::where('slug', $slug)->firstOrFail();
-    
+
         $music = Configuration::where('slug', 'music')->value('value');
         $wishes = Guest::where('main_category_id', $event->id)
-        ->whereNotNull('note')
-        ->where('note', '!=', '')
-        ->get();
+            ->whereNotNull('note')
+            ->where('note', '!=', '')
+            ->get();
 
-    
-        return view('welcome', compact('event', 'guest', 'theme', 'music', 'wishes'));
+        return view('welcome',compact(
+                'event',
+                'guest',
+                'theme',
+                'music',
+                'wishes',
+                'locale'
+            )
+        );
     }
 
     /**
@@ -53,16 +63,21 @@ class EventController extends Controller
      */
     public function rsvpReply(Request $request, $slug, $gid)
     {
+        $locale = $request->query('lang') === 'en' ? 'en' : 'km';
         $request->validate(['status' => 'required|in:yes,no']);
 
         $guest = Guest::findOrFail($gid);
-        $isAttending = $request->input('status') ;
+        $isAttending = $request->input('status');
         $guest->update(['is_attending' => $isAttending]);
 
         // Personalised message using the saved value
-        $message = $guest->is_attending == 'yes'
-            ? '🎉 អរគុណ ' . $guest->name . '! យើងពិតជារីករាយណាស់ដែលអ្នកអាចចូលរួមជាមួយយើងបាន។'
-            : '💛 យើងយល់ហើយ ' . $guest->name . '។ សូមអរគុណសម្រាប់ការប្រាប់យើងឱ្យដឹង។';
+        $message = ($locale === 'en')
+            ? ($guest->is_attending == 'yes'
+                ? '🎉 Thank you ' . $guest->name . '! We are so happy you can join us.'
+                : '💛 We understand ' . $guest->name . '. Thank you for letting us know.')
+            : ($guest->is_attending == 'yes'
+                ? '🎉 អរគុណ ' . $guest->name . '! យើងពិតជារីករាយណាស់ដែលអ្នកអាចចូលរួមជាមួយយើងបាន។'
+                : '💛 យើងយល់ហើយ ' . $guest->name . '។ សូមអរគុណសម្រាប់ការប្រាប់យើងឱ្យដឹង។');
 
         return response()->json([
             'success'      => true,
@@ -70,5 +85,4 @@ class EventController extends Controller
             'message'      => $message,
         ]);
     }
-
 }

@@ -75,7 +75,7 @@ class GuestsTable
                     return rtrim($domain, '/') . '/events/' . $record->mainCategory->slug  . '/template/' 
                     //  . $record->mainCategory->defaultTheme 
                      .  '1/'
-                     . '?gid=' . $record->id;
+                     . '?gid=' . $record->id . '&lang=' . $record->lang;
                 })
                 ->limit(40) // 👀 show short
                 ->tooltip(fn ($state) => $state) // full on hover
@@ -86,7 +86,7 @@ class GuestsTable
                     . '/template/' 
                     .  '1/'
                     .
-                    '?gid=' . $record->id
+                    '?gid=' . $record->id . '&lang=' . $record->lang
                 )
                 ->copyMessageDuration(1500)
                 ->icon('heroicon-o-link'),

@@ -6,6 +6,7 @@ use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 
 class MainCategoryInfolist
@@ -17,14 +18,36 @@ class MainCategoryInfolist
                 TextEntry::make('type')
                     ->label(__('messages.type'))
                     ->badge(),
-                TextEntry::make('bride_name')
-                    ->label(__('messages.bride_name'))
-                    ->placeholder('-'),
-                TextEntry::make('groom_name')
-                    ->label(__('messages.groom_name'))
-                    ->placeholder('-'),
+
                 TextEntry::make('slug')
-                    ->label(__('messages.slug')),
+                ->label(__('messages.slug')),
+
+                Grid::make(2)
+                    ->schema([
+                        TextEntry::make('bride_name')
+                            ->label(__('messages.bride_name_kh'))
+                            ->placeholder('-')
+                            ->color('primary'),
+
+                        TextEntry::make('groom_name')
+                            ->label(__('messages.groom_name_kh'))
+                            ->placeholder('-')
+                            ->color('primary'),
+                    ])
+                    ,
+                Grid::make(2)
+                    ->schema([
+                        TextEntry::make('bride_name_en')
+                        ->label(__('messages.bride_name_en'))
+                        ->placeholder('-')
+                        ->color('primary'),
+
+                        TextEntry::make('groom_name_en')
+                        ->label(__('messages.groom_name_en'))
+                        ->placeholder('-')
+                        ->color('primary'),
+                    ]),
+               
                 TextEntry::make('date')
                     ->label(__('messages.date'))
                     ->placeholder('-')
@@ -53,10 +76,11 @@ class MainCategoryInfolist
 
                 ImageEntry::make('portfolios')
                 ->disk('public')
-                ->imageWidth(300)
+                ->imageWidth(200)
                 ->label(__('messages.portfolios'))
                 // ->columnSpanFull()
-                ->placeholder('No Cover Image'),
+                ->placeholder('No Cover Image')
+                ->columnSpanFull(),
                 
                 ColorEntry::make('theme_color')
                     ->label(__('messages.theme_color')),

@@ -56,13 +56,31 @@ class MainCategoryForm
                     ->required()
                     ->label(__('messages.slug')),
 
-                TextInput::make('bride_name')
-                    ->placeholder('ធូ សាន')
-                    ->label(__('messages.bride_name')),
+                Grid::make(2)
+                    ->schema([
+                        TextInput::make('bride_name')
+                        ->placeholder('ធូ សាន')
+                        ->label(__('messages.bride_name_kh'))
+                        ->required(),
 
-                TextInput::make('groom_name')
-                    ->placeholder('ហ៊ុន ចាន់ម៉ាលីលី')
-                    ->label(__('messages.groom_name')),
+                        TextInput::make('groom_name')
+                        ->placeholder('ហ៊ុន ចាន់ម៉ាលីលី')
+                        ->label(__('messages.groom_name_kh'))
+                        ->required(),
+                      
+                    ]),
+
+                    Grid::make(2)
+                    ->schema([
+                        TextInput::make('bride_name_en')
+                        ->placeholder('Thou San')
+                        ->label(__('messages.bride_name_en')),
+
+                        TextInput::make('groom_name_en')
+                        ->placeholder('Hun Chanmalyly')
+                        ->label(__('messages.groom_name_en')),
+                    ]),
+             
 
                 DatePicker::make('date')
                     ->native(false)

@@ -30,7 +30,9 @@ class MainCategory extends Model
         'theme_color',
         'bg_color',
         'schedules',
-        'music_id'
+        'music_id',
+        'bride_name_en',
+        'groom_name_en',
     ];
 
     protected $casts = [

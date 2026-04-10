@@ -47,8 +47,10 @@ return [
      'main_category' => 'ប្រភេទកម្មវិធី',
      'type' => 'ប្រភេទ',
      'date' => 'ថ្ងៃកម្មវិធី',
-     'groom_name' => 'កូនក្រមុំ',
-     'bride_name' => 'កូនកម្លោះ',
+     'groom_name_en' => 'កូនក្រមុំ (ឡាតាំង)',
+     'bride_name_en' => 'កូនកម្លោះ (ឡាតាំង)',
+     'groom_name_kh' => 'កូនក្រមុំ (ខ្មែរ)',
+     'bride_name_kh' => 'កូនក្រមុំ (ខ្មែរ)',
      'slug' => 'ស្លាក',
      'create_category'=> 'បង្កើតប្រភេទកម្មវីធី',
      'google_map' => 'ទីតាំងផែនទី',
@@ -202,4 +204,8 @@ return [
     'birthday' => 'ថ្ងៃកំណើត',
     'handtied_ceremony' => 'ពិធីចងដៃ',
     'other' => 'ផ្សេងៗ',
+    'language' => 'ភាសា',
+    'english' => 'អង្លេស',
+    'khmer' => 'ខ្មែរ',
+
 ];

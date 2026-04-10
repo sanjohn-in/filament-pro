@@ -24,6 +24,41 @@
     @php
         $themeColor = $event->theme_color ?? '#4548c9';
         $bgColor    = $event->bg_color ?? ('color-mix(in srgb, ' . $themeColor . ' 6%, #fdf6e8)');
+        
+        // Translation Logic
+        $lang = $locale ?? 'km';
+        $t = function($km, $en) use ($lang) {
+            return $lang === 'en' ? $en : $km;
+        };
+
+        $translations = [
+            'wedding_invitation' => $t('សិរីមង្គលអាពាហ៏ពិពាហ៍', 'Wedding Invitation'),
+            'respectfully_to' => $t('ដោយការគោរពនិងជូនចំពោះ', 'Respectfully Invited to'),
+            'invite_msg' => $t('យើងខ្ញុំសូមអញ្ជើញលោកអ្នក មកចូលរួមពិធីមង្គលការរបស់យើង។', 'We cordially invite you to celebrate our wedding day.'),
+            'open_invite' => $t('បើកការអញ្ជើញ', 'Open Invitation'),
+            'tap_to_open' => $t('ចុចដើម្បីបើក', 'Tap to open'),
+            'scroll_down' => $t('អូសចុះក្រោម', 'Scroll Down'),
+            'honor_invite' => $t('យើងខ្ញុំមានកិត្តិយសសូមគោរពអញ្ជើញ', 'We have the honor to invite you'),
+            'honor_msg' => $t('ឯកឧត្តម លោកឧកញ៉ា លោកជំទាវ លោក លោកស្រី អ្នកនាងកញ្ញា អញ្ជើញចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស ដើម្បីប្រសិទ្ធិពរជ័យសិរីសួស្តី ជ័យមង្គល ក្នុងពិធីអាពាហ៍ពិពាហ៍ របស់យើងខ្ញុំទាំងពីរ។', 'To join us as our guest of honor and witness the celebration of our marriage. Your presence will bring us great joy and blessings.'),
+            'gallery_title' => $t('កំរងរូបភាពអាពាហ៍ពិពាហ៍របស់យើង', 'Our Wedding Gallery'),
+            'event_info' => $t('ព័ត៌មានអំពីកម្មវិធី', 'Event Schedule'),
+            'open_maps' => $t('បើក Google Maps', 'Open Google Maps'),
+            'gift_qr' => $t('ចងដៃ​ Qr Code', 'Wedding Gift QR Code'),
+            'rsvp' => $t('បញ្ជាក់ការចូលរួម', 'Confirm Attendance'),
+            'rsvp_intro' => $t('វត្តមានរបស់អ្នកជាសុភមង្គលដ៏ធំបំផុតសម្រាប់យើង។', 'Your presence is our greatest happiness.'),
+            'attending' => $t('ចូលរួម', 'Attending'),
+            'not_attending' => $t('មិនចូលរួម', 'Decline'),
+            'send_wishes' => $t('ផ្ញើពាក្យអបអរសាទរ', 'Send Your Best Wishes'),
+            'wishes_placeholder' => $t('សូមសរសេរពាក្យអបអរសាទរ និងពរជ័យសម្រាប់កូនក្រមុំ និងកូនកម្រា…', 'Write your messages and wishes for the couple...'),
+            'wishes_btn' => $t('ផ្ញើពាក្យអបអរ', 'Send Wishes'),
+            'wishes_success' => $t('សូមអរគុណសម្រាប់ពាក្យអបអរសាទររបស់អ្នក!', 'Thank you for your warm wishes!'),
+            'guest_comments' => $t('មតិអបអរសាទរពីភ្ញៀវកិត្តិយស', 'Wishes from our Guests'),
+            'days' => $t('ថ្ងៃ', 'Days'),
+            'hours' => $t('ម៉ោង', 'Hours'),
+            'minutes' => $t('នាទី', 'Mins'),
+            'seconds' => $t('វិនាទី', 'Secs'),
+            'guest' => $t('ភ្ញៀវកិត្តិយស', 'Guest'),
+        ];
     @endphp
 
     <style>
@@ -690,11 +725,11 @@
         <div class="divider-line mb-6"></div>
 
         <p class="anim-fadeup d1 text-xl tracking-widest uppercase mb-5 f-serif font-bold" style="color:var(--primary)">
-            — សិរីមង្គលអាពាហ៏ពិពាហ៍ —
+            — {{ $translations['wedding_invitation'] }} —
         </p>
 
         <p class="anim-fadeup d2 f-serif text-base italic mb-1" style="color:#9a8070">
-            ដោយការគោរពនិងជូនចំពោះ
+            {{ $translations['respectfully_to'] }}
         </p>
 
         <h2 class="f-display anim-fadeup d2 mb-1 leading-tight py-2 font-bold" style="font-size:2rem;color:var(--primary)">
@@ -704,7 +739,7 @@
         <div class="divider-line mb-4"></div>
 
         <p class="anim-fadeup d3 f-serif leading-relaxed font-medium mb-4" style="color:#7a6555">
-           យើងខ្ញុំសូមអញ្ជើញលោកអ្នក<br> មកចូលរួមពិធីមង្គលការរបស់យើង។
+           {!! nl2br(e($translations['invite_msg'])) !!}
         </p>
 
         {{-- FIX: w-100 → w-full --}}
@@ -740,7 +775,7 @@
 
                 <button class="btn-open btn-open-enhanced" onclick="openWeddingPage()">
                     <span class="btn-open-shimmer" aria-hidden="true"></span>
-                    ✦ &nbsp; បើកការអញ្ជើញ &nbsp; ✦
+                    ✦ &nbsp; {{ $translations['open_invite'] }} &nbsp; ✦
                 </button>
             </div>
 
@@ -753,7 +788,7 @@
                     <div class="hand-ripple-ring"></div>
                     <span class="hand-emoji">👆</span>
                 </div>
-                <span class="hand-label">ចុចដើម្បីបើក</span>
+                <span class="hand-label">{{ $translations['tap_to_open'] }}</span>
             </div>
         </div>
 
@@ -806,7 +841,7 @@
              style="background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, transparent 80%);">
             <h2 class="f-serif text-white uppercase font-bold anim-fadeup mb-5 text-3xl "
                style="text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">
-               សិរីមង្គលអាពាហ៍ពិពាហ៍
+               {{ $translations['wedding_invitation'] }}
             </h2>
 
             <div class="ornament-row mb-5 text-xl anim-fadeup d1" aria-hidden="true">✦</div>
@@ -834,10 +869,10 @@
             {{-- Countdown --}}
             @if($event->date ?? false)
             <div id="countdown" class="flex justify-center gap-3 mt-10 anim-fadeup d6">
-                @foreach(['days' => 'ថ្ងៃ', 'hours' => 'ម៉ោង', 'minutes' => 'នាទី', 'seconds' => 'វិនាទី'] as $key => $label)
+                @foreach(['days', 'hours', 'minutes', 'seconds'] as $key)
                 <div class="cd-box shadow-xl">
                     <div id="cd-{{ $key }}" class="f-heading text-2xl font-semibold" style="color:var(--primary); text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">00</div>
-                    <div class="text-xs uppercase tracking-wider mt-1" style="color:rgba(255,255,255,.5)">{{ $label }}</div>
+                    <div class="text-xs uppercase tracking-wider mt-1" style="color:rgba(255,255,255,.5)">{{ $translations[$key] }}</div>
                 </div>
                 @endforeach
             </div>
@@ -847,7 +882,7 @@
         <div class="scroll-hint" aria-hidden="true">
             <span class="scroll-hand-icon">👇</span>
             <p class="f-serif text-sm tracking-widest uppercase mb-3">
-               អូសចុះក្រោម
+               {{ $translations['scroll_down'] }}
             </p>
         </div>
     </section>
@@ -858,10 +893,10 @@
         <div class="max-w-3xl mx-auto text-center">
 
             <p class="f-serif font-bold text-xl tracking-widest uppercase reveal" style="color:var(--primary)">
-                យើងខ្ញុំមានកិត្តិយសសូមគោរពអញ្ជើញ
+                {{ $translations['honor_invite'] }}
             </p>
             <h2 class="f-display text-gray-600 reveal mt-2">
-                ឯកឧត្តម លោកឧកញ៉ា លោកជំទាវ លោក លោកស្រី អ្នកនាងកញ្ញា អញ្ជើញចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស ដើម្បីប្រសិទ្ធិពរជ័យសិរីសួស្តី ជ័យមង្គល ក្នុងពិធីអាពាហ៍ពិពាហ៍ របស់យើងខ្ញុំទាំងពីរ។
+                {{ $translations['honor_msg'] }}
             </h2>
             <div class="ornament-row my-4 text-sm reveal" aria-hidden="true">✦ ✦ ✦</div>
 
@@ -883,7 +918,7 @@
     <section class="section-light pb-5 px-4">
         <div class="max-w-2xl mx-auto">
             <p class="f-serif text-lg tracking-widest uppercase text-center mb-3 reveal" style="color:var(--primary)">
-                កំរងរូបភាពអាពាហ៍ពិពាហ៍របស់យើង
+                {{ $translations['gallery_title'] }}
             </p>
             <div class="gallery-grid reveal">
                 @foreach($event->portfolios as $i => $photo)
@@ -904,7 +939,7 @@
         <div class="max-w-3xl mx-auto text-center">
 
             <h2 class="reveal mt-2" style="font-size:2rem">
-                ព័ត៌មានអំពីកម្មវិធី
+                {{ $translations['event_info'] }}
             </h2>
 
             <div class="ornament-row my-4 text-sm reveal" style="color:var(--primary)" aria-hidden="true">
@@ -970,7 +1005,7 @@
                    style="border:1px solid var(--primary);color:var(--primary)"
                    onmouseover="this.style.background='var(--primary)';this.style.color='#fff'"
                    onmouseout="this.style.background='transparent';this.style.color='var(--primary)'">
-                    📍 &nbsp; បើក Google Maps
+                    📍 &nbsp; {{ $translations['open_maps'] }}
                 </a>
             </div>
             @endif
@@ -983,7 +1018,7 @@
     <section class="section-light py-6 px-4">
         <div class="max-w-sm mx-auto text-center reveal">
             <p class="f-serif text-base tracking-widest uppercase mb-3" style="color:var(--primary)">
-                ចងដៃ​ Qr Code
+                {{ $translations['gift_qr'] }}
             </p>
             <img src="{{ asset('storage/' . $event->qr_code) }}" alt="QR Code"
                  class="mx-auto"
@@ -997,7 +1032,7 @@
         <div class="max-w-lg mx-auto text-center">
 
             <p class="f-serif text-base tracking-widest uppercase reveal" style="color:var(--primary)">
-                បញ្ជាក់ការចូលរួម
+                {{ $translations['rsvp'] }}
             </p>
             {{-- FIX: fw-bold → font-bold --}}
             <h2 class=" fw-light reveal mt-2" style="font-size:1.5rem;color:#2a1200">RSVP</h2>
@@ -1005,18 +1040,18 @@
             <div class="ornament-row my-4 text-lg reveal" aria-hidden="true">✦</div>
 
             <p class="f-serif reveal text-base mb-1" style="color:#7a6555">
-                ជូនចំពោះ <strong style="color:var(--primary)">{{ $guest->name ?? 'ភ្ញៀវកិត្តិយស' }}</strong>,
+                {{ $t('ជូនចំពោះ', 'Dear') }} <strong style="color:var(--primary)">{{ $guest->name ?? $translations['guest'] }}</strong>,
             </p>
             <p class="f-serif reveal mb-8 text-base italic" style="color:#9a8a7a">
-                វត្តមានរបស់អ្នកជាសុភមង្គលដ៏ធំបំផុតសម្រាប់យើង។
+                {{ $translations['rsvp_intro'] }}
             </p>
 
             <div class="flex gap-3 mb-4 reveal">
                 <button id="btn-yes" class="btn-rsvp-yes" onclick="rsvpReply('yes')">
-                    ✓ &nbsp; ចូលរួម
+                    ✓ &nbsp; {{ $translations['attending'] }}
                 </button>
                 <button id="btn-no" class="btn-rsvp-no" onclick="rsvpReply('no')">
-                    ✗ &nbsp; មិនចូលរួម
+                    ✗ &nbsp; {{ $translations['not_attending'] }}
                 </button>
             </div>
 
@@ -1027,18 +1062,18 @@
             <div class="reveal mt-8">
                 <div class="ornament-row mb-6 text-sm" aria-hidden="true">✦</div>
                 <h3 class="f-heading mb-4 font-normal" style="color:#2a1200;font-size:1.4rem">
-                    ផ្ញើពាក្យអបអរសាទរ
+                    {{ $translations['send_wishes'] }}
                 </h3>
 
                 <textarea id="wishes-text" class="wishes-input" rows="4"
-                          placeholder="សូមសរសេរពាក្យអបអរសាទរ និងពរជ័យសម្រាប់កូនក្រមុំ និងកូនកម្រា…"></textarea>
+                          placeholder="{{ $translations['wishes_placeholder'] }}"></textarea>
 
                 <button class="btn-primary" onclick="sendWishes()">
-                    ✦ &nbsp; ផ្ញើពាក្យអបអរ &nbsp; ✦
+                    ✦ &nbsp; {{ $translations['wishes_btn'] }} &nbsp; ✦
                 </button>
 
                 <p id="wishes-sent" class="f-serif text-sm mt-4 hidden" style="color:var(--primary)">
-                    💛 សូមអរគុណសម្រាប់ពាក្យអបអរសាទររបស់អ្នក!
+                    💛 {{ $translations['wishes_success'] }}
                 </p>
             </div>
         </div>
@@ -1053,7 +1088,7 @@
                     ពាក្យជូនពរ
                 </p>
                 <h2 class="f-display text-xl md:text-2xl" style="color:var(--text)">
-                    មតិអបអរសាទរពីភ្ញៀវកិត្តិយស
+                    {{ $translations['guest_comments'] }}
                 </h2>
                 <div class="ornament-row justify-center mt-6 text-sm" aria-hidden="true">✦</div>
             </div>
@@ -1068,7 +1103,7 @@
                             <div class="flex items-center flex-column justify-center ">
                                 
                                 <h4 class="f-serif text-sm md:text-base mb-1" style="color:var(--primary)">
-                                    {{ $wish->name ?? 'ភ្ញៀវកិត្តិយស' }}
+                                    {{ $wish->name ?? $translations['guest'] }}
                                 </h4>
                                 </div>
                                 
@@ -1263,7 +1298,7 @@ function initCountdown() {
 
     function tick() {
         const diff = EVENT_TS - Date.now();
-        const ids  = ['days','hours','minutes','seconds'];
+        const ids  = ['days', 'hours', 'minutes', 'seconds'];
 
         if (diff <= 0) {
             ids.forEach(k => {

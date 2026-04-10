@@ -11,6 +11,7 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Table;
 
 class MainCategoriesTable
@@ -23,10 +24,18 @@ class MainCategoriesTable
                 ->label(__('messages.type'))
                 ->badge(),
                 TextColumn::make('bride_name')
-                    ->label(__('messages.bride_name'))
+                    ->label(__('messages.bride_name_kh'))
                     ->searchable(),
                 TextColumn::make('groom_name')
-                    ->label(__('messages.groom_name'))
+                    ->label(__('messages.groom_name_kh'))
+                    ->searchable(),
+
+                TextColumn::make('bride_name_en')
+                ->label(__('messages.bride_name_en'))
+                ->searchable(),
+
+                TextColumn::make('groom_name_en')
+                    ->label(__('messages.groom_name_en'))
                     ->searchable(),
                 TextColumn::make('slug')
                     ->label(__('messages.slug'))
@@ -59,6 +68,7 @@ class MainCategoriesTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            
             ->filters([
                 //
             ])
@@ -72,7 +82,7 @@ class MainCategoriesTable
 
                     return redirect('/admin/select-category');
                 }),
-            ])
+            ], position: RecordActionsPosition::BeforeColumns)
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
