@@ -61,6 +61,7 @@
             'seconds' => $t('វិនាទី', 'Secs'),
             'guest' => $t('ភ្ញៀវកិត្តិយស', 'Guest'),
             'location_label' => $t('ទីតាំងកម្មវិធី', 'Event Location'),
+            'greetins' => $t('ពាក្យជូនពរ', 'Greetings')
         ];
     @endphp
     {{-- ── Basic SEO ── --}}
@@ -145,7 +146,7 @@
         @keyframes cardReveal   { to { opacity: 0; transform: scale(1.1); filter: blur(10px); } }
         @keyframes textShimmer { to { background-position: 200% center; } }
         @keyframes iconSpin    { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes liveBreathing { 0%, 100% { text-shadow: 0 0 5px transparent; transform: scale(1); } 50% { text-shadow: 0 0 15px var(--primary-glow); transform: scale(1.09); } }
+        @keyframes liveBreathing { 0%, 100% { text-shadow: 0 0 5px transparent; transform: scale(1); } 50% { text-shadow: 0 0 15px var(--primary-glow); transform: scale(1.08); } }
 
         .anim-fadeup  { animation: fadeUp  .9s ease both; }
         .anim-scalein { animation: scaleIn .85s cubic-bezier(.22,1,.36,1) both; }
@@ -301,7 +302,7 @@
         .btn-open {
             position: relative;
             display: inline-block;
-            padding: 14px 28px;
+            padding: 14px 6px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 50%, var(--primary) 100%);
             background-size: 200%;
             color: #fff;
@@ -1249,7 +1250,7 @@
         <div class="max-w-4xl mx-auto">
             <div class="text-center  reveal">
                 <p class="f-serif text-sm tracking-[0.3em] uppercase mb-3" style="color:var(--primary)">
-                    ពាក្យជូនពរ
+                    {{ $translations['greetins'] }}
                 </p>
                 <h2 class="f-display text-xl md:text-2xl" style="color:var(--text)">
                     {{ $translations['guest_comments'] }}
