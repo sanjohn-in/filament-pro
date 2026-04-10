@@ -26,6 +26,14 @@ class Guest extends Model
         'table_group_id',
         'lang',
     ];
+    
+    // 👇 Add this
+    protected static function booted()
+    {
+        static::deleting(function ($guest) {
+            $guest->donations()->delete();
+        });
+    }
 
     public function mainCategory(): BelongsTo
     {
