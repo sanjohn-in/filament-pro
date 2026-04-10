@@ -95,13 +95,32 @@
         @keyframes float     { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         @keyframes shimmer   { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
         @keyframes pulseGlow { 0%,100% { opacity: .4; } 50% { opacity: 1; } }
-        @keyframes doorClose { to { opacity: 0; transform: scale(1.08); pointer-events: none; } }
         @keyframes drawLine  { from { width: 0; } to { width: 100%; } }
         @keyframes scrollHandBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+        @keyframes slideInLeft  { from { opacity: 0; transform: translateX(-100px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(100px);  } to { opacity: 1; transform: translateX(0); } }
+        @keyframes cardReveal   { to { opacity: 0; transform: scale(1.1); filter: blur(10px); } }
+        @keyframes textShimmer { to { background-position: 200% center; } }
+        @keyframes iconSpin    { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes liveBreathing { 0%, 100% { text-shadow: 0 0 5px transparent; transform: scale(1); } 50% { text-shadow: 0 0 15px var(--primary-glow); transform: scale(1.02); } }
 
         .anim-fadeup  { animation: fadeUp  .9s ease both; }
         .anim-scalein { animation: scaleIn .85s cubic-bezier(.22,1,.36,1) both; }
+        .anim-slide-left  { animation: slideInLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .anim-slide-right { animation: slideInRight 1.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
         .anim-float   { animation: float 4s ease-in-out infinite; }
+        .anim-draw      { animation: drawLine 1.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .anim-spin-slow { animation: iconSpin 12s linear infinite; }
+        .open-animate   { animation: liveBreathing 4s ease-in-out infinite; }
+
+        .text-shimmer {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-glow) 25%, var(--primary) 50%, var(--primary-glow) 75%, var(--primary) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 3s linear infinite;
+            padding: 16px 0;
+        }
 
         .d1 { animation-delay: .2s; }
         .d2 { animation-delay: .4s; }
@@ -145,6 +164,49 @@
             padding: 20px;
             overflow: hidden;
         }
+
+        /* Split Panel Background Effect */
+        .opener-panel {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: var(--secondary);
+            background-image: 
+                radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 35c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm60-21c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM47 17c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm21 39c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm11 15c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM48 54c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23 25c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zm-45-1c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zm17-23c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zM80 10c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zM37 0c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z' fill='%23" . str_replace('#', '', $themeColor) . "' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+            z-index: -1;
+            transition: transform 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+        .panel-left { 
+            left: 0; 
+            border-right: 1px solid var(--primary-dim); 
+        }
+        .panel-right { 
+            right: 0; 
+            border-left: 1px solid var(--primary-dim); 
+        }
+
+        /* Decorative elements that slide from sides */
+        .opener-decoration {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20vw;
+            max-width: 250px;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.7;
+            color: var(--primary);
+        }
+        .opener-decoration.left  { left: 20px; }
+        .opener-decoration.right { right: 20px; transform: translateY(-50%) scaleX(-1); }
+
+        #opener.closing .panel-left { transform: translateX(-100%); }
+        #opener.closing .panel-right { transform: translateX(100%); }
+        #opener.closing .opener-card { animation: cardReveal 0.8s ease forwards; pointer-events: none; }
+        #opener.closing .opener-decoration.left { transform: translateY(-50%) translateX(-150%); transition: 0.8s; }
+        #opener.closing .opener-decoration.right { transform: translateY(-50%) scaleX(-1) translateX(-150%); transition: 0.8s; }
 
         .opener-bg {
             position: absolute;
@@ -294,7 +356,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 100px 24px 140px;
+            padding: 60px 24px 140px;
             background-color: var(--dark);
             background-size: cover;
             background-position: center center;
@@ -307,10 +369,10 @@
             inset: 0;
             background: linear-gradient(
                 180deg,
-                rgba(0,0,0,.65) 0%,
-                rgba(0,0,0,.35) 40%,
-                rgba(0,0,0,.35) 60%,
-                rgba(0,0,0,.75) 100%
+                rgba(0,0,0,0.35) 0%,
+                rgba(0,0,0,0.35) 40%,
+                rgba(0,0,0,.25) 60%,
+                rgba(0,0,0,.35) 100%
             );
             z-index: 1;
             pointer-events: none;
@@ -691,8 +753,29 @@
      OPENER
 ═══════════════════════════════════════════════ --}}
 <div id="opener" role="dialog" aria-modal="true" aria-label="Invitation">
+    {{-- Curtains --}}
+    <div class="opener-panel panel-left"></div>
+    <div class="opener-panel panel-right"></div>
 
     <div class="opener-bg"></div>
+
+    {{-- Side decorations that slide in --}}
+    <div class="opener-decoration left anim-slide-left d1">
+        <svg viewBox="0 0 200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 400C50 350 100 250 100 200C100 150 50 50 0 0" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4"/>
+            <circle cx="100" cy="200" r="40" stroke="currentColor" stroke-width="0.5"/>
+            <path d="M100 160L120 180L100 200L80 180L100 160Z" fill="currentColor" fill-opacity="0.2"/>
+            <path d="M100 240L120 220L100 200L80 220L100 240Z" fill="currentColor" fill-opacity="0.2"/>
+        </svg>
+    </div>
+    <div class="opener-decoration right anim-slide-right d1">
+        <svg viewBox="0 0 200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 400C50 350 100 250 100 200C100 150 50 50 0 0" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4"/>
+            <circle cx="100" cy="200" r="40" stroke="currentColor" stroke-width="0.5"/>
+            <path d="M100 160L120 180L100 200L80 180L100 160Z" fill="currentColor" fill-opacity="0.2"/>
+            <path d="M100 240L120 220L100 200L80 220L100 240Z" fill="currentColor" fill-opacity="0.2"/>
+        </svg>
+    </div>
 
     {{-- Bokeh blobs --}}
     <div class="bokeh anim-float"     style="width:320px;height:320px;top:-80px;left:-100px;animation-delay:0s"    aria-hidden="true"></div>
@@ -718,32 +801,34 @@
         <div class="corner bl" aria-hidden="true"></div>
         <div class="corner br" aria-hidden="true"></div>
 
-        <div class="f-display anim-fadeup leading-none mb-1" style="font-size:2.5rem;color:var(--primary)">
+        <div class="f-display anim-fadeup anim-spin-slow leading-none mb-1" style="font-size:2.5rem;color:var(--primary)">
             ✦
         </div>
 
-        <div class="divider-line mb-6"></div>
+        <div class="divider-line mb-6 anim-draw d1"></div>
 
-        <p class="anim-fadeup d1 text-xl tracking-widest uppercase mb-5 f-serif font-bold" style="color:var(--primary)">
-            — {{ $translations['wedding_invitation'] }} —
+        <p class="anim-fadeup d1 text-xl tracking-widest uppercase  f-serif font-bold flex items-center justify-center gap-4" style="color:var(--primary)">
+            <span class="opacity-30 anim-slide-left d2">—</span>
+            <span class="text-shimmer">{{ $translations['wedding_invitation'] }}</span>
+            <span class="opacity-30 anim-slide-right d2">—</span>
         </p>
 
         <p class="anim-fadeup d2 f-serif text-base italic mb-1" style="color:#9a8070">
             {{ $translations['respectfully_to'] }}
         </p>
 
-        <h2 class="f-display anim-fadeup d2 mb-1 leading-tight py-2 font-bold" style="font-size:2rem;color:var(--primary)">
+        <h2 class="f-display anim-fadeup d2 mb-1 leading-tight py-2 font-bold open-animate" style="font-size:2rem;color:var(--primary)">
             {{ $guest->name ?? '—' }}
         </h2>
 
-        <div class="divider-line mb-4"></div>
+        <div class="divider-line mb-4 anim-draw d3"></div>
 
         <p class="anim-fadeup d3 f-serif leading-relaxed font-medium mb-4" style="color:#7a6555">
            {!! nl2br(e($translations['invite_msg'])) !!}
         </p>
 
         {{-- FIX: w-100 → w-full --}}
-        <div class="anim-fadeup d3 flex gap-3 w-full items-center justify-center">
+        <div class="anim-fadeup d3 flex gap-3 w-full items-center justify-center open-animate">
             <h1 class="f-display text-xl leading-none">
                 {{ $event->groom_name ?? 'Hun Chan Malyly' }}
             </h1>
@@ -753,7 +838,7 @@
             </h1>
         </div>
 
-        <div class="divider-line my-4"></div>
+        <div class="divider-line my-4 anim-draw d5"></div>
 
         @if($event->date ?? false)
             <p class="anim-fadeup d4 f-serif text-sm tracking-wider" style="color:#9a8070">
@@ -837,33 +922,45 @@
         <div class="hero-glow"    aria-hidden="true"></div>
         <div class="hero-frame"   aria-hidden="true"></div>
 
-        <div class="relative z-10 w-full max-w-2xl mx-auto px-4 py-8 rounded-2xl"
-             style="background: radial-gradient(circle, rgba(0,0,0,0.3) 0%, transparent 80%);">
-            <h2 class="f-serif text-white uppercase font-bold anim-fadeup mb-5 text-3xl "
-               style="text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">
+        <div class="relative z-10 w-full max-w-2xl mx-auto px-4 py-12 rounded-3xl border border-white/10 backdrop-blur-[2px]"
+             style="background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, transparent 100%);">
+            
+             
+            <h2 class="f-serif uppercase font-bold anim-fadeup mb-2 md:text-5xl text-4xl text-shimmer"
+               style="text-shadow: 0 0 20px rgba(255,255,255,0.2);">
                {{ $translations['wedding_invitation'] }}
             </h2>
 
-            <div class="ornament-row mb-5 text-xl anim-fadeup d1" aria-hidden="true">✦</div>
+            <div class="ornament-row mb-8 text-xl anim-fadeup d1" aria-hidden="true">
+                <span class="anim-spin-slow">✦</span>
+            </div>
 
-            <h1 class="f-display  text-white anim-fadeup d2 leading-none text-2xl"
-                style="size:2rem; text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">
-                {{ $event->groom_name ?? 'Groom Name' }}
-            </h1>
-            <p class="f-display text-white anim-fadeup d3 my-2"
-               style="font-size:2rem; text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">&amp;</p>
-            <h1 class="f-display  text-white anim-fadeup d4 leading-none text-2xl"
-                style="size:2rem; text-shadow: 0 0 15px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);">
-                {{ $event->bride_name ?? 'Bride Name' }}
-            </h1>
+            <div class="space-y-2 open-animate md:text-4xl text-3xl">
+                <div class="f-display  anim-fadeup d2 leading-tight "
+                    style="text-shadow: 0 0 20px rgba(255,255,255,0.4);">
+                    {{ $event->groom_name ?? 'Groom Name' }}
+                </div>
+                
+                <div class="f-display anim-fadeup d3 text-3xl opacity-80"
+                   style="text-shadow: 0 0 15px rgba(255,255,255,0.3);">&amp;</div>
+                
+                <div class="f-display anim-fadeup d4 leading-tight"
+                    style="text-shadow: 0 0 20px rgba(255,255,255,0.4);">
+                    {{ $event->bride_name ?? 'Bride Name' }}
+                </div>
+            </div>
 
-            <div class="ornament-row my-8 text-xl anim-fadeup d5" aria-hidden="true">✦</div>
+            <div class="ornament-row my-10 text-xl anim-fadeup d5" aria-hidden="true">
+                <span class="anim-spin-slow">✦</span>
+            </div>
 
             @if($event->date ?? false)
-                <p class="f-heading anim-fadeup d5 text-lg font-normal tracking-wider"
-                   style="color:#fff; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">
-                    {{ \Carbon\Carbon::parse($event->date)->translatedFormat('l, d F Y') }}
-                </p>
+                <div class="anim-fadeup d5">
+                    <p class="f-heading text-xl font-light tracking-[0.15em] text-white/90"
+                       style="text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
+                        {{ \Carbon\Carbon::parse($event->date)->translatedFormat('l, d F Y') }}
+                    </p>
+                </div>
             @endif
 
             {{-- Countdown --}}
