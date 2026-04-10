@@ -19,28 +19,44 @@ class EventController extends Controller
     {
         $locale = $request->query('lang') === 'en' ? 'en' : 'km';
         app()->setLocale($locale);
-
+    
         $theme = Theme::findOrFail($id);
         $guest = $request->query('gid')
             ? Guest::findOrFail($request->query('gid'))
             : null;
         $event = MainCategory::where('slug', $slug)->firstOrFail();
-
+    
         $music = Configuration::where('slug', 'music')->value('value');
         $wishes = Guest::where('main_category_id', $event->id)
             ->whereNotNull('note')
             ->where('note', '!=', '')
             ->get();
-
-        return view('welcome',compact(
-                'event',
-                'guest',
-                'theme',
-                'music',
-                'wishes',
-                'locale'
-            )
-        );
+    
+        // If guest exists, move their wish to index position 1 (second)
+        if ($guest) {
+            $guestWish = $wishes->firstWhere('id', $guest->id);
+    
+            if ($guestWish) {
+                // Remove guest's wish from current position
+                $filtered = $wishes->reject(fn($w) => $w->id === $guest->id)->values();
+    
+                // Insert at index 1 (second position), or at start if only one item
+                $wishes = $filtered->count() >= 1
+                    ? $filtered->slice(0, 1)
+                        ->push($guestWish)
+                        ->concat($filtered->slice(1))
+                    : collect([$guestWish]);
+            }
+        }
+    
+        return view('welcome', compact(
+            'event',
+            'guest',
+            'theme',
+            'music',
+            'wishes',
+            'locale'
+        ));
     }
 
     /**
