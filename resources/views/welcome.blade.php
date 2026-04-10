@@ -1030,7 +1030,7 @@
 
         <div class="scroll-hint" onclick="document.getElementById('couple-section').scrollIntoView({ behavior: 'smooth' })">
             <span class="scroll-hand-icon">👇</span>
-            <p class="f-serif text-sm tracking-widest uppercase mb-3">
+            <p class="f-serif text-sm tracking-widest uppercase mb-5">
                {{ $translations['scroll_down'] }}
             </p>
         </div>
