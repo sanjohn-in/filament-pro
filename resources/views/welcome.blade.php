@@ -393,7 +393,7 @@
         #wedding-page { display: none; }
 
         .hero {
-            min-height: 100vh;
+            min-height: 95vh;
             position: relative;
             display: flex;
             flex-direction: column;

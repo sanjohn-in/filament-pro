@@ -187,8 +187,8 @@ class MainCategoryForm
 
                 ColorPicker::make('theme_color')
                 ->label(__('messages.theme_color'))
-                ->default('#87CEEB')
-                ->formatStateUsing(fn ($state) => $state ?? '#87CEEB')
+                ->default('##ffbf00')
+                ->formatStateUsing(fn ($state) => $state ?? '##ffbf00')
                 ->required(),
 
                 ColorPicker::make('bg_color')
