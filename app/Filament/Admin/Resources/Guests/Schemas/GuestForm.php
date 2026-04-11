@@ -33,7 +33,13 @@ class GuestForm
                                 ->where('main_category_id', session('main_category_id'))
                                 ->where('status', 'open')
                                 ->get()
-                                ->mapWithKeys(fn ($t) => [$t->id => $t->name]);
+                                ->mapWithKeys(fn ($t) => [
+                                    $t->id => $t->name . (
+                                        __('messages.' . $t->tag) !== 'messages.' . $t->tag
+                                            ? ' - ' . __('messages.' . $t->tag)
+                                            : ''
+                                    )
+                                ]);
 
                             return $tables;
                         })
