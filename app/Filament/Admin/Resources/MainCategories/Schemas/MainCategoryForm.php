@@ -58,27 +58,27 @@ class MainCategoryForm
 
                 Grid::make(2)
                     ->schema([
-                        TextInput::make('bride_name')
+                        TextInput::make('groom_name')
                         ->placeholder('ធូ សាន')
-                        ->label(__('messages.bride_name_kh'))
+                        ->label(__('messages.groom_name_kh'))
                         ->required(),
 
-                        TextInput::make('groom_name')
+                        TextInput::make('bride_name')
                         ->placeholder('ហ៊ុន ចាន់ម៉ាលីលី')
-                        ->label(__('messages.groom_name_kh'))
+                        ->label(__('messages.bride_name_kh'))
                         ->required(),
                       
                     ]),
 
                     Grid::make(2)
                     ->schema([
-                        TextInput::make('bride_name_en')
-                        ->placeholder('Thou San')
-                        ->label(__('messages.bride_name_en')),
-
                         TextInput::make('groom_name_en')
-                        ->placeholder('Hun Chanmalyly')
+                        ->placeholder('Thou San')
                         ->label(__('messages.groom_name_en')),
+
+                        TextInput::make('bride_name_en')
+                        ->placeholder('Hun Chanmalyly')
+                        ->label(__('messages.bride_name_en')),
                     ]),
              
 

@@ -878,13 +878,13 @@
         {{-- FIX: w-100 → w-full --}}
         <div class="anim-fadeup d3 flex gap-3 w-full items-center justify-center open-animate">
             <h1 class="f-display text-xl leading-none ">
-                {{ $lang == 'km' ? $event->bride_name : $event->bride_name_en}}
+                {{ $lang == 'km' ? $event->groom_name : $event->groom_name_en}}
             </h1>
             
             <span class="f-display" style="font-size:1rem;color:var(--primary)">&amp;</span>
             
             <h1 class="f-display text-xl leading-none">
-                {{  $lang == 'km' ?  $event->groom_name : $event->groom_name_en }}
+                {{  $lang == 'km' ?  $event->bride_name : $event->bride_name_en }}
             </h1>
           
         </div>
@@ -989,7 +989,7 @@
             <div class="space-y-2 open-animate md:text-4xl text-3xl">
 
                 <div class="f-display anim-fadeup d4 leading-tight" style="text-shadow: 0 0 20px rgba(255,255,255,0.4);">
-                    {{ $lang == 'km' ? $event->bride_name : $event->bride_name_en }}
+                    {{ $lang == 'km' ? $event->groom_name : $event->groom_name_en }}
                 </div>
 
                 <div class="f-display anim-fadeup d3 text-3xl opacity-80"
@@ -998,7 +998,7 @@
                 </div>
                 
                 <div class="f-display  anim-fadeup d2 leading-tight " style="text-shadow: 0 0 20px rgba(255,255,255,0.4);">
-                   {{$lang == 'km' ? $event->groom_name : $event->groom_name_en}}
+                   {{$lang == 'km' ? $event->bride_name : $event->bride_name_en}}
                </div>
                
             </div>
@@ -1294,7 +1294,7 @@
     <footer class="section-dark py-6 px-4 text-center">
         <div class="max-w-md mx-auto">
             <p class="f-display text-base" style="color:var(--primary)">
-                {{ $lang == 'km' ? $event->bride_name : $event->bride_name_en}} &amp; {{ $lang == 'km' ? $event->groom_name  : $event->groom_name_en }} 
+                {{ $lang == 'km' ? $event->groom_name : $event->groom_name_en}} &amp; {{ $lang == 'km' ? $event->bride_name  : $event->bride_name_en }} 
             </p>
             @if($event->date ?? false)
             <p class="f-serif mt-2 mb-10 text-sm italic"

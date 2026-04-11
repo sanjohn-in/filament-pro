@@ -210,5 +210,7 @@ return [
     'english' => 'English',
     'khmer' => 'Khmer',
     'donation_created' => 'Created Sucess!',
+    'bride_table' => 'Bride Table',
+    'groom_table' => 'Groom Table',
     
 ];

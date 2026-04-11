@@ -34,8 +34,8 @@ class TableGroupForm
                     Select::make('tag')
                     ->label(__('messages.tag'))
                     ->options([
-                        'bride_site' => __('messages.bride_site'),
-                        'groom_site' => __('messages.groom_site'),
+                        'bride_table' => __('messages.bride_table'),
+                        'groom_table' => __('messages.groom_table'),
                     ]),
 
                     Select::make('status')
