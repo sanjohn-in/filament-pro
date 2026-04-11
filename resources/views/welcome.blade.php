@@ -1091,7 +1091,7 @@
     <section class="section-dark py-5 px-4">
         <div class="max-w-3xl mx-auto text-center">
 
-            <h2 class="reveal mt-2 font-bold" style="font-size:1.5rem">
+            <h2 class="reveal mt-2 f-serif " style="font-size:1.5rem">
                 {{ $translations['event_info'] }}
             </h2>
 
