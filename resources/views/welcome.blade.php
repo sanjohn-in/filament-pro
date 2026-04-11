@@ -307,9 +307,9 @@
             background-size: 200%;
             color: #fff;
             /* font-family: 'Jost', sans-serif; */
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 800;
-            letter-spacing: .28em;
+            letter-spacing: .24em;
             text-transform: uppercase;
             border: none;
             cursor: pointer;
@@ -439,6 +439,7 @@
             border: 1px solid var(--primary);
             pointer-events: none;
             z-index: 3;
+            border-radius:8px
         }
         .hero-frame::before,
         .hero-frame::after {
@@ -524,6 +525,7 @@
             text-transform: uppercase;
             cursor: pointer;
             transition: all .3s;
+            border-radius: 8px;
         }
         .btn-rsvp-yes {
             background: transparent;
@@ -556,6 +558,7 @@
             outline: none;
             transition: border-color .3s;
             background: #fff;
+            border-radius: 8px;
         }
         .wishes-input:focus { border-color: var(--primary); }
 
@@ -843,7 +846,7 @@
     </div>
 
     {{-- Card --}}
-    <div class="opener-card anim-scalein">
+    <div class="opener-card anim-scalein rounded-xl">
         <div class="corner tl" aria-hidden="true"></div>
         <div class="corner tr" aria-hidden="true"></div>
         <div class="corner bl" aria-hidden="true"></div>
@@ -959,7 +962,7 @@
     ">🎵</button>
 
     {{-- ░░░ HERO ░░░ --}}
-    <section class="hero"
+    <section class="hero "
         @if($event->cover_image)
         style="
             background-image: url('{{ asset('storage/' . $event->cover_image) }}');
@@ -1233,7 +1236,7 @@
                 <textarea id="wishes-text" class="wishes-input" rows="4"
                           placeholder="{{ $translations['wishes_placeholder'] }}"></textarea>
 
-                <button class="btn-primary" onclick="sendWishes()">
+                <button class="btn-primary rounded-lg" onclick="sendWishes()">
                     ✦ &nbsp; {{ $translations['wishes_btn'] }} &nbsp; ✦
                 </button>
 
@@ -1276,7 +1279,8 @@
                                 <p class="f-serif text-xs md:text-sm leading-[1.8] text-gray-700 italic mb-2">
                                     {{ $wish->note }}
                                 </p>
-
+                                <small class="flex justify-end text-gray-300 text-xs">
+                                    {{ \Carbon\Carbon::parse($wish->created_at)->translatedFormat('d F Y') }} </small>
                               
                             </div>
                         </div>
