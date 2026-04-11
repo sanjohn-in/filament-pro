@@ -1241,7 +1241,9 @@
                           placeholder="{{ $translations['wishes_placeholder'] }}"></textarea>
 
                 <button class="btn-primary rounded-lg" onclick="sendWishes()">
-                    ✦ &nbsp; {{ $translations['wishes_btn'] }} &nbsp; ✦
+                    <span class="f-serif">
+                        ✦ &nbsp; {{ $translations['wishes_btn'] }} &nbsp; ✦
+                    </span>
                 </button>
 
                 <p id="wishes-sent" class="f-serif text-sm mt-4 hidden" style="color:var(--primary)">
