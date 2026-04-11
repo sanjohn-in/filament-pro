@@ -17,6 +17,7 @@ class TableGroup extends Model
         'name',
         'status',
         'note',
+        'tag',
     ];
     protected $casts = [];
 

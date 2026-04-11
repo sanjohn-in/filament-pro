@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('main_category_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('name');
+            $table->string('tag')->nullable();
             $table->enum('status', ['open', 'full', 'closed'])->default('open');
             $table->text('note')->nullable();
             $table->timestamps();
