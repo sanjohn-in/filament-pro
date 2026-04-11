@@ -1109,8 +1109,8 @@
 
                 @if($event->address)
                     <div class="text-center mb-6 px-4">
-                        <span class="block opacity-50 text-[10px] uppercase tracking-[0.2em] mb-1">{{ $translations['location_label'] }}</span>
-                        <p class="f-serif text-sm md:text-base font-medium" style="color:#7a6555; line-height: 1.5;">{{ $event->address }}</p>
+                        <span class="block  text-[10px] uppercase tracking-[0.2em] mb-1">{{ $translations['location_label'] }}</span>
+                        <p class="f-serif text-sm md:text-base " style="color:#7a6555; line-height: 1.5;">{{ $event->address }}</p>
                     </div>
                 @endif
 
@@ -1215,11 +1215,15 @@
             </p>
 
             <div class="flex gap-3 mb-4 reveal">
-                <button id="btn-yes" class="btn-rsvp-yes" onclick="rsvpReply('yes')">
-                    ✓ &nbsp; {{ $translations['attending'] }}
+                <button id="btn-yes" class="f-serif btn-rsvp-yes" onclick="rsvpReply('yes')">
+                    <span class=f-serif >
+                        ✓ &nbsp; {{ $translations['attending'] }}
+                    </span>
                 </button>
                 <button id="btn-no" class="btn-rsvp-no" onclick="rsvpReply('no')">
-                    ✗ &nbsp; {{ $translations['not_attending'] }}
+                    <span class=f-serif >
+                        ✗ &nbsp; {{ $translations['not_attending'] }}
+                    </span> 
                 </button>
             </div>
 
