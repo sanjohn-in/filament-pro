@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Storage;
 
 class MainCategory extends Model
 {
@@ -39,6 +40,41 @@ class MainCategory extends Model
         'portfolios' => 'array',
         'schedules'  => 'array',
     ];
+
+    protected static function booted()
+    {
+        // Handle cleanup when a record is updated (file replaced or removed)
+        static::updating(function (MainCategory $model) {
+            // Cleanup single files (cover_image and qr_code)
+            foreach (['cover_image', 'qr_code'] as $field) {
+                if ($model->isDirty($field)) {
+                    $oldFile = $model->getOriginal($field);
+                    if ($oldFile && Storage::disk('public')->exists($oldFile)) {
+                        Storage::disk('public')->delete($oldFile);
+                    }
+                }
+            }
+
+            // Cleanup array of files (portfolios)
+            if ($model->isDirty('portfolios')) {
+                $oldFiles = $model->getOriginal('portfolios') ?? [];
+                $newFiles = $model->portfolios ?? [];
+                $toDelete = array_diff($oldFiles, $newFiles);
+
+                foreach ($toDelete as $file) {
+                    Storage::disk('public')->delete($file);
+                }
+            }
+        });
+
+        // Handle cleanup when the entire record is deleted
+        static::deleting(function (MainCategory $model) {
+            Storage::disk('public')->delete(array_merge(
+                [$model->cover_image, $model->qr_code],
+                $model->portfolios ?? []
+            ));
+        });
+    }
 
     public function user()
     {

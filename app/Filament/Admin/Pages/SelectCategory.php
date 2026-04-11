@@ -251,7 +251,10 @@ class SelectCategory extends Page
                                 ->visibility('public')
                                 ->image()
                                 ->label(__('messages.qr_code'))
-                                ->imageEditorAspectRatioOptions([null, '16:9', '4:3', '1:1']),
+                                ->imageEditorAspectRatioOptions([null, '16:9', '4:3', '1:1'])
+                                ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
+                                    return ImageCompressor::compressAndSave($file, 'cover');
+                                }),
     
 
                                 FileUpload::make('portfolios')
