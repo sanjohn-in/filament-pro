@@ -14,7 +14,7 @@ class ExchangeRate
     public static function khr(): float
     {
         return Cache::remember('exchange_rate_khr', now()->addMinutes(60), function () {
-            return (float) Configuration::where('slug', 'exhange-rate-kh')->value('value') ?? 4000;
+            return (float) Configuration::where('slug', 'exchange-rate-kh')->value('value') ?? 4000;
         });
     }
 

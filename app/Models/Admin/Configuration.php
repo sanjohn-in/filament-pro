@@ -17,7 +17,7 @@ class Configuration extends Model
 
     protected $casts = [
         'is_visible' => 'boolean',
-        'value' => 'string'
+        // 'value' => 'string'
     ];
 
     protected static function booted()
@@ -47,7 +47,7 @@ class Configuration extends Model
         });
 
         static::saved(function (Configuration $configuration) {
-            if ($configuration->slug === 'exhange-rate-kh') {
+            if ($configuration->slug === 'exchange-rate-kh') {
                 Cache::forget('exchange_rate_khr');
             }
         });
