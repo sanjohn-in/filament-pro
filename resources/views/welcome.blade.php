@@ -979,8 +979,8 @@
         <div class="relative z-10 w-full max-w-2xl mx-auto px-4 py-0 md:py-8 rounded-3xl border border-white/10 backdrop-blur-[2px]"
              style="background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, transparent 100%);">
              
-            <h2 class="f-serif uppercase font-bold anim-fadeup mb-0 md:text-5xl text-4xl text-shimmer leading-relaxed"
-               style="text-shadow: 0 0 20px rgba(255,255,255,0.2);">
+            <h2 class="f-serif uppercase font-bold anim-fadeup mb-0 md:text-5xl text-4xl text-shimmer "
+               style="text-shadow: 0 0 20px rgba(255,255,255,0.2); line-height: 1.5!important">
              
                {{ $translations['wedding_invitation'] }}
             </h2>
