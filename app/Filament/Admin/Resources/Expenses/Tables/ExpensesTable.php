@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Expenses\Tables;
 
+use App\Helpers\ExchangeRate;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -59,21 +60,14 @@ class ExpensesTable
             TextColumn::make('combined_total')
                 ->label(__('messages.combined_total'))
                 ->getStateUsing(function ($record): string {
-                    // Exchange rate — adjust as needed
-                    $rate = config('app.khr_to_usd_rate', 4100); // 1 USD = 4100 KHR
-                    $usd     = floatval($record->amount_usd);
-                    $khrToUsd = floatval($record->amount_khr) / $rate;
-                    $total   = $usd + $khrToUsd;
+                    $total = floatval($record->amount_usd) + ExchangeRate::khrToUsd(floatval($record->amount_khr));
                     return '$' . number_format($total, 2);
                 })
                 ->summarize(
                     Summarizer::make()
                         ->label(__('messages.grand_total_usd'))
                         ->using(function ($query): string {
-                            $rate = config('app.khr_to_usd_rate', 4100);
-                            $totalUsd = $query->sum('amount_usd');
-                            $totalKhr = $query->sum('amount_khr');
-                            $total    = $totalUsd + ($totalKhr / $rate);
+                            $total = $query->sum('amount_usd') + ExchangeRate::khrToUsd($query->sum('amount_khr'));
                             return '$' . number_format($total, 2);
                         })
                 ),
@@ -92,23 +86,17 @@ class ExpensesTable
                     default  => $state,
                 }),
 
-                TextColumn::make('combined_total_khr')
+            TextColumn::make('combined_total_khr')
                 ->label(__('messages.combined_total_khr'))
                 ->getStateUsing(function ($record): string {
-                    $rate    = 4100; // 1 USD = 4100 KHR
-                    $khr     = floatval($record->amount_khr);
-                    $usdToKhr = floatval($record->amount_usd) * $rate;
-                    $total   = $khr + $usdToKhr;
+                    $total = floatval($record->amount_khr) + ExchangeRate::usdToKhr(floatval($record->amount_usd));
                     return number_format($total, 0) . ' ៛';
                 })
                 ->summarize(
                     Summarizer::make()
                         ->label(__('messages.grand_total_khr'))
                         ->using(function ($query): string {
-                            $rate     = 4100;
-                            $totalUsd = $query->sum('amount_usd');
-                            $totalKhr = $query->sum('amount_khr');
-                            $total    = $totalKhr + ($totalUsd * $rate);
+                            $total = $query->sum('amount_khr') + ExchangeRate::usdToKhr($query->sum('amount_usd'));
                             return number_format($total, 0) . ' ៛';
                         })
                 ),

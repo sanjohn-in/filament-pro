@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Donations\Widgets;
 
+use App\Helpers\ExchangeRate;
 use App\Models\Admin\Donation;
 use App\Models\Admin\Guest;
 use Filament\Widgets\StatsOverviewWidget as BaseStatsOverviewWidget;
@@ -38,11 +39,10 @@ class DonationStatsWidget extends BaseStatsOverviewWidget
             ->where('main_category_id', $mainCategoryId)
             ->first();
 
-        $rate = config('app.khr_to_usd_rate', 4100);
-        $totalUsd = floatval($data->total_usd ?? 0);
-        $totalKhr = floatval($data->total_khr ?? 0);
-        $grandTotalUsd = $totalUsd + ($totalKhr / $rate);
-        $grandTotalKhr = $totalKhr + ($totalUsd * $rate);
+        $totalUsd      = floatval($data->total_usd ?? 0);
+        $totalKhr      = floatval($data->total_khr ?? 0);
+        $grandTotalUsd = $totalUsd + ExchangeRate::khrToUsd($totalKhr);
+        $grandTotalKhr = $totalKhr + ExchangeRate::usdToKhr($totalUsd);
 
         return [
             // Donated vs Total

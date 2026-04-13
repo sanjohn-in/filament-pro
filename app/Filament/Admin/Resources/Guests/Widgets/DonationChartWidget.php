@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Guests\Widgets;
 
+use App\Helpers\ExchangeRate;
 use App\Models\Admin\Donation as AdminDonation;
 use App\Models\Admin\Guest;
 use Filament\Widgets\ChartWidget;
@@ -37,10 +38,9 @@ class DonationChartWidget extends ChartWidget
             ->where('main_category_id', $mainCategoryId)
             ->first();
 
-        $rate = config('app.khr_to_usd_rate', 4100);
-        $totalUsd = floatval($data->total_usd ?? 0);
-        $totalKhr = floatval($data->total_khr ?? 0);
-        $grandTotalUsd = $totalUsd + ($totalKhr / $rate);
+        $totalUsd      = floatval($data->total_usd ?? 0);
+        $totalKhr      = floatval($data->total_khr ?? 0);
+        $grandTotalUsd = $totalUsd + ExchangeRate::khrToUsd($totalKhr);
 
         // Handle empty data
         if ($donatedCount == 0 && $nonDonatedCount == 0) {
@@ -88,20 +88,18 @@ class DonationChartWidget extends ChartWidget
     protected function getOptions(): array
     {
         $mainCategoryId = session('main_category_id');
-    
+
         $data = AdminDonation::select(
             DB::raw('SUM(amount_usd) as total_usd'),
             DB::raw('SUM(amount_khr) as total_khr')
         )
         ->where('main_category_id', $mainCategoryId)
         ->first();
-    
-        $rate = config('app.khr_to_usd_rate', 4100);
-    
-        $totalUsd = floatval($data->total_usd ?? 0);
-        $totalKhr = floatval($data->total_khr ?? 0);
-        $grandTotalUsd = $totalUsd + ($totalKhr / $rate);
-    
+
+        $totalUsd      = floatval($data->total_usd ?? 0);
+        $totalKhr      = floatval($data->total_khr ?? 0);
+        $grandTotalUsd = $totalUsd + ExchangeRate::khrToUsd($totalKhr);
+
         return [
             'plugins' => [
                 'tooltip' => [

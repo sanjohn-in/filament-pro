@@ -4,7 +4,7 @@ namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class Configuration extends Model
@@ -45,6 +45,11 @@ class Configuration extends Model
                 }
             }
         });
-    }
 
+        static::saved(function (Configuration $configuration) {
+            if ($configuration->slug === 'exhange-rate-kh') {
+                Cache::forget('exchange_rate_khr');
+            }
+        });
+    }
 }
