@@ -163,7 +163,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: textShimmer 3s linear infinite;
-            padding-top: 16px;
+            padding-top: 4px;
             padding-bottom: 0;
         }
 
@@ -860,7 +860,7 @@
 
         <p class="anim-fadeup d1 tracking-widest uppercase  f-serif font-bold flex items-center justify-center gap-4" >
             <span class="opacity-30 anim-slide-left d2">—</span>
-            <span class="text-shimmer text-base ">{{ $translations['wedding_invitation'] }}</span>
+            <span class="text-shimmer" style="line-height:1.7rem">{{ $translations['wedding_invitation'] }}</span>
             <span class="opacity-30 anim-slide-right d2">—</span>
         </p>
 
@@ -879,12 +879,12 @@
         </p>
 
         {{-- FIX: w-100 → w-full --}}
-        <div class="anim-fadeup d3 flex gap-3 w-full items-center justify-center open-animate">
+        <div class="anim-fadeup d3 flex flex-col w-full items-center justify-center open-animate">
             <h1 class="f-display text-xl leading-none ">
                 {{ $lang == 'km' ? $event->groom_name : $event->groom_name_en}}
             </h1>
             
-            <span class="f-display" style="font-size:1rem;color:var(--primary)">&amp;</span>
+            <span class="f-display" style="font-size:1.5rem;color:var(--primary)">&amp;</span>
             
             <h1 class="f-display text-xl leading-none">
                 {{  $lang == 'km' ?  $event->bride_name : $event->bride_name_en }}
@@ -900,7 +900,7 @@
             </p>
         @endif
 
-        <div class="mt-8 anim-fadeup d5 text-center">
+        <div class="mt-5 anim-fadeup d5 text-center">
             <div class="btn-open-wrap">
                 {{-- Expanding pulse rings --}}
                 <span class="btn-open-ring" aria-hidden="true"></span>
@@ -989,7 +989,7 @@
                 <span class="anim-spin-slow">✦</span>
             </div>
 
-            <div class="space-y-2 open-animate md:text-4xl text-3xl">
+            <div class=" open-animate md:text-4xl text-3xl">
 
                 <div class="f-display anim-fadeup d4 leading-tight" style="text-shadow: 0 0 20px rgba(255,255,255,0.4);">
                     {{ $lang == 'km' ? $event->groom_name : $event->groom_name_en }}
@@ -1000,7 +1000,7 @@
                    &amp;
                 </div>
                 
-                <div class="f-display  anim-fadeup d2 leading-tight " style="text-shadow: 0 0 20px rgba(255,255,255,0.4);">
+                <div class="f-display  anim-fadeup mt-1 d2 leading-tight " style="text-shadow: 0 0 20px rgba(255,255,255,0.4);">
                    {{$lang == 'km' ? $event->bride_name : $event->bride_name_en}}
                </div>
                
