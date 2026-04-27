@@ -136,47 +136,51 @@ class CarsTable
                 ->relationship('owner', 'name')
                 ->searchable()
                 ->preload(),
+                SelectFilter::make('pay_date')
+                ->label(__('messages.pay_date'))
+                ->options(
+                    collect(range(1, 31))->mapWithKeys(fn ($day) => [$day => "ថ្ងៃទី {$day}"])
+                ),
+                // Filter::make('end_date')
+                //     ->label(__('messages.end_date'))
+                //     ->schema([
+                //         DatePicker::make('end_date_from')
+                //             ->label(__('messages.start_date'))
+                //             ->native(false)
+                //             ->displayFormat('d/m/Y'),
 
-                Filter::make('end_date')
-                    ->label(__('messages.end_date'))
-                    ->schema([
-                        DatePicker::make('end_date_from')
-                            ->label(__('messages.start_date'))
-                            ->native(false)
-                            ->displayFormat('d/m/Y'),
+                //         DatePicker::make('end_date_until')
+                //             ->label(__('messages.end_date'))
+                //             ->native(false)
+                //             ->displayFormat('d/m/Y'),
+                //     ])
+                //     ->columns(2)
+                //     ->query(function ($query, array $data) {
+                //         return $query
+                //             ->when(
+                //                 $data['end_date_from'],
+                //                 fn ($query) => $query->whereDate('end_date', '>=', $data['end_date_from'])
+                //             )
+                //             ->when(
+                //                 $data['end_date_until'],
+                //                 fn ($query) => $query->whereDate('end_date', '<=', $data['end_date_until'])
+                //             );
+                //     })
+                //     ->indicateUsing(function (array $data): array {
+                //         $indicators = [];
 
-                        DatePicker::make('end_date_until')
-                            ->label(__('messages.end_date'))
-                            ->native(false)
-                            ->displayFormat('d/m/Y'),
-                    ])
-                    ->columns(2)
-                    ->query(function ($query, array $data) {
-                        return $query
-                            ->when(
-                                $data['end_date_from'],
-                                fn ($query) => $query->whereDate('end_date', '>=', $data['end_date_from'])
-                            )
-                            ->when(
-                                $data['end_date_until'],
-                                fn ($query) => $query->whereDate('end_date', '<=', $data['end_date_until'])
-                            );
-                    })
-                    ->indicateUsing(function (array $data): array {
-                        $indicators = [];
+                //         if ($data['end_date_from']) {
+                //             $indicators[] = __('messages.start_date') . ': ' .
+                //                 Carbon::parse($data['end_date_from'])->format('d/m/Y');
+                //         }
 
-                        if ($data['end_date_from']) {
-                            $indicators[] = __('messages.start_date') . ': ' .
-                                Carbon::parse($data['end_date_from'])->format('d/m/Y');
-                        }
+                //         if ($data['end_date_until']) {
+                //             $indicators[] = __('messages.end_date') . ': ' .
+                //                 Carbon::parse($data['end_date_until'])->format('d/m/Y');
+                //         }
 
-                        if ($data['end_date_until']) {
-                            $indicators[] = __('messages.end_date') . ': ' .
-                                Carbon::parse($data['end_date_until'])->format('d/m/Y');
-                        }
-
-                        return $indicators;
-                    }),
+                //         return $indicators;
+                //     }),
 
                     TernaryFilter::make('is_active')
                         ->label(__('messages.is_active')),
