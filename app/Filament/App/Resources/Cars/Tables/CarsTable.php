@@ -23,7 +23,7 @@ class CarsTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->defaultSort('end_date', 'asc')
+            ->defaultSort('pay_date', 'asc')
             ->columns([
                 TextColumn::make('carModel.name')
                     ->label(__('messages.car_model'))
