@@ -47,13 +47,15 @@ class ExpenseForm
                         ->label(__('messages.amount_usd'))
                         ->numeric()
                         ->prefix('$')
-                        ->default(0),
+                        ->default(0)
+                        ->dehydrateStateUsing(fn ($state) => $state !== null && $state !== '' ? $state : 0),
 
                     TextInput::make('amount_khr')
                         ->label(__('messages.amount_khr'))
                         ->numeric()
                         ->suffix('៛')
-                        ->default(0),
+                        ->default(0)
+                        ->dehydrateStateUsing(fn ($state) => $state !== null && $state !== '' ? $state : 0),
 
                     Select::make('status')
                         ->label(__('messages.status'))
