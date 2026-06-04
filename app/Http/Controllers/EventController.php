@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin\Configuration;
+use App\Models\Admin\Donation;
 use App\Models\Admin\Guest;
 use App\Models\Admin\MainCategory;
 use App\Models\Admin\Theme;
@@ -24,10 +25,10 @@ class EventController extends Controller
         $guest = $request->query('gid')
             ? Guest::findOrFail($request->query('gid'))
             : null;
-        $event = MainCategory::where('slug', $slug)->firstOrFail();
-    
-        $music = Configuration::where('slug', 'music')->value('value');
-        $wishes = Guest::where('main_category_id', $event->id)
+        $event = MainCategory::where('slug', '=', $slug)->firstOrFail();
+
+        $music = Configuration::where('slug', '=', 'music')->value('value');
+        $wishes = Guest::where('main_category_id', '=', $event->id)
             ->whereNotNull('note')
             ->where('note', '!=', '')
             ->get();
@@ -69,6 +70,58 @@ class EventController extends Controller
 
         $guest = Guest::findOrFail($gid);
         $guest->update(['note' => $request->input('wishes')]);
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * Return donation status for a guest.
+     * Route: GET /events/{slug}/guest/{gid}/donation
+     */
+    public function getDonationStatus($slug, $gid)
+    {
+        $guest    = Guest::with('donation')->findOrFail($gid);
+        $donation = $guest->donation;
+
+        return response()->json([
+            'has_donation' => (bool) $donation,
+            'donation'     => $donation ? [
+                'payment_method' => $donation->payment_method,
+                'cash_method'    => $donation->cash_method,
+                'amount_usd'     => $donation->amount_usd,
+                'amount_khr'     => $donation->amount_khr,
+                'note'           => $donation->note,
+            ] : null,
+        ]);
+    }
+
+    /**
+     * Create or update a guest's donation.
+     * Route: POST /events/{slug}/guest/{gid}/donation
+     */
+    public function saveDonation(Request $request, $slug, $gid)
+    {
+        $request->validate([
+            'payment_method' => 'required|in:cash,qr_code,other',
+            'cash_method'    => 'required|in:usd,khr,both',
+            'amount_usd'     => 'nullable|numeric|min:0',
+            'amount_khr'     => 'nullable|numeric|min:0',
+            'note'           => 'nullable|string|max:500',
+        ]);
+
+        $guest = Guest::findOrFail($gid);
+
+        Donation::updateOrCreate(
+            ['guest_id' => $guest->id],
+            [
+                'main_category_id' => $guest->main_category_id,
+                'payment_method'   => $request->input('payment_method'),
+                'cash_method'      => $request->input('cash_method'),
+                'amount_usd'       => $request->input('amount_usd', 0),
+                'amount_khr'       => $request->input('amount_khr', 0),
+                'note'             => $request->input('note'),
+            ]
+        );
 
         return response()->json(['success' => true]);
     }

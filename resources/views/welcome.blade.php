@@ -791,6 +791,157 @@
         .primary {
             color: var(--primary)!important;
         }
+
+        /* ════════════════════════════════════════
+           ENHANCEMENT ANIMATIONS
+        ════════════════════════════════════════ */
+
+        /* ─── Typewriter cursor ─── */
+        .typewriter-cursor {
+            border-right: 2px solid var(--primary);
+            padding-right: 2px;
+            animation: blinkCaret 0.75s step-end infinite;
+        }
+        @keyframes blinkCaret {
+            0%, 100% { border-color: var(--primary); }
+            50%      { border-color: transparent; }
+        }
+
+        /* ─── Countdown digit pop ─── */
+        @keyframes cdPop {
+            0%   { transform: scale(0.55) translateY(-8px); opacity: 0; }
+            65%  { transform: scale(1.12) translateY(0); }
+            100% { transform: scale(1);   opacity: 1; }
+        }
+        .cd-pop { animation: cdPop 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+
+        /* ─── Timeline schedule ─── */
+        .timeline-list { position: relative; }
+        .timeline-item {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            padding: 10px 0;
+        }
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 48px;
+            bottom: -8px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary-dim), transparent);
+        }
+        .timeline-dot {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 0 4px var(--primary-dim);
+            z-index: 1;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
+        }
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.18);
+            box-shadow: 0 0 0 8px var(--primary-dim), 0 6px 20px var(--primary-dim);
+        }
+        .timeline-content { flex: 1; text-align: left; }
+
+        /* ─── Confetti pieces ─── */
+        .confetti-piece {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99999;
+            border-radius: 3px;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0%   { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+            80%  { opacity: 1; }
+            100% { opacity: 0; transform: translateY(108vh) rotate(720deg) scale(0.3); }
+        }
+
+        /* ─── Floating hearts ─── */
+        .float-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9997;
+            line-height: 1;
+            animation: heartRise linear forwards;
+            color: var(--primary);
+            filter: drop-shadow(0 2px 8px var(--primary-dim));
+        }
+        @keyframes heartRise {
+            0%   { transform: translateY(0) scale(1) rotate(-10deg); opacity: 0.85; }
+            45%  { transform: translateY(-35vh) scale(1.25) rotate(8deg); }
+            100% { transform: translateY(-108vh) scale(0.35) rotate(0deg); opacity: 0; }
+        }
+
+        /* ─── Wish card hover lift ─── */
+        .wish-card {
+            transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.38s;
+        }
+        .wish-card:hover {
+            transform: translateY(-7px) scale(1.015);
+            box-shadow: 0 28px 65px rgba(0,0,0,0.12) !important;
+        }
+
+        /* ─── RSVP message pop-in ─── */
+        @keyframes rsvpReveal {
+            0%   { transform: scale(0.8) translateY(10px); opacity: 0; }
+            65%  { transform: scale(1.04) translateY(-2px); }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .rsvp-reveal { animation: rsvpReveal 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+
+        /* ─── Music button breathing pulse ─── */
+        @keyframes musicPulse {
+            0%, 100% { transform: scale(1);    box-shadow: 0 4px 16px var(--primary-dim); }
+            50%       { transform: scale(1.1);  box-shadow: 0 8px 28px var(--primary-dim); }
+        }
+        #music-btn { animation: musicPulse 2.4s ease-in-out infinite; }
+        #music-btn.paused { animation: none; opacity: 0.65; }
+
+        /* ─── Photo ring ambient glow ─── */
+        @keyframes portraitGlow {
+            0%, 100% { box-shadow: 0 0 0 6px var(--primary-dim); }
+            50%       { box-shadow: 0 0 0 14px var(--primary-dim), 0 0 45px color-mix(in srgb, var(--primary) 18%, transparent); }
+        }
+        .photo-ring { animation: portraitGlow 3.2s ease-in-out infinite !important; }
+
+        /* ─── Ornament floating ─── */
+        @keyframes ornFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33%      { transform: translateY(-6px) rotate(14deg); }
+            66%      { transform: translateY(-3px) rotate(-9deg); }
+        }
+        .orn-float { animation: ornFloat 5.5s ease-in-out infinite; }
+
+        /* ─── Section heading underline reveal ─── */
+        .heading-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .heading-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            transition: width 0.8s ease;
+        }
+        .reveal.in .heading-underline::after { width: 120%; }
     </style>
 </head>
 <body>
@@ -868,7 +1019,7 @@
             {{ $translations['respectfully_to'] }}
         </p>
 
-        <h2 class="f-display anim-fadeup d2 mb-1 leading-tight py-2 font-bold open-animate text-2xl" >
+        <h2 id="opener-guest-name" class="f-display anim-fadeup d2 mb-1 leading-tight py-2 font-bold open-animate text-2xl">
             {{ $guest->name ?? '—' }}
         </h2>
 
@@ -950,7 +1101,7 @@
     @endif
 
     <button id="music-btn" onclick="toggleMusic()" style="
-        position: fixed; bottom: 20px; right: 20px; z-index: 9998;
+        position: fixed; bottom: 20px; right: 12px; z-index: 9998;
         width: 44px; height: 44px;
         border-radius: 50%;
         background: var(--primary);
@@ -960,6 +1111,28 @@
         box-shadow: 0 4px 16px var(--primary-dim);
         transition: transform .3s;
     ">🎵</button>
+
+    {{-- ░░░ GIFT BUTTON ░░░ --}}
+    @if($guest)
+    <button id="gift-btn" onclick="openGiftModal()" style="
+        position: fixed; bottom: 72px; right: 12px; z-index: 9998;
+        display: flex; align-items: center; gap: 6px;
+        padding: 7px 14px; height: 36px;
+        border-radius: 99px;
+        background: var(--primary);
+        border: 2px solid var(--primary-dim);
+        color: #fff; font-size: 11px; font-weight: 700;
+        letter-spacing: .12em; text-transform: uppercase;
+        cursor: pointer;
+        box-shadow: 0 4px 16px var(--primary-dim);
+        transition: all .3s;
+        font-family: 'Jost', sans-serif;
+        white-space: nowrap;
+    ">
+        <span id="gift-btn-icon">{{ $guest->donation ? '✓' : '🎁' }}</span>
+        <span id="gift-btn-text">{{ $guest->donation ? $t('បានផ្ញើ', 'Gifted') : $t('អំណោយ', 'Gift') }}</span>
+    </button>
+    @endif
 
     {{-- ░░░ HERO ░░░ --}}
     <section class="hero "
@@ -1116,7 +1289,7 @@
 
                 <div class="divider-line mb-6"></div>
 
-                <div class="space-y-5">
+                <div class="timeline-list">
                     @foreach($event->schedules as $i => $schedule)
 
                     @php
@@ -1139,12 +1312,9 @@
                         }
                     @endphp
 
-                    <div class="flex items-center gap-4">
-                        <div class="flex-shrink-0 w-8 h-8 rounded flex items-center justify-center text-sm font-semibold"
-                             style="background:color-mix(in srgb, var(--primary) 12%, transparent);color:var(--primary)">
-                            {{ $i + 1 }}
-                        </div>
-                        <div class="flex-1 text-start">
+                    <div class="timeline-item">
+                        <div class="timeline-dot">{{ $i + 1 }}</div>
+                        <div class="timeline-content py-1">
                             <p class="f-serif text-lg font-semibold" style="color:var(--text)">
                                 {{ $timeDisplay }}
                             </p>
@@ -1153,10 +1323,6 @@
                             </p>
                         </div>
                     </div>
-
-                    @if(!$loop->last)
-                        <div class="divider-line"></div>
-                    @endif
 
                     @endforeach
                 </div>
@@ -1271,7 +1437,7 @@
                 <div class="swiper-wrapper">
                     @foreach($wishes as $wish)
                         <div class="swiper-slide py-4 px-2 md:p-8">
-                            <div class="relative bg-[#fffdfa] rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] p-3 md:p-8 text-center border border-primary/10 max-w-2xl mx-auto">
+                            <div class="wish-card relative bg-[#fffdfa] rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] p-3 md:p-8 text-center border border-primary/10 max-w-2xl mx-auto">
                                 
                                 {{-- The Guest Name with stylized signature lines --}}
                             <div class="flex items-center flex-column justify-center ">
@@ -1326,6 +1492,213 @@
             </p>
         </div>
     </footer>
+
+    {{-- ░░░ GIFT MODAL ░░░ --}}
+    @if($guest)
+    <style>
+        .gift-modal-inner {
+            position: relative;
+            max-width: 460px;
+            width: 100%;
+            background: #fff;
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 28px 22px 22px;
+            box-shadow: 0 40px 100px rgba(0,0,0,.55);
+            max-height: 92vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+        .gift-modal-inner::-webkit-scrollbar       { width: 3px; }
+        .gift-modal-inner::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 99px; }
+        @keyframes giftModalIn {
+            from { opacity: 0; transform: scale(0.88) translateY(28px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .gift-modal-enter { animation: giftModalIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+        .gift-label {
+            display: block;
+            font-size: 10px;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: #9a8070;
+            margin-bottom: 5px;
+            font-family: 'Jost', sans-serif;
+        }
+        .gift-select, .gift-input {
+            width: 100%;
+            padding: 9px 11px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #374151;
+            background: #fff;
+            outline: none;
+            transition: border-color .25s;
+            font-family: 'Jost', sans-serif;
+        }
+        .gift-select:focus, .gift-input:focus { border-color: var(--primary); }
+        .gift-close-btn {
+            position: absolute; top: 10px; right: 10px;
+            width: 28px; height: 28px; border-radius: 50%;
+            border: 1px solid var(--primary-dim);
+            background: transparent;
+            color: var(--primary);
+            cursor: pointer; font-size: 13px;
+            display: flex; align-items: center; justify-content: center;
+            transition: background .2s, color .2s;
+        }
+        .gift-close-btn:hover { background: var(--primary); color: #fff; }
+        #gift-btn.gifted {
+            background: linear-gradient(135deg, #2da44e, #40c468) !important;
+            border-color: rgba(45,164,78,.4) !important;
+            box-shadow: 0 4px 16px rgba(45,164,78,.35) !important;
+        }
+        /* ─── Input with suffix icon ─── */
+        .gift-input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .gift-input-wrap .gift-input {
+            padding-right: 30px;
+        }
+        .gift-input-suffix {
+            position: absolute;
+            right: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            pointer-events: none;
+            user-select: none;
+            line-height: 1;
+        }
+        /* hide browser spin arrows so they don't clash with suffix */
+        .gift-input[type=number]::-webkit-inner-spin-button,
+        .gift-input[type=number]::-webkit-outer-spin-button { opacity: 1; }
+    </style>
+
+    <div id="gift-modal" role="dialog" aria-modal="true" aria-label="Gift"
+         style="display:none; position:fixed; inset:0; z-index:99998;
+                align-items:center; justify-content:center;
+                padding:16px; overflow-y:auto;">
+
+        {{-- Backdrop --}}
+        <div onclick="closeGiftModal()" aria-hidden="true"
+             style="position:fixed; inset:0;
+                    background:rgba(0,0,0,0.65);
+                    backdrop-filter:blur(10px);
+                    -webkit-backdrop-filter:blur(10px);">
+        </div>
+
+        {{-- Card --}}
+        <div class="gift-modal-inner gift-modal-enter">
+            <div class="corner tl" aria-hidden="true"></div>
+            <div class="corner tr" aria-hidden="true"></div>
+            <div class="corner bl" aria-hidden="true"></div>
+            <div class="corner br" aria-hidden="true"></div>
+
+            <button class="gift-close-btn" onclick="closeGiftModal()" aria-label="Close">✕</button>
+
+            {{-- Header --}}
+            <div class="text-center mb-4">
+                <div class="anim-spin-slow f-display" style="font-size:1.6rem; color:var(--primary); display:inline-block;">✦</div>
+                <p class="f-serif text-xs tracking-widest uppercase mt-1" style="color:var(--primary)">
+                    {{ $translations['gift_qr'] }}
+                </p>
+            </div>
+
+            {{-- QR image + download --}}
+            @if($event->qr_code ?? false)
+            <div class="text-center mb-4">
+                <div style="display:inline-block; border:2px solid var(--primary); border-radius:12px; padding:10px; background:#fff;">
+                    <img src="{{ asset('storage/' . $event->qr_code) }}" alt="Gift QR Code"
+                         style="width:170px; height:170px; object-fit:contain; display:block;">
+                </div>
+                <br>
+                <a href="{{ asset('storage/' . $event->qr_code) }}"
+                   download="wedding-gift-qr.png"
+                   style="display:inline-flex; align-items:center; gap:6px;
+                          margin-top:8px; font-size:11px; letter-spacing:.12em;
+                          color:var(--primary); text-decoration:none;
+                          border:1px solid var(--primary);
+                          padding:6px 18px; border-radius:99px;
+                          transition:background .25s, color .25s;
+                          font-family:'Jost',sans-serif; text-transform:uppercase;"
+                   onmouseover="this.style.background='var(--primary)';this.style.color='#fff'"
+                   onmouseout="this.style.background='transparent';this.style.color='var(--primary)'"
+                >
+                    ⬇ &nbsp; {{ $t('ទាញយក QR', 'Download QR') }}
+                </a>
+            </div>
+            @endif
+
+            <div class="divider-line my-4"></div>
+
+            {{-- Donation form --}}
+            <form id="gift-form" onsubmit="submitDonation(event)">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <div>
+                        <label class="gift-label">{{ $t('របៀបបង់', 'Payment') }}</label>
+                        <select id="gift-payment" class="gift-select">
+                            <option value="cash">{{ __('messages.payment_cash') }}</option>
+                            <option value="qr_code">{{ __('messages.payment_qr_code') }}</option>
+                            <option value="other">{{ __('messages.payment_other') }}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="gift-label">{{ $t('រូបិយប័ណ្ណ', 'Currency') }}</label>
+                        <select id="gift-cash-method" class="gift-select">
+                            <option value="usd">USD ($)</option>
+                            <option value="khr">KHR (៛)</option>
+                            <option value="both">{{ __('messages.both') }}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="gift-label">{{ __('messages.amount_usd') }}</label>
+                        <div class="gift-input-wrap">
+                            <input type="number" id="gift-usd" class="gift-input"
+                                   value="0" min="0" step="1"
+                                   inputmode="numeric" pattern="[0-9]*"
+                                   placeholder="0"
+                                   oninput="this.value = Math.floor(Math.abs(this.value)) || 0">
+                            <span class="gift-input-suffix">$</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="gift-label">{{ __('messages.amount_khr') }}</label>
+                        <div class="gift-input-wrap">
+                            <input type="number" id="gift-khr" class="gift-input"
+                                   value="0" min="0" step="1"
+                                   inputmode="numeric" pattern="[0-9]*"
+                                   placeholder="0"
+                                   oninput="this.value = Math.floor(Math.abs(this.value)) || 0">
+                            <span class="gift-input-suffix">៛</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:14px;">
+                    <label class="gift-label">{{ __('messages.note') }}</label>
+                    <textarea id="gift-note" class="gift-input" rows="2"
+                              placeholder="{{ $t('ចំណាំ (ស្រេចចិត្ត)', 'Optional note...') }}"
+                              style="resize:none;"></textarea>
+                </div>
+
+                <button type="submit" id="gift-submit" class="btn-primary rounded-lg" style="margin-top:0;">
+                    <span id="gift-submit-label" class="f-serif">
+                        ✦ &nbsp; {{ $t('ផ្ញើអំណោយ', 'Send Gift') }} &nbsp; ✦
+                    </span>
+                </button>
+            </form>
+
+            <div id="gift-success-msg" style="display:none; text-align:center; padding:16px 0; color:var(--primary);" class="f-serif text-sm">
+                💛 {{ $t('អរគុណសម្រាប់អំណោយរបស់អ្នក!', 'Thank you for your gift!') }}
+            </div>
+        </div>
+    </div>
+    @endif
 
 </div>{{-- end #wedding-page --}}
 
@@ -1455,6 +1828,7 @@ function openWeddingPage() {
         initReveal();
         initFancybox();
         initSwiper();
+        startHearts();
     }, 800);
 }
 
@@ -1488,10 +1862,17 @@ function initCountdown() {
         const m = document.getElementById('cd-minutes');
         const s = document.getElementById('cd-seconds');
 
-        if (d) d.textContent = pad(Math.floor(diff / 86400000));
-        if (h) h.textContent = pad(Math.floor((diff % 86400000) / 3600000));
-        if (m) m.textContent = pad(Math.floor((diff % 3600000)  / 60000));
-        if (s) s.textContent = pad(Math.floor((diff % 60000)    / 1000));
+        function setVal(el, val) {
+            if (!el || el.textContent === val) return;
+            el.textContent = val;
+            el.classList.remove('cd-pop');
+            void el.offsetWidth;
+            el.classList.add('cd-pop');
+        }
+        setVal(d, pad(Math.floor(diff / 86400000)));
+        setVal(h, pad(Math.floor((diff % 86400000) / 3600000)));
+        setVal(m, pad(Math.floor((diff % 3600000)  / 60000)));
+        setVal(s, pad(Math.floor((diff % 60000)    / 1000)));
     }
 
     tick();
@@ -1543,9 +1924,20 @@ function initSwiper() {
 }
 
 
-const WISHES_URL = "{{ $guest ? route('event.wishes', ['slug' => $event->slug, 'gid' => $guest->id]) : null }}";
-const RSVP_URL   = "{{ $guest ? route('event.rsvp',   ['slug' => $event->slug, 'gid' => $guest->id]) : null }}";
-const CSRF_TOKEN = "{{ csrf_token() }}";
+const WISHES_URL   = "{{ $guest ? route('event.wishes',   ['slug' => $event->slug, 'gid' => $guest->id]) : null }}";
+const RSVP_URL     = "{{ $guest ? route('event.rsvp',     ['slug' => $event->slug, 'gid' => $guest->id]) : null }}";
+const DONATION_URL = "{{ $guest ? route('event.donation', ['slug' => $event->slug, 'gid' => $guest->id]) : null }}";
+const CSRF_TOKEN   = "{{ csrf_token() }}";
+
+/* Server-side donation state (avoids an extra fetch on load) */
+window._hasDonation      = {{ $guest && $guest->donation ? 'true' : 'false' }};
+window._existingDonation = {!! $guest && $guest->donation ? json_encode([
+    'payment_method' => $guest->donation->payment_method,
+    'cash_method'    => $guest->donation->cash_method,
+    'amount_usd'     => (float) $guest->donation->amount_usd,
+    'amount_khr'     => (float) $guest->donation->amount_khr,
+    'note'           => $guest->donation->note ?? '',
+], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT) : 'null' !!};
 // Pre-fill RSVP state if guest already replied
 /* ─── RSVP ─── */
 async function rsvpReply(status) {
@@ -1554,13 +1946,19 @@ async function rsvpReply(status) {
 
     const msg = document.getElementById('rsvp-msg');
 
+    function showMsg() {
+        msg.classList.remove('hidden', 'rsvp-reveal');
+        void msg.offsetWidth;
+        msg.classList.add('rsvp-reveal');
+        if (status === 'yes') confettiBurst();
+        msg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
     if (!RSVP_URL) {
-        // Fallback when no guest is loaded (preview mode)
         msg.textContent = status == 'yes'
             ? '🎉 អរគុណ! យើងពិតជារីករាយណាស់ដែលអ្នកអាចចូលរួមជាមួយយើងបាន។'
             : '💛 យើងយល់ហើយ។ សូមអរគុណសម្រាប់ការប្រាប់យើងឱ្យដឹង។';
-        msg.classList.remove('hidden');
-        msg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        showMsg();
         return;
     }
 
@@ -1578,8 +1976,7 @@ async function rsvpReply(status) {
             : '💛 យើងយល់ហើយ។ សូមអរគុណសម្រាប់ការប្រាប់យើងឱ្យដឹង។';
     }
 
-    msg.classList.remove('hidden');
-    msg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    showMsg();
 }
 
 /* ─── Wishes ─── */
@@ -1602,9 +1999,24 @@ async function sendWishes() {
     textarea.value = '';
 }
 
-/* ─── Restore RSVP state on page load ─── */
-document.addEventListener('DOMContentLoaded', () => {
-    if (INITIAL_RSVP) rsvpReply(INITIAL_RSVP);
+/* ─── Init on DOM ready ─── */
+document.addEventListener('DOMContentLoaded', function () {
+    /* Typewriter on opener guest name */
+    var guestEl = document.getElementById('opener-guest-name');
+    if (guestEl) {
+        var name = guestEl.textContent.trim();
+        if (name && name !== '—') {
+            setTimeout(function () { typewriterEffect(guestEl, name, 65); }, 850);
+        }
+    }
+    /* Sync gift button with server-rendered donation state */
+    if (window._hasDonation) {
+        setGiftBtnGifted();
+    }
+    /* Restore previous RSVP reply if any */
+    if (typeof INITIAL_RSVP !== 'undefined' && INITIAL_RSVP) {
+        rsvpReply(INITIAL_RSVP);
+    }
 });
 
 /* ─── Music ─── */
@@ -1614,10 +2026,176 @@ function toggleMusic() {
     if (!music) return;
     if (music.paused) {
         music.play().catch(() => {});
-        if (btn) btn.textContent = '🎵';
+        if (btn) { btn.textContent = '🎵'; btn.classList.remove('paused'); }
     } else {
         music.pause();
-        if (btn) btn.textContent = '🔇';
+        if (btn) { btn.textContent = '🔇'; btn.classList.add('paused'); }
+    }
+}
+
+/* ─── Typewriter effect ─── */
+function typewriterEffect(el, text, speed) {
+    speed = speed || 68;
+    el.textContent = '';
+    el.classList.add('typewriter-cursor');
+    var i = 0;
+    var t = setInterval(function () {
+        if (i < text.length) {
+            el.textContent += text[i++];
+        } else {
+            clearInterval(t);
+            setTimeout(function () { el.classList.remove('typewriter-cursor'); }, 1100);
+        }
+    }, speed);
+}
+
+/* ─── Confetti burst ─── */
+function confettiBurst() {
+    var colors = ['var(--primary)', '#fff9c4', '#ffd700', '#ffb6c1', '#c8f0d8', 'var(--primary-glow)'];
+    for (var i = 0; i < 80; i++) {
+        (function () {
+            var delay = Math.random() * 220;
+            setTimeout(function () {
+                var el       = document.createElement('div');
+                el.className = 'confetti-piece';
+                var x        = Math.random() * window.innerWidth;
+                var dur      = 1.8 + Math.random() * 1.6;
+                var w        = 6 + Math.random() * 9;
+                el.style.cssText = [
+                    'left:'              + x + 'px',
+                    'top:-18px',
+                    'width:'             + w + 'px',
+                    'height:'            + (w * 0.55) + 'px',
+                    'background:'        + colors[Math.floor(Math.random() * colors.length)],
+                    'animation-duration:' + dur + 's',
+                    'animation-delay:'   + (Math.random() * 0.3) + 's',
+                ].join(';');
+                document.body.appendChild(el);
+                setTimeout(function () { el.remove(); }, (dur + 0.5) * 1000);
+            }, delay);
+        })();
+    }
+}
+
+/* ─── Floating hearts ─── */
+function spawnHeart() {
+    var symbols = ['♥', '♥', '❤', '💕'];
+    var el       = document.createElement('span');
+    el.className = 'float-heart';
+    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    var size = 0.7 + Math.random() * 1.2;
+    var dur  = 4.2 + Math.random() * 3.5;
+    el.style.cssText = [
+        'left:'               + (4 + Math.random() * 92) + 'vw',
+        'bottom:0',
+        'font-size:'          + size + 'rem',
+        'animation-duration:' + dur + 's',
+        'opacity:'            + (0.35 + Math.random() * 0.45),
+    ].join(';');
+    document.body.appendChild(el);
+    setTimeout(function () { el.remove(); }, dur * 1000 + 300);
+}
+var _heartTimer = null;
+function startHearts() {
+    if (_heartTimer) return;
+    spawnHeart();
+    _heartTimer = setInterval(spawnHeart, 2800);
+}
+
+/* ─── Gift Modal ─── */
+var _giftFormPrefilled = false;
+
+function openGiftModal() {
+    var modal = document.getElementById('gift-modal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    /* Replay entrance animation */
+    var card = modal.querySelector('.gift-modal-inner');
+    if (card) {
+        card.classList.remove('gift-modal-enter');
+        void card.offsetWidth;
+        card.classList.add('gift-modal-enter');
+    }
+
+    /* Pre-fill form once with existing donation data */
+    if (window._existingDonation && !_giftFormPrefilled) {
+        _giftFormPrefilled = true;
+        var d  = window._existingDonation;
+        var pm = document.getElementById('gift-payment');
+        var cm = document.getElementById('gift-cash-method');
+        var u  = document.getElementById('gift-usd');
+        var k  = document.getElementById('gift-khr');
+        var n  = document.getElementById('gift-note');
+        var lbl = document.getElementById('gift-submit-label');
+        if (pm  && d.payment_method) pm.value = d.payment_method;
+        if (cm  && d.cash_method)    cm.value = d.cash_method;
+        if (u)  u.value  = d.amount_usd !== undefined ? d.amount_usd : 0;
+        if (k)  k.value  = d.amount_khr !== undefined ? d.amount_khr : 0;
+        if (n   && d.note) n.value = d.note;
+        if (lbl) lbl.innerHTML = '✦ &nbsp; {{ $t('កែប្រែអំណោយ', 'Update Gift') }} &nbsp; ✦';
+    }
+}
+
+function closeGiftModal() {
+    var modal = document.getElementById('gift-modal');
+    if (!modal) return;
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function setGiftBtnGifted() {
+    var btn  = document.getElementById('gift-btn');
+    var icon = document.getElementById('gift-btn-icon');
+    var text = document.getElementById('gift-btn-text');
+    if (!btn) return;
+    btn.classList.add('gifted');
+    if (icon) icon.textContent = '✓';
+    if (text) text.textContent = '{{ $t('បានផ្ញើ', 'Gifted') }}';
+}
+
+async function submitDonation(e) {
+    e.preventDefault();
+    if (!DONATION_URL) return;
+
+    var btn   = document.getElementById('gift-submit');
+    var label = document.getElementById('gift-submit-label');
+    btn.disabled = true;
+    if (label) label.innerHTML = '…';
+
+    var payload = {
+        payment_method: (document.getElementById('gift-payment')     || {value:'cash'}).value,
+        cash_method:    (document.getElementById('gift-cash-method') || {value:'usd'}).value,
+        amount_usd:     parseFloat((document.getElementById('gift-usd')  || {value:0}).value) || 0,
+        amount_khr:     parseFloat((document.getElementById('gift-khr')  || {value:0}).value) || 0,
+        note:           (document.getElementById('gift-note') || {value:''}).value,
+    };
+
+    try {
+        var res  = await fetch(DONATION_URL, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN },
+            body:    JSON.stringify(payload),
+        });
+        var data = await res.json();
+
+        if (data.success) {
+            window._existingDonation = payload;
+            setGiftBtnGifted();
+            var form    = document.getElementById('gift-form');
+            var success = document.getElementById('gift-success-msg');
+            if (form)    form.style.display    = 'none';
+            if (success) success.style.display = 'block';
+            confettiBurst();
+            setTimeout(closeGiftModal, 2400);
+        } else {
+            btn.disabled = false;
+            if (label) label.innerHTML = '✦ &nbsp; {{ $t('ព្យាយាមម្តងទៀត', 'Retry') }} &nbsp; ✦';
+        }
+    } catch (_) {
+        btn.disabled = false;
+        if (label) label.innerHTML = '✦ &nbsp; {{ $t('ព្យាយាមម្តងទៀត', 'Retry') }} &nbsp; ✦';
     }
 }
 </script>
