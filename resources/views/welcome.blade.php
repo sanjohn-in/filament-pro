@@ -1335,6 +1335,60 @@
             @if($event->google_map ?? false)
             <div class="mt-10 reveal w-full">
                 <style>
+                    /* ── shared map card ── */
+                    .gmap-card {
+                        width: 100%;
+                        border-radius: 16px;
+                        overflow: hidden;
+                        background: #fff;
+                        box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.06);
+                        border: 1.5px solid #e8eaed;
+                    }
+                    .gmap-card-header {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        padding: 12px 16px 10px;
+                        border-bottom: 1px solid #f1f3f4;
+                    }
+                    .gmap-card-header-label {
+                        font-size: 0.78rem;
+                        font-weight: 700;
+                        letter-spacing: 0.12em;
+                        text-transform: uppercase;
+                        color: #80868b;
+                    }
+                    /* iframe wrapper makes iframe fill width & fixed height */
+                    .gmap-iframe-wrap {
+                        position: relative;
+                        width: 100%;
+                        height: 240px;
+                    }
+                    .gmap-iframe-wrap iframe {
+                        position: absolute;
+                        inset: 0;
+                        width: 100% !important;
+                        height: 100% !important;
+                        border: 0;
+                        display: block;
+                    }
+                    .gmap-card-footer {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 6px;
+                        padding: 10px 16px;
+                        border-top: 1px solid #f1f3f4;
+                        text-decoration: none;
+                        font-size: 0.82rem;
+                        font-weight: 600;
+                        color: #1a73e8;
+                        transition: background 0.18s ease;
+                    }
+                    .gmap-card-footer:hover {
+                        background: #f8f9fa;
+                    }
+                    /* ── link button ── */
                     .gmaps-btn {
                         display: flex;
                         align-items: center;
@@ -1344,76 +1398,87 @@
                         padding: 14px 24px;
                         background: #fff;
                         border: 2px solid #dadce0;
-                        border-radius: 8px;
+                        border-radius: 12px;
                         color: #3c4043;
                         font-size: 0.95rem;
                         font-weight: 600;
                         letter-spacing: 0.02em;
-                        box-shadow: 0 1px 3px rgba(0,0,0,.12);
+                        box-shadow: 0 2px 8px rgba(0,0,0,.08);
                         text-decoration: none;
                         transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-                    }
-                    .gmaps-btn:hover {
-                        transform: translateY(-2px) scale(1.01);
-                        box-shadow: 0 6px 20px rgba(0,0,0,.15);
-                        border-color: #bdc1c6;
-                    }
-                    .gmaps-btn:active {
-                        transform: translateY(0) scale(0.99);
-                        box-shadow: 0 1px 4px rgba(0,0,0,.12);
-                    }
-                    .gmaps-btn .gmaps-pin {
-                        transition: transform 0.3s ease;
-                    }
-                    .gmaps-btn:hover .gmaps-pin {
-                        transform: translateY(-3px);
-                    }
-                    .gmaps-btn .gmaps-arrow {
-                        transition: transform 0.3s ease, opacity 0.3s ease;
-                        opacity: 0.5;
-                    }
-                    .gmaps-btn:hover .gmaps-arrow {
-                        transform: translate(2px, -2px);
-                        opacity: 1;
-                    }
-                    @keyframes gmaps-pulse-ring {
-                        0%   { box-shadow: 0 0 0 0 rgba(66,133,244,0.35), 0 1px 3px rgba(0,0,0,.12); }
-                        70%  { box-shadow: 0 0 0 10px rgba(66,133,244,0), 0 1px 3px rgba(0,0,0,.12); }
-                        100% { box-shadow: 0 0 0 0 rgba(66,133,244,0), 0 1px 3px rgba(0,0,0,.12); }
-                    }
-.gmaps-btn {
                         animation: gmaps-pulse-ring 2s ease-out infinite;
                     }
                     .gmaps-btn:hover {
+                        transform: translateY(-2px) scale(1.01);
+                        box-shadow: 0 8px 24px rgba(0,0,0,.13);
+                        border-color: #bdc1c6;
                         animation: none;
                     }
+                    .gmaps-btn:active {
+                        transform: translateY(0) scale(0.99);
+                        box-shadow: 0 1px 4px rgba(0,0,0,.10);
+                    }
+                    .gmaps-btn .gmaps-pin { transition: transform 0.3s ease; }
+                    .gmaps-btn:hover .gmaps-pin { transform: translateY(-3px); }
+                    .gmaps-btn .gmaps-arrow { transition: transform 0.3s ease, opacity 0.3s ease; opacity: 0.45; }
+                    .gmaps-btn:hover .gmaps-arrow { transform: translate(2px, -2px); opacity: 1; }
+                    @keyframes gmaps-pulse-ring {
+                        0%   { box-shadow: 0 0 0 0 rgba(66,133,244,0.30), 0 2px 8px rgba(0,0,0,.08); }
+                        70%  { box-shadow: 0 0 0 10px rgba(66,133,244,0), 0 2px 8px rgba(0,0,0,.08); }
+                        100% { box-shadow: 0 0 0 0 rgba(66,133,244,0), 0 2px 8px rgba(0,0,0,.08); }
+                    }
                 </style>
-                <div class="hand-cta anim-fadeup" aria-hidden="true">
-                    <div class="hand-tap-zone">
-                        <div class="hand-halo"></div>
-                        <div class="hand-ripple r1"></div>
-                        <div class="hand-ripple r2"></div>
-                        <div class="hand-ripple-ring"></div>
-                        <span class="hand-emoji">👇</span>
+
+                @if(str_contains($event->google_map, '<iframe'))
+                    {{-- ── Embedded map card ── --}}
+                    <div class="gmap-card">
+                        <div class="gmap-card-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style="flex-shrink:0">
+                                <path fill="#EA4335" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                                <circle fill="#fff" cx="12" cy="9" r="2.5"/>
+                            </svg>
+                            <span class="gmap-card-header-label">{{ $translations['location_label'] ?? 'Location' }}</span>
+                        </div>
+                        <div class="gmap-iframe-wrap">
+                            {!! $event->google_map !!}
+                        </div>
+                        @if($event->address)
+                        <a href="{{ 'https://www.google.com/maps/search/' . urlencode($event->address) }}" target="_blank" rel="noopener" class="gmap-card-footer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                            </svg>
+                            {{ $translations['open_maps'] ?? 'Open in Google Maps' }}
+                        </a>
+                        @endif
                     </div>
-                    {{-- <span class="hand-label">{{ $translations['tap_to_open'] }}</span> --}}
-                </div>
-                <a href="{{ $event->google_map }}" target="_blank" rel="noopener" class="gmaps-btn">
-                    <svg class="gmaps-pin" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" style="flex-shrink:0">
-                        <path fill="#EA4335" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-                        <circle fill="#fff" cx="12" cy="9" r="2.5"/>
-                    </svg>
-                    <span style="font-family:sans-serif;display:flex;flex-direction:column;align-items:center;line-height:1.3">
-                        <span>
-                            <span style="color:#4285F4;font-weight:700">G</span><span style="color:#EA4335;font-weight:700">o</span><span style="color:#FBBC05;font-weight:700">o</span><span style="color:#4285F4;font-weight:700">g</span><span style="color:#34A853;font-weight:700">l</span><span style="color:#EA4335;font-weight:700">e</span>
-                            <span style="color:#3c4043"> Maps</span>
+                @else
+                    {{-- ── Link button ── --}}
+                    <div class="hand-cta anim-fadeup" aria-hidden="true">
+                        <div class="hand-tap-zone">
+                            <div class="hand-halo"></div>
+                            <div class="hand-ripple r1"></div>
+                            <div class="hand-ripple r2"></div>
+                            <div class="hand-ripple-ring"></div>
+                            <span class="hand-emoji">👇</span>
+                        </div>
+                    </div>
+                    <a href="{{ $event->google_map }}" target="_blank" rel="noopener" class="gmaps-btn">
+                        <svg class="gmaps-pin" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" style="flex-shrink:0">
+                            <path fill="#EA4335" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                            <circle fill="#fff" cx="12" cy="9" r="2.5"/>
+                        </svg>
+                        <span style="font-family:sans-serif;display:flex;flex-direction:column;align-items:center;line-height:1.3">
+                            <span>
+                                <span style="color:#4285F4;font-weight:700">G</span><span style="color:#EA4335;font-weight:700">o</span><span style="color:#FBBC05;font-weight:700">o</span><span style="color:#4285F4;font-weight:700">g</span><span style="color:#34A853;font-weight:700">l</span><span style="color:#EA4335;font-weight:700">e</span>
+                                <span style="color:#3c4043"> Maps</span>
+                            </span>
+                            <span style="font-size:0.78em;margin-top:4px;color:#5f6368;font-weight:500;font-family:'Khmer OS','Noto Sans Khmer',sans-serif">{{ $translations['open_maps'] }}</span>
                         </span>
-                        <span style="font-size:0.78em;margin-top:9px;color:#5f6368;font-weight:500;font-family:'Khmer OS','Noto Sans Khmer',sans-serif">{{ $translations['open_maps'] }}</span>
-                    </span>
-                    <svg class="gmaps-arrow" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3c4043" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-                    </svg>
-                </a>
+                        <svg class="gmaps-arrow" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3c4043" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </a>
+                @endif
             </div>
             @endif
         </div>
