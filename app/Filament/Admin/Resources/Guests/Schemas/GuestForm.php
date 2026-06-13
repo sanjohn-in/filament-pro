@@ -68,8 +68,8 @@ class GuestForm
                             Select::make('tag')
                                 ->label(__('messages.tag'))
                                 ->options([
-                                    'bride_site' => __('messages.bride_site'),
                                     'groom_site' => __('messages.groom_site'),
+                                    'bride_site' => __('messages.bride_site'),
                                     'both_site' => __('messages.both_site'),
                                     'other' => __('messages.other'),
                                 ])

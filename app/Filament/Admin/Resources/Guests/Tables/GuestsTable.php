@@ -13,6 +13,7 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Filament\Tables\Enums\RecordActionsPosition;
 
 class GuestsTable
 {
@@ -25,19 +26,14 @@ class GuestsTable
                     ->searchable()
                     ->sortable(),
 
-                    TextColumn::make('phone')
-                    ->label(__('messages.phone'))
-                    ->searchable()
-                    ->placeholder('--'),
-
                 TextColumn::make('tag')
                     ->label(__('messages.tag'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'bride_site' => 'primary',
-                        'groom_site'  => 'danger',
-                        'both_site'  => 'info',
-                        'other' => 'warning',
+                        'bride_site' => 'danger',
+                        'groom_site'  => 'info',
+                        'both_site'  => 'warning',
+                        'other' => 'success',
                         default  => 'gray',
                     })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
@@ -60,10 +56,6 @@ class GuestsTable
                         'no'  => __('messages.no'),
                         default  => $state,
                     }),
-                  
-                TextColumn::make('note')
-                    ->label(__('messages.note'))
-                    ->limit(40),
 
                
 
@@ -90,6 +82,15 @@ class GuestsTable
                 )
                 ->copyMessageDuration(1500)
                 ->icon('heroicon-o-link'),
+
+                TextColumn::make('note')
+                ->label(__('messages.note'))
+                ->limit(40),
+
+                TextColumn::make('phone')
+                ->label(__('messages.phone'))
+                ->searchable()
+                ->placeholder('--'),
 
                 TextColumn::make('created_at')
                 ->label(__('messages.created_at'))
@@ -132,10 +133,10 @@ class GuestsTable
                     ->disabled()
                     ->visible(fn ($record) => $record->donation()->exists()),
 
-                ViewAction::make(),
+                // ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
-            ])
+            ], position: RecordActionsPosition::BeforeColumns)
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
