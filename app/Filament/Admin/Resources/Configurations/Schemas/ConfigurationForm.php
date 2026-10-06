@@ -59,40 +59,36 @@ class ConfigurationForm
                     ->columns(2),
 
                 Section::make(__('messages.value'))
-                    ->schema([
+                ->schema([
+                    // ── TEXT ──
+                    TextInput::make('value')
+                        ->label(__('messages.value'))
+                        ->nullable()
+                        ->visible(fn (Get $get): bool => $get('type') === 'text')
+                        ->dehydrated(fn (Get $get): bool => $get('type') === 'text'),
 
-                        // ── TEXT ──
-                        TextInput::make('value')
-                            ->label(__('messages.value'))
-                            ->nullable()
-                            ->visible(fn (Get $get): bool => $get('type') === 'text'),
+                    // ── FILE (IMAGE or MUSIC) ──
+                    FileUpload::make('value')
+                        ->label(fn (Get $get) => $get('type') === 'music' ? __('messages.music') : __('messages.type_image'))
+                        ->disk('public')
+                        ->directory(fn (Get $get) => $get('type') === 'music' ? 'music' : 'cover')
+                        ->image(fn (Get $get) => $get('type') === 'image')
+                        ->imageEditor(fn (Get $get) => $get('type') === 'image')
+                        ->imageEditorAspectRatioOptions([null, '16:9', '4:3', '1:1'])
+                        ->acceptedFileTypes(fn (Get $get) => $get('type') === 'music' 
+                            ? ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg', 'audio/aac'] 
+                            : ['image/*']
+                        )
+                        ->maxSize(51200) // 50MB
+                        ->visible(fn (Get $get): bool => in_array($get('type'), ['image', 'music']))
+                        ->dehydrated(fn (Get $get): bool => in_array($get('type'), ['image', 'music'])), // Only save if type is image/music
 
-                        // ── FILE (IMAGE or MUSIC) ──
-                        FileUpload::make('value')
-                            ->label(fn (Get $get) => $get('type') === 'music' ? __('messages.music') : __('messages.type_image'))
-                            ->disk('public')
-                            ->directory(fn (Get $get) => $get('type') === 'music' ? 'music' : 'cover')
-                            ->image(fn (Get $get) => $get('type') === 'image')
-                            ->imageEditor(fn (Get $get) => $get('type') === 'image')
-                            ->imageEditorAspectRatioOptions([null, '16:9', '4:3', '1:1'])
-                            ->acceptedFileTypes(fn (Get $get) => $get('type') === 'music' 
-                                ? ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg', 'audio/aac'] 
-                                : ['image/*']
-                            )
-                            ->maxSize(51200) // 50MB (value in KB)
-                            ->afterStateHydrated(function ($component, $record) {
-                                if ($record && in_array($record->type, ['image', 'music']) && filled($record->value)) {
-                                    $component->state(is_array($record->value) ? $record->value : [$record->value]);
-                                }
-                            })
-                            ->visible(fn (Get $get): bool => in_array($get('type'), ['image', 'music'])),
+                    Toggle::make('is_visible')
+                        ->label(__('messages.is_visible'))
+                        ->default(true)
+                        ->columnSpanFull(),
 
-                        Toggle::make('is_visible')
-                            ->label(__('messages.is_visible'))
-                            ->default(true)
-                            ->columnSpanFull(),
-
-                    ])->columns(1),
+                ])->columns(1),
             ]);
     }
 }

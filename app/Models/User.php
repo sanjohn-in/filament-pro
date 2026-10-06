@@ -64,7 +64,7 @@ class User extends Authenticatable
     /**
      * Get user's preferences for a specific category
      */
-    public function getUserCategoryData($mainCategoryId): array
+    public function getUserCategoryData(int $mainCategoryId): array
     {
         $data = json_decode($this->category_preferences ?? '{}', true);
         return $data[$mainCategoryId] ?? [];
@@ -73,7 +73,7 @@ class User extends Authenticatable
     /**
      * Update user's category preferences (selected theme, etc)
      */
-    public function updateUserCategoryData($mainCategoryId, array $data): void
+    public function updateUserCategoryData(int $mainCategoryId, array $data): void
     {
         $preferences = json_decode($this->category_preferences ?? '{}', true);
         $preferences[$mainCategoryId] = array_merge(
