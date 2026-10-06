@@ -58,40 +58,51 @@ class ConfigurationForm
                     ])
                     ->columns(2),
 
-                Section::make(__('messages.value')),
+                Section::make(__('messages.value'))
+                ->schema([
+                    // ── TEXT ──
+                    TextInput::make('value')
+                        ->label(__('messages.value'))
+                        ->nullable()
+                        ->visible(fn (Get $get): bool => $get('type') === 'text')
+                        ->dehydrated(fn (Get $get): bool => $get('type') === 'text'),
 
-                FileUpload::make('value')
-                ->label(fn (Get $get) => $get('type') === 'music' ? __('messages.music') : __('messages.type_image'))
-                ->disk('public')
-                ->directory(fn (Get $get) => $get('type') === 'music' ? 'music' : 'cover')
-                ->image(fn (Get $get) => $get('type') === 'image')
-                ->imageEditor(fn (Get $get) => $get('type') === 'image')
-                ->imageEditorAspectRatioOptions([null, '16:9', '4:3', '1:1'])
-                ->acceptedFileTypes(fn (Get $get) => $get('type') === 'music' 
-                    ? [
-                        'audio/mpeg', 
-                        'audio/mp3', 
-                        'audio/wav', 
-                        'audio/x-wav', 
-                        'audio/wave', 
-                        'audio/ogg', 
-                        'audio/aac',
-                        'application/octet-stream', // Required for some MP3 encoders
-                    ] 
-                    : ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
-                )
-                ->maxSize(51200) // 50MB
-                ->visible(fn (Get $get): bool => in_array($get('type'), ['image', 'music']))
-                ->dehydrated(fn (Get $get): bool => in_array($get('type'), ['image', 'music']))
-                // Ignore validation on existing string paths during edit
-                ->rules([
-                    fn (Get $get): \Closure => function (string $attribute, $value, \Closure $fail) use ($get) {
-                        // If it's already an existing string saved in DB, skip validation
-                        if (is_string($value)) {
-                            return;
-                        }
-                    },
-                ]),
+                    // ── FILE (IMAGE or MUSIC) ──
+                    FileUpload::make('value')
+                        ->label(fn (Get $get) => $get('type') === 'music' ? __('messages.music') : __('messages.type_image'))
+                        ->disk('public')
+                        ->directory(fn (Get $get) => $get('type') === 'music' ? 'music' : 'cover')
+                        ->image(fn (Get $get) => $get('type') === 'image')
+                        ->imageEditor(fn (Get $get) => $get('type') === 'image')
+                        ->imageEditorAspectRatioOptions([null, '16:9', '4:3', '1:1'])
+                        ->acceptedFileTypes(fn (Get $get) => $get('type') === 'music' 
+                            ? [
+                                'audio/mpeg', 
+                                'audio/mp3', 
+                                'audio/wav', 
+                                'audio/x-wav', 
+                                'audio/wave', 
+                                'audio/ogg', 
+                                'audio/aac',
+                                'application/octet-stream', // Required for some MP3 encoders
+                            ] 
+                            : ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+                        )
+                        ->rules([
+                            fn (Get $get) => $get('type') === 'music'
+                                ? 'nullable|file|mimes:mp3,wav,ogg,aac'
+                                : 'nullable|file|mimes:jpg,jpeg,png,webp',
+                        ])
+                        ->maxSize(51200) // 50MB
+                        ->visible(fn (Get $get): bool => in_array($get('type'), ['image', 'music']))
+                        ->dehydrated(fn (Get $get): bool => in_array($get('type'), ['image', 'music'])), // Only save if type is image/music
+
+                    Toggle::make('is_visible')
+                        ->label(__('messages.is_visible'))
+                        ->default(true)
+                        ->columnSpanFull(),
+
+                ])->columns(1),
             ]);
     }
 }
