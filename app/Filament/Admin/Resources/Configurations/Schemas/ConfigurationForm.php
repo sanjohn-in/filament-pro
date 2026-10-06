@@ -84,15 +84,10 @@ class ConfigurationForm
                                 'audio/wave', 
                                 'audio/ogg', 
                                 'audio/aac',
-                                'application/octet-stream', // Required for some MP3 encoders
+                                'application/octet-stream'
                             ] 
                             : ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
                         )
-                        ->rules([
-                            fn (Get $get) => $get('type') === 'music'
-                                ? 'nullable|file|mimes:mp3,wav,ogg,aac'
-                                : 'nullable|file|mimes:jpg,jpeg,png,webp',
-                        ])
                         ->maxSize(51200) // 50MB
                         ->visible(fn (Get $get): bool => in_array($get('type'), ['image', 'music']))
                         ->dehydrated(fn (Get $get): bool => in_array($get('type'), ['image', 'music'])), // Only save if type is image/music
