@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->text('note')->nullable();
             $table->enum('tag', ['bride_site', 'groom_site', 'both_site', 'other'])->nullable();
-            $table->string('is_attending', ['yes', 'no'])->default('yes');
+            $table->enum('is_attending', ['yes', 'no'])->default('yes');
+            $table->string('lang', 10)->default('kh');
+            $table->string('link')->nullable();
             $table->timestamps();
         });
     }
