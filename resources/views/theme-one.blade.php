@@ -664,7 +664,7 @@
             font-family: {{ $lang == 'km' ? "'Kantumruy Pro', -apple-system, sans-serif" : "'Playfair Display', Georgia, serif" }};
             font-size: clamp(14.5px, 2.2vw, 16px);
             font-weight: {{ $lang == 'km' ? '500' : '400' }};
-            line-height: {{ $lang == 'km' ? '2.4' : '2.0' }};
+            line-height: {{ $lang == 'km' ? '2.0' : '2.0' }};
             letter-spacing: {{ $lang == 'km' ? '0.015em' : '0.03em' }};
             color: var(--primary-heading);
             max-width: 580px;
@@ -1252,7 +1252,7 @@
             </div>
 
             <!-- Invitation Message with Generous Line-Height and Clean Font Weight -->
-            <p class="invite-msg-body mb-4">
+            <p class="invite-msg-body mb-4 f-moul">
                 {{ $translations['invite_msg'] }}
             </p>
 
