@@ -185,17 +185,12 @@
 
         .f-moul { 
             font-family: 'Moul', 'Khmer OS Muol', {{ $lang == 'km' ? 'cursive, serif' : "'Cinzel', 'Playfair Display', Georgia, serif" }}; 
-            font-weight: 700;
-            -webkit-text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
-            text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
+            font-weight: normal; 
         }
         .f-cinzel { font-family: 'Cinzel', serif; letter-spacing: 0.12em; }
         .f-heading {
             font-family: {{ $lang == 'km' ? "'Moul', 'Khmer OS Muol', cursive, serif" : "'Cinzel', 'Playfair Display', Georgia, serif" }};
             letter-spacing: {{ $lang == 'km' ? 'normal' : '0.04em' }};
-            font-weight: 700;
-            -webkit-text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
-            text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
         }
 
         /* Dynamic Classes Driven by API Colors */
@@ -584,12 +579,10 @@
             50% { transform: scale(1.4) rotate(45deg); opacity: 1; filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px var(--primary-bright)); }
         }
 
-        /* Auspicious Blessing - Bold & High Contrast */
+        /* Auspicious Blessing - Royal & High Contrast */
         .hero-blessing-text {
             font-family: {{ $lang == 'km' ? "'Moul', 'Khmer OS Muol', cursive, serif" : "'Cinzel', 'Playfair Display', Georgia, serif" }};
-            font-weight: 800;
-            -webkit-text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
-            text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
+            font-weight: 700;
             color: var(--primary-dark);
             letter-spacing: {{ $lang == 'km' ? '0.03em' : '0.12em' }};
             text-shadow: 0 1px 3px rgba(var(--primary-rgb), 0.20);
@@ -598,9 +591,7 @@
         /* Main Wedding Title with Continuous Royal Shimmer */
         .hero-wedding-title {
             font-family: {{ $lang == 'km' ? "'Moul', 'Khmer OS Muol', cursive, serif" : "'Cinzel', 'Playfair Display', Georgia, serif" }};
-            font-weight: 800;
-            -webkit-text-stroke: {{ $lang == 'km' ? '0.5px currentColor' : '0' }};
-            text-stroke: {{ $lang == 'km' ? '0.5px currentColor' : '0' }};
+            font-weight: 700;
             color: var(--primary-dark);
             letter-spacing: {{ $lang == 'km' ? '0.02em' : '0.06em' }};
             text-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
@@ -622,12 +613,10 @@
             75%, 100% { background-position: -100% 0; }
         }
 
-        /* Couple Names - Ultra Bold & Luxury Metallic Gleam */
+        /* Couple Names - Royal Dignity & Luxury Metallic Gleam */
         .hero-couple-name {
             font-family: {{ $lang == 'km' ? "'Moul', 'Khmer OS Muol', cursive, serif" : "'Cinzel', 'Playfair Display', Georgia, serif" }};
-            font-weight: 800;
-            -webkit-text-stroke: {{ $lang == 'km' ? '0.55px currentColor' : '0' }};
-            text-stroke: {{ $lang == 'km' ? '0.55px currentColor' : '0' }};
+            font-weight: 700;
             color: var(--primary-dark);
             position: relative;
             display: inline-block;
@@ -651,6 +640,44 @@
             70%, 100% { background-position: -100% 0; }
         }
 
+        /* Elegant Khmer Wedding Invitation Message Card */
+        .invite-msg-badge {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: {{ $bgIsLight ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(var(--primary-rgb), 0.12))' : 'rgba(255, 255, 255, 0.08)' }};
+            border: 1.5px solid var(--border-primary);
+            box-shadow: 
+                0 8px 24px -4px rgba(var(--primary-rgb), 0.25),
+                0 0 0 2px rgba(255, 255, 255, 0.8) inset;
+            transition: transform 0.3s ease;
+        }
+        .invite-msg-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .invite-msg-body {
+            font-family: {{ $lang == 'km' ? "'Kantumruy Pro', -apple-system, sans-serif" : "'Playfair Display', Georgia, serif" }};
+            font-size: clamp(14.5px, 2.2vw, 16px);
+            font-weight: {{ $lang == 'km' ? '500' : '400' }};
+            line-height: {{ $lang == 'km' ? '2.4' : '2.0' }};
+            letter-spacing: {{ $lang == 'km' ? '0.015em' : '0.03em' }};
+            color: var(--primary-heading);
+            max-width: 580px;
+            margin: 0 auto;
+            text-wrap: pretty;
+        }
+        .iframe-container{
+            iframe{
+                width: 100%;
+                height: 100%;
+            }
+        }
+      
         /* Romantic Ampersand Heartbeat Emblem */
         .hero-ampersand-badge {
             position: relative;
@@ -1176,23 +1203,95 @@
     </section>
 
     {{-- INVITATION MESSAGE --}}
-    <section id="invitation-section" class="py-12 px-4">
-        <div class="max-w-2xl mx-auto khmer-card p-6 md:p-10 text-center reveal">
-            <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center text-xl mb-3 theme-tint-bg border theme-border theme-primary-text">
-                💮
+    <section id="invitation-section" class="pt-10 px-4">
+        <div class="max-w-3xl mx-auto khmer-card p-6 md:p-10 text-center reveal">
+            <!-- Authentic Khmer Royal Wedding Logo Badge -->
+            <div class="invite-msg-badge" title="{{ $translations['wedding_invitation'] }}">
+                <svg class="w-9 h-9" viewBox="0 0 56 50" fill="none">
+                    <defs>
+                        <linearGradient id="msgLogoGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="var(--primary-bright)"/>
+                            <stop offset="50%" stop-color="var(--primary)"/>
+                            <stop offset="100%" stop-color="var(--primary-dark)"/>
+                        </linearGradient>
+                        <linearGradient id="msgDiamondGlow" x1="50%" y1="0%" x2="50%" y2="100%">
+                            <stop offset="0%" stop-color="#ffffff"/>
+                            <stop offset="60%" stop-color="var(--primary-bright)"/>
+                            <stop offset="100%" stop-color="var(--primary)"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Lotus Laurel Wings Flanking Base -->
+                    <path d="M12 38 C18 34, 23 35, 28 39 C33 35, 38 34, 44 38" stroke="url(#msgLogoGold)" stroke-width="1.6" stroke-linecap="round"/>
+                    <path d="M16 42 C22 39, 25 40, 28 42 C31 40, 34 39, 40 42" stroke="url(#msgLogoGold)" stroke-width="1.2" stroke-linecap="round"/>
+                    <circle cx="28" cy="42" r="1.5" fill="var(--primary-bright)"/>
+
+                    <!-- Left Ring (Groom's Ring) -->
+                    <ellipse cx="22" cy="26" rx="9" ry="10.5" stroke="url(#msgLogoGold)" stroke-width="2.6" fill="none"/>
+                    <ellipse cx="22" cy="26" rx="9" ry="10.5" stroke="rgba(255,255,255,0.7)" stroke-width="0.6" stroke-dasharray="5 15" fill="none"/>
+
+                    <!-- Right Ring (Bride's Ring with Diamond Crown) -->
+                    <ellipse cx="34" cy="26" rx="9" ry="10.5" stroke="url(#msgLogoGold)" stroke-width="2.6" fill="none"/>
+                    <ellipse cx="34" cy="26" rx="9" ry="10.5" stroke="rgba(255,255,255,0.7)" stroke-width="0.6" stroke-dasharray="5 15" fill="none"/>
+
+                    <!-- Ring Interlocking Front Arc -->
+                    <path d="M28.5 20 C30.5 23, 30.5 29, 28.5 32" stroke="url(#msgLogoGold)" stroke-width="2.8" stroke-linecap="round"/>
+
+                    <!-- Solitaire Diamond Crown on Bride Ring -->
+                    <path d="M30 15 L34 17 L38 15" stroke="url(#msgLogoGold)" stroke-width="1.3" fill="none"/>
+                    <polygon points="34,6 39,11 37,15 31,15 29,11" fill="url(#msgDiamondGlow)" stroke="url(#msgLogoGold)" stroke-width="1"/>
+                    <line x1="29" y1="11" x2="39" y2="11" stroke="rgba(255,255,255,0.9)" stroke-width="0.7"/>
+
+                    <!-- Radiant Diamond Sparkle Twinkle -->
+                    <g class="hero-diamond-twinkle">
+                        <circle cx="34" cy="6" r="3.5" fill="rgba(255,255,255,0.6)"/>
+                        <path d="M34 2 L35.2 4.8 L38 6 L35.2 7.2 L34 10 L32.8 7.2 L30 6 L32.8 4.8 Z" fill="#ffffff"/>
+                        <circle cx="34" cy="6" r="1.1" fill="#ffffff"/>
+                    </g>
+                </svg>
             </div>
-            <p class="f-moul text-sm theme-heading mb-3">{{ $translations['invite_msg'] }}</p>
-            <div class="w-24 h-0.5 mx-auto my-4" style="background: var(--primary)"></div>
+
+            <!-- Invitation Message with Generous Line-Height and Clean Font Weight -->
+            <p class="invite-msg-body mb-4">
+                {{ $translations['invite_msg'] }}
+            </p>
+
+            <!-- Royal Ornamental Divider -->
+            <div class="flex items-center justify-center gap-2 my-4">
+                <span class="h-[1.5px] w-14 bg-gradient-to-r from-transparent to-[var(--primary)]"></span>
+                <span class="text-xs text-[var(--primary)]">✦</span>
+                <span class="h-[1.5px] w-14 bg-gradient-to-l from-transparent to-[var(--primary)]"></span>
+            </div>
+
             @if($event->love_quote ?? false)
-            <p class="text-xs italic font-medium mt-4 theme-muted-text">« {{ $event->love_quote }} »</p>
+            <p class="text-xs md:text-sm italic font-medium mt-4 theme-muted-text">« {{ $event->love_quote }} »</p>
             @endif
         </div>
     </section>
 
+      {{-- GALLERY --}}
+    @if(($event->portfolios ?? false) && count($event->portfolios) > 0)
+    <section class="py-8 px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-6 reveal">
+                <span class="text-xl theme-primary-text">🪷</span>
+                <h2 class="f-moul text-base theme-heading mt-1">{{ $translations['gallery_title'] }}</h2>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 reveal">
+                @foreach($event->portfolios as $i => $photo)
+                <a href="{{ asset('storage/' . $photo) }}" data-fancybox="gallery" class="rounded-xl overflow-hidden border shadow-sm block aspect-square theme-border theme-tint-bg">
+                    <img src="{{ asset('storage/' . $photo) }}" alt="Photo {{ $i + 1 }}" class="w-full h-full object-cover" loading="lazy">
+                </a>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+
     {{-- SCHEDULE --}}
     @if(!empty($event->schedules) && count($event->schedules))
     <section class="py-6 px-4">
-        <div class="max-w-2xl mx-auto khmer-card p-6 md:p-8 reveal">
+        <div class="max-w-3xl mx-auto khmer-card p-6 md:p-8 reveal">
             <div class="text-center mb-6">
                 <span class="text-xl theme-primary-text">⚜️</span>
                 <h2 class="f-moul text-base theme-heading mt-1">{{ $translations['event_info'] }}</h2>
@@ -1236,10 +1335,10 @@
     {{-- GOOGLE MAPS --}}
     @if($event->google_map ?? false)
     <section class="py-6 px-4">
-        <div class="max-w-2xl mx-auto khmer-card p-5 reveal">
+        <div class="max-w-3xl mx-auto khmer-card google-map p-5 reveal">
             <h3 class="f-moul text-sm text-center mb-4 theme-heading">{{ $translations['location_label'] }}</h3>
             @if(str_contains($event->google_map, '<iframe'))
-            <div class="rounded-xl overflow-hidden border aspect-video w-full theme-border">
+            <div class="rounded-xl overflow-hidden border aspect-video w-full theme-border iframe-container">
                 {!! $event->google_map !!}
             </div>
             @else
@@ -1253,24 +1352,7 @@
     </section>
     @endif
 
-    {{-- GALLERY --}}
-    @if(($event->portfolios ?? false) && count($event->portfolios) > 0)
-    <section class="py-8 px-4">
-        <div class="max-w-3xl mx-auto">
-            <div class="text-center mb-6 reveal">
-                <span class="text-xl theme-primary-text">🪷</span>
-                <h2 class="f-moul text-base theme-heading mt-1">{{ $translations['gallery_title'] }}</h2>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 reveal">
-                @foreach($event->portfolios as $i => $photo)
-                <a href="{{ asset('storage/' . $photo) }}" data-fancybox="gallery" class="rounded-xl overflow-hidden border shadow-sm block aspect-square theme-border theme-tint-bg">
-                    <img src="{{ asset('storage/' . $photo) }}" alt="Photo {{ $i + 1 }}" class="w-full h-full object-cover" loading="lazy">
-                </a>
-                @endforeach
-            </div>
-        </div>
-    </section>
-    @endif
+  
 
     {{-- RSVP & WISHES --}}
     <section class="py-8 px-4">

@@ -40,21 +40,19 @@ class MainCategoryForm
                                 'other'             => __('messages.other'),
                             ])
                           ->required(),
-
-                          Select::make('music_id')
-                          ->label(__('messages.music'))
-                          ->relationship('musics', 'name') // 'name' = column to display
-                          ->searchable()
-                          ->preload()
-                          ->required(),
+                        TextInput::make('slug')
+                        ->unique()
+                        ->readOnly()
+                        ->required()
+                        ->label(__('messages.slug')),
                             
                     ]),
-
-                TextInput::make('slug')
-                    ->unique()
-                    ->readOnly()
-                    ->required()
-                    ->label(__('messages.slug')),
+                    Select::make('music_id')
+                    ->label(__('messages.music'))
+                    ->relationship('musics', 'name') 
+                    ->searchable()
+                    ->preload()
+                    ->required(),
 
                 Grid::make(2)
                     ->schema([
@@ -184,29 +182,26 @@ class MainCategoryForm
                     ->columnSpanFull(),
 
                 // ─────────────────────────────────────────────────────────
+                Select::make('default_theme_id')
+                    ->label(__('messages.theme', ['default' => 'Theme']))
+                    ->relationship('defaultTheme', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->default(1),
+                Grid::make(2)
+                ->schema([
+                    ColorPicker::make('theme_color')
+                        ->label(__('messages.theme_color'))
+                        ->default('#ffbf00')
+                        ->formatStateUsing(fn ($state) => filled($state) ? ('#' . ltrim($state, '#')) : '#ffbf00')
+                        ->required(),
 
-                Grid::make(3)
-                    ->schema([
-                        Select::make('default_theme_id')
-                            ->label(__('messages.theme', ['default' => 'Theme']))
-                            ->relationship('defaultTheme', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->default(1),
-
-                        ColorPicker::make('theme_color')
-                            ->label(__('messages.theme_color'))
-                            ->default('#ffbf00')
-                            ->formatStateUsing(fn ($state) => filled($state) ? ('#' . ltrim($state, '#')) : '#ffbf00')
-                            ->required(),
-
-                        ColorPicker::make('bg_color')
-                            ->label(__('messages.background_color'))
-                            ->default('#FAF6EE')
-                            ->formatStateUsing(fn ($state) => filled($state) ? ('#' . ltrim($state, '#')) : '#FAF6EE')
-                            ->required(),
-                    ]),
-
+                    ColorPicker::make('bg_color')
+                        ->label(__('messages.background_color'))
+                        ->default('#FAF6EE')
+                        ->formatStateUsing(fn ($state) => filled($state) ? ('#' . ltrim($state, '#')) : '#FAF6EE')
+                        ->required(),
+                ]),
                     
                 FileUpload::make('cover_image')
                     ->disk('public')
