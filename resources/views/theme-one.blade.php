@@ -979,10 +979,10 @@
 
         <!-- Wedding Couple Announcement Plaque -->
         <div class="wedding-couple-plaque">
-            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-                <div class="text-center">
+            <div class="grid grid-cols-[1fr_auto_1fr] items-center">
+                <div class="text-right pr-2 sm:pr-3">
                     <span class="text-[10px] theme-muted-text block uppercase tracking-wider">{{ $translations['groom_title'] }}</span>
-                    <div class="f-moul text-sm md:text-base theme-heading mt-0.5">
+                    <div class="f-moul text-sm md:text-base theme-heading mt-0.5 leading-snug">
                         {{ $lang == 'km' ? $event->groom_name : $event->groom_name_en }}
                     </div>
                 </div>
@@ -991,9 +991,9 @@
                     <span class="w-6 h-6 rounded-full border border-[var(--border-primary)] bg-[var(--card-bg)] flex items-center justify-center text-[10px] f-moul theme-primary-text shadow-sm">&amp;</span>
                 </div>
 
-                <div class="text-center">
+                <div class="text-left pl-2 sm:pl-3">
                     <span class="text-[10px] theme-muted-text block uppercase tracking-wider">{{ $translations['bride_title'] }}</span>
-                    <div class="f-moul text-sm md:text-base theme-heading mt-0.5">
+                    <div class="f-moul text-sm md:text-base theme-heading mt-0.5 leading-snug">
                         {{ $lang == 'km' ? $event->bride_name : $event->bride_name_en }}
                     </div>
                 </div>
