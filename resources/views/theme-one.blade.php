@@ -185,12 +185,17 @@
 
         .f-moul { 
             font-family: 'Moul', 'Khmer OS Muol', {{ $lang == 'km' ? 'cursive, serif' : "'Cinzel', 'Playfair Display', Georgia, serif" }}; 
-            font-weight: normal; 
+            font-weight: 700;
+            -webkit-text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
+            text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
         }
         .f-cinzel { font-family: 'Cinzel', serif; letter-spacing: 0.12em; }
         .f-heading {
             font-family: {{ $lang == 'km' ? "'Moul', 'Khmer OS Muol', cursive, serif" : "'Cinzel', 'Playfair Display', Georgia, serif" }};
             letter-spacing: {{ $lang == 'km' ? 'normal' : '0.04em' }};
+            font-weight: 700;
+            -webkit-text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
+            text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
         }
 
         /* Dynamic Classes Driven by API Colors */
@@ -489,6 +494,10 @@
             text-align: center;
             padding: clamp(35px, 6vh, 60px) 16px 95px;
             background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% 25%, rgba({{ $primaryRgb }}, 0.16) 0%, transparent 60%),
+                radial-gradient(circle at 15% 75%, rgba({{ $primaryRgb }}, 0.10) 0%, transparent 50%),
+                radial-gradient(circle at 85% 75%, rgba({{ $primaryRgb }}, 0.12) 0%, transparent 50%);
             background-size: cover;
             background-position: center 20%;
             background-repeat: no-repeat;
@@ -498,50 +507,217 @@
             position: absolute;
             inset: 0;
             background: linear-gradient(180deg, 
-                rgba(255, 255, 255, 0.15) 0%, 
-                rgba({{ $bgRgb }}, 0.20) 35%, 
-                rgba({{ $bgRgb }}, 0.65) 75%, 
+                rgba(255, 255, 255, 0.20) 0%, 
+                rgba({{ $bgRgb }}, 0.25) 35%, 
+                rgba({{ $bgRgb }}, 0.70) 75%, 
                 var(--bg-color) 100%
             );
             z-index: 1;
+            pointer-events: none;
         }
 
-        /* Fresh Luminous Frosted Pearl Glass Plaque for Hero */
+        /* Fresh Luminous Frosted Pearl Glass Plaque for Hero with Ambient Floating Breath */
         .hero-invitation-glass {
             position: relative;
             z-index: 10;
-            max-width: 480px;
+            max-width: 485px;
             width: 100%;
             margin: auto;
-            background: {{ $bgIsLight ? 'rgba(255, 255, 255, 0.84)' : 'rgba(20, 26, 35, 0.85)' }};
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1.5px solid rgba(255, 255, 255, 0.95);
-            border-radius: 32px;
-            padding: clamp(22px, 3.5vh, 34px) clamp(16px, 4vw, 26px);
+            background: {{ $bgIsLight ? 'rgba(255, 255, 255, 0.90)' : 'rgba(20, 26, 35, 0.90)' }};
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 34px;
+            padding: clamp(24px, 3.8vh, 36px) clamp(16px, 4vw, 28px);
             box-shadow: 
-                0 25px 60px -10px rgba(0, 0, 0, 0.16),
+                0 25px 65px -10px rgba(0, 0, 0, 0.18),
                 0 0 0 1px rgba(255, 255, 255, 0.95) inset,
-                0 0 35px rgba({{ $primaryRgb }}, 0.18);
+                0 0 40px rgba({{ $primaryRgb }}, 0.22);
+            animation: heroPlaqueFloat 6s ease-in-out infinite;
         }
         .hero-invitation-glass::before {
             content: '';
             position: absolute;
             inset: 8px;
-            border: 1px dashed rgba({{ $primaryRgb }}, 0.35);
-            border-radius: 24px;
+            border: 1px dashed rgba({{ $primaryRgb }}, 0.40);
+            border-radius: 26px;
             pointer-events: none;
         }
 
-        .countdown-box-royal {
-            background: {{ $bgIsLight ? 'rgba(255, 255, 255, 0.92)' : 'rgba(15, 23, 42, 0.85)' }};
+        @keyframes heroPlaqueFloat {
+            0%, 100% {
+                transform: translateY(0);
+                box-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.95) inset, 0 0 40px rgba({{ $primaryRgb }}, 0.22);
+            }
+            50% {
+                transform: translateY(-6px);
+                box-shadow: 0 34px 75px -12px rgba(0, 0, 0, 0.22), 0 0 0 1.5px rgba(255, 255, 255, 1) inset, 0 0 55px rgba({{ $primaryRgb }}, 0.32);
+            }
+        }
+
+        /* Ambient Sparkling Stars in Hero Plaque */
+        .hero-sparkle {
+            position: absolute;
+            color: var(--primary);
+            font-size: 13px;
+            pointer-events: none;
+            user-select: none;
+            z-index: 2;
+        }
+        .hero-sparkle-1 { top: 16px; left: 18px; animation: sparkleTwinkle 3.2s infinite ease-in-out 0.2s; }
+        .hero-sparkle-2 { top: 18px; right: 18px; animation: sparkleTwinkle 3.8s infinite ease-in-out 1.2s; }
+        .hero-sparkle-3 { bottom: 22px; left: 20px; animation: sparkleTwinkle 4.2s infinite ease-in-out 0.7s; }
+        .hero-sparkle-4 { bottom: 24px; right: 20px; animation: sparkleTwinkle 3.5s infinite ease-in-out 1.8s; }
+
+        @keyframes sparkleTwinkle {
+            0%, 100% { opacity: 0.22; transform: scale(0.8) rotate(0deg); }
+            50% { opacity: 0.95; transform: scale(1.35) rotate(45deg); filter: drop-shadow(0 0 6px var(--primary-bright)); }
+        }
+
+        /* Solitaire Diamond Sparkle Twinkle */
+        .hero-diamond-twinkle {
+            transform-origin: 78px 4px;
+            animation: diamondGlint 2.8s infinite ease-in-out;
+        }
+        @keyframes diamondGlint {
+            0%, 100% { transform: scale(0.85) rotate(0deg); opacity: 0.6; }
+            50% { transform: scale(1.4) rotate(45deg); opacity: 1; filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px var(--primary-bright)); }
+        }
+
+        /* Auspicious Blessing - Bold & High Contrast */
+        .hero-blessing-text {
+            font-family: {{ $lang == 'km' ? "'Moul', 'Khmer OS Muol', cursive, serif" : "'Cinzel', 'Playfair Display', Georgia, serif" }};
+            font-weight: 800;
+            -webkit-text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
+            text-stroke: {{ $lang == 'km' ? '0.35px currentColor' : '0' }};
+            color: var(--primary-dark);
+            letter-spacing: {{ $lang == 'km' ? '0.03em' : '0.12em' }};
+            text-shadow: 0 1px 3px rgba(var(--primary-rgb), 0.20);
+        }
+
+        /* Main Wedding Title with Continuous Royal Shimmer */
+        .hero-wedding-title {
+            font-family: {{ $lang == 'km' ? "'Moul', 'Khmer OS Muol', cursive, serif" : "'Cinzel', 'Playfair Display', Georgia, serif" }};
+            font-weight: 800;
+            -webkit-text-stroke: {{ $lang == 'km' ? '0.5px currentColor' : '0' }};
+            text-stroke: {{ $lang == 'km' ? '0.5px currentColor' : '0' }};
+            color: var(--primary-dark);
+            letter-spacing: {{ $lang == 'km' ? '0.02em' : '0.06em' }};
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+            background: linear-gradient(
+                120deg, 
+                var(--primary-dark) 0%, 
+                var(--primary-dark) 35%, 
+                var(--primary-bright) 50%, 
+                var(--primary-dark) 65%, 
+                var(--primary-dark) 100%
+            );
+            background-size: 250% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: royalTitleShimmer 5s ease-in-out infinite;
+        }
+        @keyframes royalTitleShimmer {
+            0%, 25% { background-position: 100% 0; }
+            75%, 100% { background-position: -100% 0; }
+        }
+
+        /* Couple Names - Ultra Bold & Luxury Metallic Gleam */
+        .hero-couple-name {
+            font-family: {{ $lang == 'km' ? "'Moul', 'Khmer OS Muol', cursive, serif" : "'Cinzel', 'Playfair Display', Georgia, serif" }};
+            font-weight: 800;
+            -webkit-text-stroke: {{ $lang == 'km' ? '0.55px currentColor' : '0' }};
+            text-stroke: {{ $lang == 'km' ? '0.55px currentColor' : '0' }};
+            color: var(--primary-dark);
+            position: relative;
+            display: inline-block;
+            letter-spacing: {{ $lang == 'km' ? '0.02em' : '0.06em' }};
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+            background: linear-gradient(
+                120deg, 
+                var(--primary-dark) 0%, 
+                var(--primary-dark) 35%, 
+                var(--primary-bright) 50%, 
+                var(--primary-dark) 65%, 
+                var(--primary-dark) 100%
+            );
+            background-size: 250% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: royalCoupleGleam 4.5s ease-in-out infinite;
+        }
+        @keyframes royalCoupleGleam {
+            0%, 20% { background-position: 100% 0; }
+            70%, 100% { background-position: -100% 0; }
+        }
+
+        /* Romantic Ampersand Heartbeat Emblem */
+        .hero-ampersand-badge {
+            position: relative;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-bright) 0%, var(--primary) 50%, var(--primary-dark) 100%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 4px 14px rgba(var(--primary-rgb), 0.40),
+                0 0 0 2.5px rgba(255, 255, 255, 0.95),
+                0 0 0 4px var(--border-primary);
+            animation: royalHeartbeat 2.6s infinite ease-in-out;
+        }
+        @keyframes royalHeartbeat {
+            0%, 100% { transform: scale(1); }
+            12% { transform: scale(1.15); box-shadow: 0 6px 18px rgba(var(--primary-rgb), 0.55), 0 0 0 2.5px rgba(255, 255, 255, 1), 0 0 0 5px var(--primary-bright); }
+            24% { transform: scale(1.02); }
+            36% { transform: scale(1.12); box-shadow: 0 5px 16px rgba(var(--primary-rgb), 0.50), 0 0 0 2.5px rgba(255, 255, 255, 1), 0 0 0 4.5px var(--primary-bright); }
+            60% { transform: scale(1); }
+        }
+
+        /* Elegant Date Badge */
+        .hero-date-badge {
+            background: {{ $bgIsLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(15, 23, 42, 0.90)' }};
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1.5px solid var(--border-primary);
-            border-radius: 18px;
-            padding: 10px 14px;
-            min-width: 68px;
-            box-shadow: 0 6px 18px -4px rgba(0, 0, 0, 0.08), 0 0 15px rgba({{ $primaryRgb }}, 0.12);
+            box-shadow: 0 4px 16px -2px rgba(var(--primary-rgb), 0.20), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+        }
+
+        /* Countdown Boxes with Golden Bar Accent & Rhythmic Seconds Tick */
+        .countdown-box-royal {
+            position: relative;
+            background: {{ $bgIsLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(15, 23, 42, 0.90)' }};
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid var(--border-primary);
+            border-radius: 20px;
+            padding: 11px 12px;
+            min-width: 72px;
+            box-shadow: 
+                0 8px 20px -4px rgba(0, 0, 0, 0.10), 
+                0 0 20px rgba({{ $primaryRgb }}, 0.16),
+                0 0 0 1px rgba(255, 255, 255, 0.85) inset;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            overflow: hidden;
+        }
+        .countdown-box-royal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-bright), var(--primary), var(--primary-dark));
+            border-radius: 20px 20px 0 0;
+        }
+        .countdown-box-seconds #cd-seconds {
+            color: var(--primary) !important;
+            animation: secondPulse 1s infinite ease-in-out;
+        }
+        @keyframes secondPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 4px rgba(var(--primary-rgb), 0.4)); }
         }
 
         #leaves-canvas {
@@ -852,6 +1028,12 @@
         <div class="hero-overlay"></div>
 
         <div class="hero-invitation-glass">
+            <!-- Ambient Sparkling Stars -->
+            <div class="hero-sparkle hero-sparkle-1">✦</div>
+            <div class="hero-sparkle hero-sparkle-2">✦</div>
+            <div class="hero-sparkle hero-sparkle-3">✦</div>
+            <div class="hero-sparkle hero-sparkle-4">✦</div>
+
             <!-- Authentic Khmer Wedding Emblem: Interlocking Rings & Solitaire Diamond -->
             <svg class="w-24 h-12 mx-auto mb-2" viewBox="0 0 130 64" fill="none">
                 <defs>
@@ -865,6 +1047,10 @@
                         <stop offset="60%" stop-color="var(--primary-bright)"/>
                         <stop offset="100%" stop-color="var(--primary)"/>
                     </linearGradient>
+                    <filter id="sparkleGlowHero" x="-40%" y="-40%" width="180%" height="180%">
+                        <feGaussianBlur stdDeviation="1" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                    </filter>
                 </defs>
 
                 <!-- Khmer Ornamental Wings / Lotus Laurel (Bottom & Flanks) -->
@@ -897,49 +1083,86 @@
                 <line x1="75" y1="11" x2="78" y2="17" stroke="rgba(255,255,255,0.7)" stroke-width="0.7"/>
                 <line x1="81" y1="11" x2="78" y2="17" stroke="rgba(255,255,255,0.7)" stroke-width="0.7"/>
 
-                <!-- Radiant 4-Point Sparkle on Diamond Tip -->
-                <path d="M78 0 L79.5 3.5 L83 4 L79.5 4.5 L78 8 L76.5 4.5 L73 4 L76.5 3.5 Z" fill="#ffffff"/>
-                <circle cx="78" cy="4" r="1.2" fill="#ffffff"/>
+                <!-- Radiant 4-Point Animated Sparkle on Diamond Tip -->
+                <g class="hero-diamond-twinkle">
+                    <circle cx="78" cy="4" r="5" fill="rgba(255,255,255,0.6)" filter="url(#sparkleGlowHero)"/>
+                    <path d="M78 0 L79.5 3.5 L83 4 L79.5 4.5 L78 8 L76.5 4.5 L73 4 L76.5 3.5 Z" fill="#ffffff"/>
+                    <circle cx="78" cy="4" r="1.4" fill="#ffffff"/>
+                </g>
 
                 <!-- Auspicious Crown Apex Motif over Center -->
                 <path d="M62 13 C64 9, 66 9, 68 13" stroke="url(#crestGoldHero)" stroke-width="1.2" stroke-linecap="round"/>
                 <circle cx="65" cy="8" r="1.5" fill="var(--primary-bright)"/>
             </svg>
 
-            <p class="f-heading text-xs md:text-sm tracking-widest font-bold theme-primary-text mb-1 uppercase">{{ $translations['auspicious_blessing'] }}</p>
-            <h1 class="f-heading text-2xl md:text-3xl theme-heading mb-3 leading-snug">{{ $translations['wedding_invitation'] }}</h1>
-            <div class="w-24 h-0.5 mx-auto mb-4" style="background: linear-gradient(90deg, transparent, var(--primary), transparent);"></div>
+            <!-- Auspicious Blessing - Bold & High Contrast -->
+            <p class="hero-blessing-text text-xs sm:text-sm tracking-widest font-black mb-1 uppercase">
+                {{ $translations['auspicious_blessing'] }}
+            </p>
 
-            <div class="my-3 space-y-1">
+            <!-- Main Wedding Title with Continuous Royal Shimmer -->
+            <h1 class="hero-wedding-title text-2xl sm:text-3xl md:text-4xl mb-3 leading-snug">
+                {{ $translations['wedding_invitation'] }}
+            </h1>
+
+            <div class="flex items-center justify-center gap-2 my-3">
+                <span class="h-[1.5px] w-12 bg-gradient-to-r from-transparent to-[var(--primary)]"></span>
+                <span class="text-xs text-[var(--primary)]">✦</span>
+                <span class="h-[1.5px] w-12 bg-gradient-to-l from-transparent to-[var(--primary)]"></span>
+            </div>
+
+            <!-- Couple Section with High-Contrast Bold Typography and Shimmer -->
+            <div class="my-4 space-y-2">
                 <div>
-                    <span class="text-[10px] md:text-xs uppercase tracking-widest block font-bold theme-muted-text mb-0.5">{{ $translations['groom_title'] }}</span>
-                    <div class="f-heading text-2xl md:text-3xl theme-heading leading-tight">
-                        {{ $lang == 'km' ? $event->groom_name : $event->groom_name_en }}
+                    <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[var(--primary-tint)] border border-[var(--border-primary)] shadow-2xs mb-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[var(--primary)]"></span>
+                        <span class="text-[11px] md:text-xs uppercase tracking-widest font-black text-[var(--primary-dark)]">
+                            {{ $translations['groom_title'] }}
+                        </span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-[var(--primary)]"></span>
+                    </div>
+                    <div>
+                        <div class="hero-couple-name text-3xl sm:text-4xl md:text-4xl leading-tight">
+                            {{ $lang == 'km' ? $event->groom_name : $event->groom_name_en }}
+                        </div>
                     </div>
                 </div>
 
-                <div class="py-1">
-                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-full border border-[var(--border-primary)] bg-[var(--primary-tint)] text-[var(--primary)] f-heading text-xs font-bold shadow-sm">&amp;</span>
+                <div class="py-1 flex items-center justify-center">
+                    <div class="hero-ampersand-badge" title="{{ $translations['and'] }}">
+                        <span class="relative z-10 f-heading text-sm md:text-base font-black text-white leading-none">&amp;</span>
+                    </div>
                 </div>
 
                 <div>
-                    <span class="text-[10px] md:text-xs uppercase tracking-widest block font-bold theme-muted-text mb-0.5">{{ $translations['bride_title'] }}</span>
-                    <div class="f-heading text-2xl md:text-3xl theme-heading leading-tight">
-                        {{ $lang == 'km' ? $event->bride_name : $event->bride_name_en }}
+                    <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[var(--primary-tint)] border border-[var(--border-primary)] shadow-2xs mb-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[var(--primary)]"></span>
+                        <span class="text-[11px] md:text-xs uppercase tracking-widest font-black text-[var(--primary-dark)]">
+                            {{ $translations['bride_title'] }}
+                        </span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-[var(--primary)]"></span>
+                    </div>
+                    <div>
+                        <div class="hero-couple-name text-3xl sm:text-4xl md:text-4xl leading-tight">
+                            {{ $lang == 'km' ? $event->bride_name : $event->bride_name_en }}
+                        </div>
                     </div>
                 </div>
             </div>
 
             @if($event->date ?? false)
-            <div class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[var(--primary-tint)] border border-[var(--border-primary)] text-xs md:text-sm font-semibold theme-heading mt-3 shadow-sm">
-                🗓 {{ \Carbon\Carbon::parse($event->date)->translatedFormat('l, d F Y') }}
+            <div class="hero-date-badge inline-flex items-center gap-2 px-5 py-2 rounded-full mt-2 shadow-md">
+                <span class="text-sm">🗓️</span>
+                <span class="text-xs md:text-sm font-extrabold text-[var(--primary-dark)] tracking-wide">
+                    {{ \Carbon\Carbon::parse($event->date)->translatedFormat('l, d F Y') }}
+                </span>
             </div>
 
             <div id="countdown" class="flex justify-center gap-2 md:gap-3 mt-4">
                 @foreach(['days', 'hours', 'minutes', 'seconds'] as $key)
-                <div class="countdown-box-royal">
-                    <div id="cd-{{ $key }}" class="f-cinzel text-xl md:text-2xl font-black theme-heading">00</div>
-                    <div class="text-[9.5px] uppercase font-bold theme-muted-text mt-0.5 tracking-wider">{{ $translations[$key] }}</div>
+                <div class="countdown-box-royal {{ $key === 'seconds' ? 'countdown-box-seconds' : '' }}">
+                    <div id="cd-{{ $key }}" class="f-cinzel text-2xl md:text-3xl font-black text-slate-900 drop-shadow-xs">00</div>
+                    <div class="text-[10px] md:text-[11px] uppercase font-black text-slate-700 mt-1 tracking-wider">{{ $translations[$key] }}</div>
                 </div>
                 @endforeach
             </div>
