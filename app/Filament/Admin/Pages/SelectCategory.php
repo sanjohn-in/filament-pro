@@ -222,15 +222,15 @@ class SelectCategory extends Page
                             // ─────────────────────────────────────────────────────────
             
                             ColorPicker::make('theme_color')
-                            ->label(__('messages.theme_color'))
-                            ->default('#87CEEB')
-                            ->formatStateUsing(fn ($state) => $state ?? '#87CEEB')
-                            ->required(),
+                                ->label(__('messages.theme_color'))
+                                ->default('#C59B27')
+                                ->formatStateUsing(fn ($state) => filled($state) ? ('#' . ltrim($state, '#')) : '#C59B27')
+                                ->required(),
             
                             ColorPicker::make('bg_color')
                                 ->label(__('messages.background_color'))
-                                ->default('#e6e6e6')
-                                ->formatStateUsing(fn ($state) => $state ?? '#e6e6e6')
+                                ->default('#FAF6EE')
+                                ->formatStateUsing(fn ($state) => filled($state) ? ('#' . ltrim($state, '#')) : '#FAF6EE')
                                 ->required(),
                                 
                                 

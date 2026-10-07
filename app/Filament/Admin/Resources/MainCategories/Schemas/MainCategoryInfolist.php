@@ -82,6 +82,11 @@ class MainCategoryInfolist
                 ->placeholder('No Cover Image')
                 ->columnSpanFull(),
                 
+                TextEntry::make('defaultTheme.name')
+                    ->label(__('messages.theme', ['default' => 'Theme']))
+                    ->badge()
+                    ->color('warning'),
+
                 ColorEntry::make('theme_color')
                     ->label(__('messages.theme_color')),
                     

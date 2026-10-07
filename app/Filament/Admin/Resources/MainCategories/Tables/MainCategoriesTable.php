@@ -48,6 +48,11 @@ class MainCategoriesTable
                     ->label(__('messages.address'))
                     ->searchable(),
                     
+                TextColumn::make('defaultTheme.name')
+                    ->label(__('messages.theme', ['default' => 'Theme']))
+                    ->badge()
+                    ->color('warning'),
+
                 ColorColumn::make('theme_color')
                     ->label(__('messages.theme_color')),
 

@@ -185,17 +185,27 @@ class MainCategoryForm
 
                 // ─────────────────────────────────────────────────────────
 
-                ColorPicker::make('theme_color')
-                ->label(__('messages.theme_color'))
-                ->default('##ffbf00')
-                ->formatStateUsing(fn ($state) => $state ?? '##ffbf00')
-                ->required(),
+                Grid::make(3)
+                    ->schema([
+                        Select::make('default_theme_id')
+                            ->label(__('messages.theme', ['default' => 'Theme']))
+                            ->relationship('defaultTheme', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->default(1),
 
-                ColorPicker::make('bg_color')
-                    ->label(__('messages.background_color'))
-                    ->default('#e6e6e6')
-                    ->formatStateUsing(fn ($state) => $state ?? '#e6e6e6')
-                    ->required(),
+                        ColorPicker::make('theme_color')
+                            ->label(__('messages.theme_color'))
+                            ->default('#ffbf00')
+                            ->formatStateUsing(fn ($state) => filled($state) ? ('#' . ltrim($state, '#')) : '#ffbf00')
+                            ->required(),
+
+                        ColorPicker::make('bg_color')
+                            ->label(__('messages.background_color'))
+                            ->default('#FAF6EE')
+                            ->formatStateUsing(fn ($state) => filled($state) ? ('#' . ltrim($state, '#')) : '#FAF6EE')
+                            ->required(),
+                    ]),
 
                     
                 FileUpload::make('cover_image')

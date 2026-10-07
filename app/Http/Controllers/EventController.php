@@ -14,18 +14,53 @@ class EventController extends Controller
     /**
      * Display wedding invitation preview
      * 
-     * Route: /events/{slug}/template/{id}
+     * Route: /events/{slug}/template/{id?} or /events/{slug}
      */
-    public function index(Request $request, $slug, $id)
+    public function index(Request $request, $slug, $id = null)
     {
         $locale = $request->query('lang') === 'en' ? 'en' : 'km';
         app()->setLocale($locale);
-    
-        $theme = Theme::findOrFail($id);
-        $guest = $request->query('gid')
-            ? Guest::findOrFail($request->query('gid'))
-            : null;
+
         $event = MainCategory::where('slug', '=', $slug)->firstOrFail();
+        $id    = (int) ($id ?: ($event->default_theme_id ?? 1));
+        if ($id < 1) {
+            $id = 1;
+        }
+    
+        $themeMeta = [
+            1 => ['name' => 'Royal Gold & Ruby Silk', 'description' => 'រាជរដ្ឋសិរីមង្គល - Traditional Royal Gold Theme'],
+            2 => ['name' => 'Heritage Lotus & Ivory Silk', 'description' => 'កេរដំណែលផ្កាឈូកអង្គរ - Sacred Lotus Theme'],
+            3 => ['name' => 'Modern Luxury Khmer Gold Fusion', 'description' => 'ខ្មែរបុរាណទាន់សម័យ - Modern Luxury Theme'],
+        ];
+
+        $theme = Theme::find($id);
+
+        if (! $theme) {
+            try {
+                $theme = Theme::firstOrCreate(
+                    ['id' => (int) $id],
+                    [
+                        'name'          => $themeMeta[$id]['name'] ?? ('Theme ' . $id),
+                        'description'   => $themeMeta[$id]['description'] ?? ('Template ' . $id),
+                        'is_free'       => true,
+                        'is_active'     => true,
+                        'display_order' => (int) $id,
+                    ]
+                );
+            } catch (\Throwable $e) {
+                $theme = new Theme([
+                    'name'          => $themeMeta[$id]['name'] ?? ('Theme ' . $id),
+                    'description'   => $themeMeta[$id]['description'] ?? ('Template ' . $id),
+                    'is_free'       => true,
+                    'is_active'     => true,
+                    'display_order' => (int) $id,
+                ]);
+                $theme->id = (int) $id;
+            }
+        }
+        $guest = $request->query('gid')
+            ? Guest::find($request->query('gid'))
+            : null;
 
         $music = Configuration::where('slug', '=', 'music')->value('value');
         $wishes = Guest::where('main_category_id', '=', $event->id)

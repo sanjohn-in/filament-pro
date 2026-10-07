@@ -42,9 +42,9 @@
                         </div>
 
                         <!-- Selected Badge -->
-                        @if($this->userSelectedTheme == $theme['id'])
+                        @if((int) $this->userSelectedTheme === (int) $theme['id'])
                             <div class="absolute top-4 left-4">
-                                <span class="inline-block bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                                <span class="inline-block bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow">
                                     ✓ {{ __('messages.selected') }}
                                 </span>
                             </div>
@@ -96,7 +96,7 @@
                             <!-- Select/Purchase Button -->
                             @php
                                 $isPurchased = $theme['is_free'] || in_array($theme['id'], $this->userPurchases);
-                                $isSelected = $this->userSelectedTheme == $theme['id'];
+                                $isSelected = (int) $this->userSelectedTheme === (int) $theme['id'];
                             @endphp
 
                             @if($isPurchased)
@@ -144,20 +144,9 @@
         Livewire.on('notify', (payload) => {
             const data = Array.isArray(payload) ? payload[0] : payload;
             const { type, message } = data || {};
-            
-            // You can use your preferred notification library here
-            // Example: Toastr, SweetAlert, etc.
             console.log(`[${type}] ${message}`);
-            
-            // Simple alert for demo
-            if (type === 'success') {
-                alert(message);
-            } else if (type === 'error') {
-                alert(message);
-            }
         });
     </script>
 
     <x-filament-actions::modals />
 </x-filament-panels::page>
-`

@@ -7,6 +7,7 @@ use App\Models\Admin\MainCategory;
 use App\Models\Admin\Theme;
 use App\Models\Admin\UserThemePurchase;
 use Filament\Actions\CreateAction;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,8 +44,14 @@ class ListThemes extends ListRecords
             ->pluck('theme_id')
             ->toArray();
 
-        $userData = Auth::user()->getUserCategoryData($mainCategoryId);
-        $selectedThemeId = $userData['selected_theme_id'] ?? null;
+        // 1. Prioritize default_theme_id from the main category in the database
+        $selectedThemeId = $this->mainCategory->default_theme_id;
+
+        // 2. Fall back to user category data if mainCategory default_theme_id is empty
+        if (blank($selectedThemeId)) {
+            $userData = Auth::user()->getUserCategoryData($mainCategoryId);
+            $selectedThemeId = $userData['selected_theme_id'] ?? null;
+        }
 
         $themeMap = collect($this->themes)->keyBy('id');
 
@@ -52,20 +59,17 @@ class ListThemes extends ListRecords
             $theme = $themeMap->get($selectedThemeId);
             $canSelect = filled($theme) && ((bool) ($theme['is_free'] ?? false) || in_array($selectedThemeId, $this->userPurchases));
 
-            $this->userSelectedTheme = $canSelect ? $selectedThemeId : null;
+            $this->userSelectedTheme = $canSelect ? (int) $selectedThemeId : null;
+            $this->user = Auth::user();
             return;
         }
 
-        $candidateThemeId = $this->mainCategory->default_theme_id;
-        if (blank($candidateThemeId) && $themeMap->isNotEmpty()) {
-            $candidateThemeId = $themeMap->keys()->first();
-        }
-
+        $candidateThemeId = $themeMap->keys()->first();
         if (filled($candidateThemeId)) {
             $candidate = $themeMap->get($candidateThemeId);
             $canSelectCandidate = filled($candidate) && ((bool) ($candidate['is_free'] ?? false) || in_array($candidateThemeId, $this->userPurchases));
 
-            $this->userSelectedTheme = $canSelectCandidate ? $candidateThemeId : null;
+            $this->userSelectedTheme = $canSelectCandidate ? (int) $candidateThemeId : null;
         }
         $this->user = Auth::user();
     }
@@ -83,10 +87,16 @@ class ListThemes extends ListRecords
 
     public function selectTheme($themeId): void
     {
+        $themeId = (int) $themeId;
         $theme = Theme::findOrFail($themeId);
         $mainCategoryId = $this->mainCategory->id;
 
         if (! $theme->is_active) {
+            Notification::make()
+                ->title(__('messages.theme_not_available') ?? 'Theme not available')
+                ->danger()
+                ->send();
+
             $this->dispatch('notify', [
                 'type' => 'error',
                 'message' => __('messages.theme_not_available'),
@@ -96,6 +106,11 @@ class ListThemes extends ListRecords
         }
 
         if (! $theme->is_free && ! in_array($themeId, $this->userPurchases)) {
+            Notification::make()
+                ->title(__('messages.theme_not_purchased') ?? 'Theme not purchased')
+                ->danger()
+                ->send();
+
             $this->dispatch('notify', [
                 'type' => 'error',
                 'message' => __('messages.theme_not_purchased'),
@@ -103,12 +118,27 @@ class ListThemes extends ListRecords
             return;
         }
 
+        // 1. Update the database column default_theme_id on main_categories
+        $this->mainCategory->update([
+            'default_theme_id' => $themeId,
+        ]);
+        $this->mainCategory->refresh();
+
+        // 2. Also keep user-specific selection updated
         Auth::user()->updateUserCategoryData($mainCategoryId, [
             'selected_theme_id' => $themeId,
         ]);
 
+        // 3. Update Livewire property for reactive re-render
         $this->userSelectedTheme = $themeId;
 
+        // 4. Send native Filament notification toast
+        Notification::make()
+            ->title(__('messages.theme_selected') ?? 'Theme selected successfully')
+            ->success()
+            ->send();
+
+        // 5. Dispatch Livewire event for any listeners
         $this->dispatch('notify', [
             'type' => 'success',
             'message' => __('messages.theme_selected'),

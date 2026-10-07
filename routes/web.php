@@ -15,11 +15,12 @@ Route::get('/', function () {
 
 
 Route::controller(EventController::class)->group(function () {
-    Route::get('/events/{slug}/template/{id}',           'index');
-    Route::post('/events/{slug}/guest/{gid}/wishes',     'sendWishes')->name('event.wishes');
-    Route::post('/events/{slug}/guest/{gid}/rsvp',       'rsvpReply')->name('event.rsvp');
-    Route::get('/events/{slug}/guest/{gid}/donation',    'getDonationStatus')->name('event.donation.status');
-    Route::post('/events/{slug}/guest/{gid}/donation',   'saveDonation')->name('event.donation');
+    Route::get('/events/{slug}/template/{id?}', 'index')->name('event.template');
+    Route::get('/events/{slug}', 'index')->name('event.show');
+    Route::post('/events/{slug}/guest/{gid}/wishes', 'sendWishes')->name('event.wishes');
+    Route::post('/events/{slug}/guest/{gid}/rsvp', 'rsvpReply')->name('event.rsvp');
+    Route::get('/events/{slug}/guest/{gid}/donation', 'getDonationStatus')->name('event.donation.status');
+    Route::post('/events/{slug}/guest/{gid}/donation', 'saveDonation')->name('event.donation');
 });
 Route::get('/admin/clear-category', function () {
     session()->forget('main_category_id');

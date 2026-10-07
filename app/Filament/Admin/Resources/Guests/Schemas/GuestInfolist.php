@@ -24,8 +24,7 @@ class GuestInfolist
                     $domain = \App\Models\Admin\Configuration::where('slug', 'domain')->value('link');
                     // return $record->mainCategory;
                         return rtrim($domain, '/') . '/events/' . $record->mainCategory->slug  . '/template/' 
-                        //  . $record->mainCategory->defaultTheme 
-                        .  '1/'
+                        . ($record->mainCategory->default_theme_id ?? 1) . '/'
                         . '?gid=' . $record->id . '&lang=' . $record->lang;
                     })
                     ->limit(40) // 👀 show short
@@ -37,7 +36,7 @@ class GuestInfolist
                         rtrim(\App\Models\Admin\Configuration::where('slug', 'domain')->value('link'), '/') 
                         . '/events/' . $record->mainCategory->slug  
                         . '/template/' 
-                        .  '1/'
+                        . ($record->mainCategory->default_theme_id ?? 1) . '/'
                         .
                         '?gid=' . $record->id . '&lang=' . $record->lang
                     )
