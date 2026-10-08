@@ -30,7 +30,10 @@ class TableGroupsTable
                     ->badge()
                     ->color('info')
                     ->sortable(),
-
+                TextColumn::make('note')
+                    ->label(__('messages.note'))
+                    ->badge()
+                    ->sortable(),
                 TextColumn::make('status')
                     ->label(__('messages.status'))
                     ->badge()
