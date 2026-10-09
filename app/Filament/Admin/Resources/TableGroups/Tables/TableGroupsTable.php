@@ -30,10 +30,11 @@ class TableGroupsTable
                     ->badge()
                     ->color('info')
                     ->sortable(),
-                TextColumn::make('note')
+
+               TextColumn::make('note')
                     ->label(__('messages.note'))
-                    ->badge()
-                    ->sortable(),
+                    ->limit(40),
+
                 TextColumn::make('status')
                     ->label(__('messages.status'))
                     ->badge()
@@ -49,11 +50,6 @@ class TableGroupsTable
                         'closed' => __('messages.table_status_closed'),
                         default  => $state,
                     }),
-
-                TextColumn::make('note')
-                    ->label(__('messages.note'))
-                    ->limit(40)
-                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('created_at')
                     ->label(__('messages.created_at'))
