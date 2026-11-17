@@ -60,7 +60,43 @@ class GuestsRelationManager extends RelationManager
 
             TextColumn::make('phone')
                 ->label(__('messages.phone')),
+                
+            TextColumn::make('is_attending')
+            ->label(__('messages.is_attending'))
+            ->badge()
+            ->color(fn (string $state): string => match ($state) {
+                'yes' => 'primary',
+                'no'  => 'danger',
+                default  => 'primary',
+            })
+            ->formatStateUsing(fn (string $state): string => match ($state) {
+                'yes' => __('messages.yes'),
+                'no'  => __('messages.no'),
+                default  => $state,
+            }),
 
+           
+            TextColumn::make('guest_link')
+            ->label(__('messages.link'))
+            ->getStateUsing(function ($record) {
+                $domain = \App\Models\Admin\Configuration::where('slug', 'domain')->value('link');
+                return rtrim($domain, '/') . '/events/' . $record->mainCategory->slug  . '/template/' 
+                 . ($record->mainCategory->default_theme_id ?? 1) . '/'
+                 . '?gid=' . $record->id . '&lang=' . $record->lang;
+            })
+            ->limit(40) 
+            ->tooltip(fn ($state) => $state) // full on hover
+            ->copyable()
+            ->copyableState(fn ($record) => 
+                rtrim(\App\Models\Admin\Configuration::where('slug', 'domain')->value('link'), '/') 
+                . '/events/' . $record->mainCategory->slug  
+                . '/template/' 
+                . ($record->mainCategory->default_theme_id ?? 1) . '/'
+                .
+                '?gid=' . $record->id . '&lang=' . $record->lang
+            )
+            ->copyMessageDuration(1500)
+            ->icon('heroicon-o-link'),
             TextColumn::make('tag')
                 ->label(__('messages.tag'))
                 ->badge()
